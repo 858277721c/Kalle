@@ -88,8 +88,8 @@ public final class KalleConfig
         this.mProxy = builder.mProxy;
         this.mSSLSocketFactory = builder.mSSLSocketFactory == null ? SSLUtils.SSL_SOCKET_FACTORY : builder.mSSLSocketFactory;
         this.mHostnameVerifier = builder.mHostnameVerifier == null ? SSLUtils.HOSTNAME_VERIFIER : builder.mHostnameVerifier;
-        this.mConnectTimeout = builder.mConnectTimeout <= 0 ? 10000 : builder.mConnectTimeout;
-        this.mReadTimeout = builder.mReadTimeout <= 0 ? 10000 : builder.mReadTimeout;
+        this.mConnectTimeout = builder.mConnectTimeout <= 0 ? 10 * 1000 : builder.mConnectTimeout;
+        this.mReadTimeout = builder.mReadTimeout <= 0 ? 10 * 1000 : builder.mReadTimeout;
         this.mParams = builder.mParamsBuilder.build();
 
         this.mCacheStore = builder.mCacheStore == null ? CacheStore.DEFAULT : builder.mCacheStore;
@@ -297,11 +297,8 @@ public final class KalleConfig
          */
         public Builder connectionTimeout(int timeout, TimeUnit timeUnit)
         {
-            if (timeout <= 0)
-            {
-                throw new IllegalArgumentException("timeout must be > 0");
-            }
-            this.mConnectTimeout = (int) Math.min(timeUnit.toMillis(timeout), Integer.MAX_VALUE);
+            final long time = timeUnit.toMillis(timeout);
+            this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return this;
         }
 
@@ -310,11 +307,8 @@ public final class KalleConfig
          */
         public Builder readTimeout(int timeout, TimeUnit timeUnit)
         {
-            if (timeout <= 0)
-            {
-                throw new IllegalArgumentException("timeout must be > 0");
-            }
-            this.mReadTimeout = (int) Math.min(timeUnit.toMillis(timeout), Integer.MAX_VALUE);
+            final long time = timeUnit.toMillis(timeout);
+            this.mReadTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return this;
         }
 
