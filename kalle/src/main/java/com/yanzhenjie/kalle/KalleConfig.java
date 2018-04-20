@@ -297,8 +297,11 @@ public final class KalleConfig
          */
         public Builder connectionTimeout(int timeout, TimeUnit timeUnit)
         {
-            long time = timeUnit.toMillis(timeout);
-            this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
+            if (timeout <= 0)
+            {
+                throw new IllegalArgumentException("timeout must be > 0");
+            }
+            this.mConnectTimeout = (int) Math.min(timeUnit.toMillis(timeout), Integer.MAX_VALUE);
             return this;
         }
 
@@ -307,8 +310,11 @@ public final class KalleConfig
          */
         public Builder readTimeout(int timeout, TimeUnit timeUnit)
         {
-            long time = timeUnit.toMillis(timeout);
-            this.mReadTimeout = (int) Math.min(time, Integer.MAX_VALUE);
+            if (timeout <= 0)
+            {
+                throw new IllegalArgumentException("timeout must be > 0");
+            }
+            this.mReadTimeout = (int) Math.min(timeUnit.toMillis(timeout), Integer.MAX_VALUE);
             return this;
         }
 
