@@ -90,7 +90,7 @@ public final class KalleConfig
         this.mHostnameVerifier = builder.mHostnameVerifier == null ? SSLUtils.HOSTNAME_VERIFIER : builder.mHostnameVerifier;
         this.mConnectTimeout = builder.mConnectTimeout <= 0 ? 10000 : builder.mConnectTimeout;
         this.mReadTimeout = builder.mReadTimeout <= 0 ? 10000 : builder.mReadTimeout;
-        this.mParams = builder.mParams.build();
+        this.mParams = builder.mParamsBuilder.build();
 
         this.mCacheStore = builder.mCacheStore == null ? CacheStore.DEFAULT : builder.mCacheStore;
 
@@ -195,7 +195,7 @@ public final class KalleConfig
         private HostnameVerifier mHostnameVerifier;
         private int mConnectTimeout;
         private int mReadTimeout;
-        private Params.Builder mParams;
+        private Params.Builder mParamsBuilder;
 
         private CacheStore mCacheStore;
 
@@ -209,7 +209,7 @@ public final class KalleConfig
         public Builder()
         {
             this.mHeaders = new Headers();
-            this.mParams = Params.newBuilder();
+            this.mParamsBuilder = new Params.Builder();
             this.mInterceptors = new ArrayList<>();
 
             mHeaders.set(KEY_ACCEPT, VALUE_ACCEPT_ALL);
@@ -317,7 +317,7 @@ public final class KalleConfig
          */
         public Builder addParam(String key, String value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 

@@ -403,7 +403,7 @@ public class Url
 
     private static Params.Builder convertQuery(String query)
     {
-        Params.Builder params = Params.newBuilder();
+        Params.Builder builder = new Params.Builder();
         if (!TextUtils.isEmpty(query))
         {
             String[] paramArray = query.split("&");
@@ -423,10 +423,10 @@ public class Url
                 {
                     key = param;
                 }
-                params.add(key, value);
+                builder.add(key, value);
             }
         }
-        return params;
+        return builder;
     }
 
     private static String port(int port)

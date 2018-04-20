@@ -37,7 +37,7 @@ public class BodyRequest extends Request
     {
         super(api);
         this.mUrl = api.mUrlBuilder.build();
-        this.mParams = api.mParams.build();
+        this.mParams = api.mParamsBuilder.build();
         this.mBody = api.mBody == null ? (mParams.hasBinary() ? mParams.toFormBody() : mParams.toUrlBody()) : api.mBody;
     }
 
@@ -64,19 +64,16 @@ public class BodyRequest extends Request
 
     public static class Api<T extends Api<T>> extends Request.Api<T>
     {
-
         private Url.Builder mUrlBuilder;
-
-        private Params.Builder mParams;
+        private Params.Builder mParamsBuilder;
         private RequestBody mBody;
 
         protected Api(Url.Builder builder, RequestMethod method)
         {
             super(method);
             this.mUrlBuilder = builder;
-            this.mParams = Params.newBuilder();
-
-            this.mParams.add(Kalle.getConfig().getParams());
+            this.mParamsBuilder = new Params.Builder();
+            this.mParamsBuilder.add(Kalle.getConfig().getParams());
         }
 
         @Override
@@ -252,63 +249,63 @@ public class BodyRequest extends Request
         @Override
         public T param(String key, long value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, boolean value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, char value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, double value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, float value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, short value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, CharSequence value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, String value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return (T) this;
         }
 
         @Override
         public T param(String key, List<String> values)
         {
-            mParams.add(key, values);
+            mParamsBuilder.add(key, values);
             return (T) this;
         }
 
@@ -317,7 +314,7 @@ public class BodyRequest extends Request
          */
         public T params(Params params)
         {
-            mParams.add(params);
+            mParamsBuilder.add(params);
             return (T) this;
         }
 
@@ -326,21 +323,21 @@ public class BodyRequest extends Request
          */
         public T setParams(Params params)
         {
-            mParams.set(params);
+            mParamsBuilder.set(params);
             return (T) this;
         }
 
         @Override
         public T removeParam(String key)
         {
-            mParams.remove(key);
+            mParamsBuilder.remove(key);
             return (T) this;
         }
 
         @Override
         public T clearParams()
         {
-            mParams.clear();
+            mParamsBuilder.clear();
             return (T) this;
         }
 
@@ -349,7 +346,7 @@ public class BodyRequest extends Request
          */
         public T file(String key, File file)
         {
-            mParams.file(key, file);
+            mParamsBuilder.file(key, file);
             return (T) this;
         }
 
@@ -358,7 +355,7 @@ public class BodyRequest extends Request
          */
         public T files(String key, List<File> files)
         {
-            mParams.files(key, files);
+            mParamsBuilder.files(key, files);
             return (T) this;
         }
 
@@ -367,7 +364,7 @@ public class BodyRequest extends Request
          */
         public T binary(String key, Binary binary)
         {
-            mParams.binary(key, binary);
+            mParamsBuilder.binary(key, binary);
             return (T) this;
         }
 
@@ -376,7 +373,7 @@ public class BodyRequest extends Request
          */
         public T binaries(String key, List<Binary> binaries)
         {
-            mParams.binaries(key, binaries);
+            mParamsBuilder.binaries(key, binaries);
             return (T) this;
         }
 
@@ -392,7 +389,6 @@ public class BodyRequest extends Request
 
     public static class Builder extends BodyRequest.Api<BodyRequest.Builder>
     {
-
         private Builder(Url.Builder builder, RequestMethod method)
         {
             super(builder, method);

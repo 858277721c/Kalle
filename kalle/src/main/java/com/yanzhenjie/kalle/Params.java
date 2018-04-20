@@ -31,12 +31,6 @@ import java.util.Set;
  */
 public class Params
 {
-
-    public static Builder newBuilder()
-    {
-        return new Builder();
-    }
-
     private final Map<String, List<Object>> mMap;
 
     private Params(Builder builder)
@@ -136,7 +130,7 @@ public class Params
      */
     public UrlBody toUrlBody()
     {
-        return UrlBody.newBuilder().params(this).build();
+        return new UrlBody.Builder().params(this).build();
     }
 
     /**
@@ -144,7 +138,7 @@ public class Params
      */
     public FormBody toFormBody()
     {
-        return FormBody.newBuilder().params(this).build();
+        return new FormBody.Builder().params(this).build();
     }
 
     /**
@@ -185,10 +179,9 @@ public class Params
 
     public static class Builder
     {
-
         private Map<String, List<Object>> mMap;
 
-        private Builder()
+        public Builder()
         {
             this.mMap = new LinkedHashMap<>();
         }

@@ -33,12 +33,6 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_FORM;
  */
 public class FormBody extends BasicOutData<FormBody> implements RequestBody
 {
-
-    public static Builder newBuilder()
-    {
-        return new Builder();
-    }
-
     private final Charset mCharset;
     private final String mContentType;
     private final Params mParams;
@@ -49,7 +43,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
     {
         this.mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
         this.mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_FORM : builder.mContentType;
-        this.mParams = builder.mParams.build();
+        this.mParams = builder.mParamsBuilder.build();
         this.mBoundary = createBoundary();
     }
 
@@ -151,14 +145,13 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
 
     public static class Builder
     {
-
         private Charset mCharset;
         private String mContentType;
-        private Params.Builder mParams;
+        private Params.Builder mParamsBuilder;
 
-        private Builder()
+        public Builder()
         {
-            this.mParams = Params.newBuilder();
+            this.mParamsBuilder = new Params.Builder();
         }
 
         /**
@@ -184,7 +177,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, int value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -193,7 +186,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, long value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -202,7 +195,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, boolean value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -211,7 +204,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, char value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -220,7 +213,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, double value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -229,7 +222,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, float value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -238,7 +231,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, short value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -247,7 +240,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, CharSequence value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -256,7 +249,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, String value)
         {
-            mParams.add(key, value);
+            mParamsBuilder.add(key, value);
             return this;
         }
 
@@ -265,7 +258,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder param(String key, List<String> values)
         {
-            mParams.add(key, values);
+            mParamsBuilder.add(key, values);
             return this;
         }
 
@@ -274,7 +267,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder params(Params params)
         {
-            mParams.add(params);
+            mParamsBuilder.add(params);
             return this;
         }
 
@@ -283,7 +276,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder file(String key, File file)
         {
-            mParams.file(key, file);
+            mParamsBuilder.file(key, file);
             return this;
         }
 
@@ -292,7 +285,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder files(String key, List<File> files)
         {
-            mParams.files(key, files);
+            mParamsBuilder.files(key, files);
             return this;
         }
 
@@ -301,7 +294,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder binary(String key, Binary binary)
         {
-            mParams.binary(key, binary);
+            mParamsBuilder.binary(key, binary);
             return this;
         }
 
@@ -310,7 +303,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder binaries(String key, List<Binary> binaries)
         {
-            mParams.binaries(key, binaries);
+            mParamsBuilder.binaries(key, binaries);
             return this;
         }
 
@@ -319,7 +312,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder removeParam(String key)
         {
-            mParams.remove(key);
+            mParamsBuilder.remove(key);
             return this;
         }
 
@@ -328,7 +321,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
          */
         public Builder clearParams()
         {
-            mParams.clear();
+            mParamsBuilder.clear();
             return this;
         }
 
