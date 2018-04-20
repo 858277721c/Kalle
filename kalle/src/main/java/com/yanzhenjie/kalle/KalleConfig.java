@@ -56,10 +56,6 @@ import static com.yanzhenjie.kalle.Headers.VALUE_USER_AGENT;
  */
 public final class KalleConfig {
 
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     private final Executor mWorkExecutor;
     private final Executor mMainExecutor;
 
@@ -191,7 +187,7 @@ public final class KalleConfig {
 
         private Converter mConverter;
 
-        private Builder() {
+        public Builder() {
             this.mHeaders = new Headers();
             this.mParams = Params.newBuilder();
             this.mInterceptors = new ArrayList<>();

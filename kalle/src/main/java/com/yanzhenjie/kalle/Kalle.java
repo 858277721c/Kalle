@@ -45,7 +45,7 @@ public final class Kalle {
         if (sConfig == null) {
             synchronized (KalleConfig.class) {
                 if (sConfig == null) {
-                    sConfig = KalleConfig.newBuilder().build();
+                    sConfig = new KalleConfig.Builder().build();
                 }
             }
         }
