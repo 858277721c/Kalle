@@ -23,9 +23,11 @@ import com.yanzhenjie.kalle.Url;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class BodyDownload extends BodyRequest implements Download {
+public class BodyDownload extends BodyRequest implements Download
+{
 
-    public static BodyDownload.Api newApi(Url.Builder builder, RequestMethod method) {
+    public static BodyDownload.Api newApi(Url.Builder builder, RequestMethod method)
+    {
         return new BodyDownload.Api(builder, method);
     }
 
@@ -35,7 +37,8 @@ public class BodyDownload extends BodyRequest implements Download {
     private final ProgressBar mProgressBar;
     private final Policy mPolicy;
 
-    private BodyDownload(Api api) {
+    private BodyDownload(Api api)
+    {
         super(api);
         this.mDirectory = api.mDirectory;
         this.mFileName = api.mFileName;
@@ -44,26 +47,31 @@ public class BodyDownload extends BodyRequest implements Download {
     }
 
     @Override
-    public String directory() {
+    public String directory()
+    {
         return mDirectory;
     }
 
     @Override
-    public String fileName() {
+    public String fileName()
+    {
         return mFileName;
     }
 
     @Override
-    public ProgressBar progressBar() {
+    public ProgressBar progressBar()
+    {
         return mProgressBar;
     }
 
     @Override
-    public Policy policy() {
+    public Policy policy()
+    {
         return mPolicy;
     }
 
-    public static class Api extends BodyRequest.Api<BodyDownload.Api> {
+    public static class Api extends BodyRequest.Api<BodyDownload.Api>
+    {
 
         private String mDirectory;
         private String mFileName;
@@ -71,35 +79,42 @@ public class BodyDownload extends BodyRequest implements Download {
         private ProgressBar mProgressBar;
         private Policy mPolicy;
 
-        private Api(Url.Builder builder, RequestMethod method) {
+        private Api(Url.Builder builder, RequestMethod method)
+        {
             super(builder, method);
         }
 
-        public Api directory(String directory) {
+        public Api directory(String directory)
+        {
             this.mDirectory = directory;
             return this;
         }
 
-        public Api fileName(String fileName) {
+        public Api fileName(String fileName)
+        {
             this.mFileName = fileName;
             return this;
         }
 
-        public Api onProgress(ProgressBar bar) {
+        public Api onProgress(ProgressBar bar)
+        {
             this.mProgressBar = bar;
             return this;
         }
 
-        public Api policy(Policy policy) {
+        public Api policy(Policy policy)
+        {
             this.mPolicy = policy;
             return this;
         }
 
-        public String perform() throws Exception {
+        public String perform() throws Exception
+        {
             return new BodyWorker(new BodyDownload(this)).call();
         }
 
-        public Canceller perform(Callback callback) {
+        public Canceller perform(Callback callback)
+        {
             return DownloadManager.getInstance().perform(new BodyDownload(this), callback);
         }
     }

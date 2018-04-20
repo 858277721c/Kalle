@@ -29,9 +29,11 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_URLENCODED;
 /**
  * Created by YanZhenjie on 2018/2/24.
  */
-public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
+public class UrlBody extends BasicOutData<StringBody> implements RequestBody
+{
 
-    public static Builder newBuilder() {
+    public static Builder newBuilder()
+    {
         return new Builder();
     }
 
@@ -39,7 +41,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
     private final Charset mCharset;
     private final String mContentType;
 
-    private UrlBody(Builder builder) {
+    private UrlBody(Builder builder)
+    {
         this.mParams = builder.mParams.build();
         this.mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
         this.mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_URLENCODED : builder.mContentType;
@@ -48,42 +51,49 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
     /**
      * Copy parameters from url body.
      */
-    private Params copyParams() {
+    private Params copyParams()
+    {
         return mParams;
     }
 
     @Override
-    public long length() {
+    public long length()
+    {
         String body = mParams.toString();
         if (TextUtils.isEmpty(body)) return 0;
         return IOUtils.toByteArray(body, mCharset).length;
     }
 
     @Override
-    public String contentType() {
+    public String contentType()
+    {
         return mContentType;
     }
 
     @Override
-    protected void onWrite(OutputStream writer) throws IOException {
+    protected void onWrite(OutputStream writer) throws IOException
+    {
         String body = mParams.toString();
         IOUtils.write(writer, body, mCharset);
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         private Charset mCharset;
         private String mContentType;
         private Params.Builder mParams;
 
-        private Builder() {
+        private Builder()
+        {
             this.mParams = Params.newBuilder();
         }
 
         /**
          * Data charset.
          */
-        public Builder charset(Charset charset) {
+        public Builder charset(Charset charset)
+        {
             this.mCharset = charset;
             return this;
         }
@@ -91,7 +101,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Content type.
          */
-        public Builder contentType(String contentType) {
+        public Builder contentType(String contentType)
+        {
             this.mContentType = contentType;
             return this;
         }
@@ -99,7 +110,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, int value) {
+        public Builder param(String key, int value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -107,7 +119,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, long value) {
+        public Builder param(String key, long value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -115,7 +128,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, boolean value) {
+        public Builder param(String key, boolean value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -123,7 +137,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, char value) {
+        public Builder param(String key, char value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -131,7 +146,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, double value) {
+        public Builder param(String key, double value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -139,7 +155,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, float value) {
+        public Builder param(String key, float value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -147,7 +164,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, short value) {
+        public Builder param(String key, short value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -155,7 +173,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, CharSequence value) {
+        public Builder param(String key, CharSequence value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -163,7 +182,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, String value) {
+        public Builder param(String key, String value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -171,7 +191,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameters.
          */
-        public Builder param(String key, List<String> values) {
+        public Builder param(String key, List<String> values)
+        {
             mParams.add(key, values);
             return this;
         }
@@ -179,7 +200,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Add parameters.
          */
-        public Builder params(Params params) {
+        public Builder params(Params params)
+        {
             mParams.add(params);
             return this;
         }
@@ -187,7 +209,8 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Remove parameters.
          */
-        public Builder removeParam(String key) {
+        public Builder removeParam(String key)
+        {
             mParams.remove(key);
             return this;
         }
@@ -195,12 +218,14 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody {
         /**
          * Clear parameters.
          */
-        public Builder clearParams() {
+        public Builder clearParams()
+        {
             mParams.clear();
             return this;
         }
 
-        public UrlBody build() {
+        public UrlBody build()
+        {
             return new UrlBody(this);
         }
     }

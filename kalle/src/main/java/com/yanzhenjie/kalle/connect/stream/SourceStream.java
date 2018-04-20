@@ -24,59 +24,70 @@ import java.io.InputStream;
 /**
  * Created by YanZhenjie on 2018/2/25.
  */
-public class SourceStream extends InputStream {
+public class SourceStream extends InputStream
+{
 
     private final Connection mConnection;
     private final InputStream mStream;
 
-    public SourceStream(Connection connection, InputStream stream) {
+    public SourceStream(Connection connection, InputStream stream)
+    {
         this.mConnection = connection;
         this.mStream = stream;
     }
 
     @Override
-    public int read() throws IOException {
+    public int read() throws IOException
+    {
         return mStream.read();
     }
 
     @Override
-    public int read(byte[] b) throws IOException {
+    public int read(byte[] b) throws IOException
+    {
         return mStream.read(b, 0, b.length);
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException
+    {
         return mStream.read(b, off, len);
     }
 
     @Override
-    public long skip(long n) throws IOException {
+    public long skip(long n) throws IOException
+    {
         return mStream.skip(n);
     }
 
     @Override
-    public int available() throws IOException {
+    public int available() throws IOException
+    {
         return mStream.available();
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() throws IOException
+    {
         IOUtils.closeQuietly(mStream);
         IOUtils.closeQuietly(mConnection);
     }
 
     @Override
-    public void reset() throws IOException {
+    public void reset() throws IOException
+    {
         mStream.reset();
     }
 
     @Override
-    public synchronized void mark(int limit) {
+    public synchronized void mark(int limit)
+    {
         mStream.mark(limit);
     }
 
     @Override
-    public boolean markSupported() {
+    public boolean markSupported()
+    {
         return mStream.markSupported();
     }
 }

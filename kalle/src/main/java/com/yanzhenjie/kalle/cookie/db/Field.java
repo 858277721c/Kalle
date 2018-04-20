@@ -18,7 +18,8 @@ package com.yanzhenjie.kalle.cookie.db;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public interface Field {
+public interface Field
+{
     String TABLE_NAME = "COOKIES_TABLE";
 
     String ID = "_ID";

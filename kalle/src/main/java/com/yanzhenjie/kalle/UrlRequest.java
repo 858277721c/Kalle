@@ -20,148 +20,174 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class UrlRequest extends Request {
+public class UrlRequest extends Request
+{
 
-    public static UrlRequest.Builder newBuilder(Url.Builder builder, RequestMethod method) {
+    public static UrlRequest.Builder newBuilder(Url.Builder builder, RequestMethod method)
+    {
         return new UrlRequest.Builder(builder, method);
     }
 
     private final Url mUrl;
 
-    protected UrlRequest(Api api) {
+    protected UrlRequest(Api api)
+    {
         super(api);
         this.mUrl = api.mUrl.build();
     }
 
     @Override
-    public Url url() {
+    public Url url()
+    {
         return mUrl;
     }
 
     @Override
-    public Params copyParams() {
+    public Params copyParams()
+    {
         return mUrl.copyQuery();
     }
 
     @Override
-    public RequestBody body() {
+    public RequestBody body()
+    {
         throw new AssertionError("It should not be called.");
     }
 
-    public static class Api<T extends Api<T>> extends Request.Api<T> {
+    public static class Api<T extends Api<T>> extends Request.Api<T>
+    {
 
         private Url.Builder mUrl;
 
-        protected Api(Url.Builder builder, RequestMethod method) {
+        protected Api(Url.Builder builder, RequestMethod method)
+        {
             super(method);
             this.mUrl = builder;
             this.mUrl.addQuery(Kalle.getConfig().getParams());
         }
 
         @Override
-        public T path(int value) {
+        public T path(int value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(long value) {
+        public T path(long value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(boolean value) {
+        public T path(boolean value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(char value) {
+        public T path(char value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(double value) {
+        public T path(double value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(float value) {
+        public T path(float value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(CharSequence value) {
+        public T path(CharSequence value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(String value) {
+        public T path(String value)
+        {
             mUrl.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, int value) {
+        public T param(String key, int value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, long value) {
+        public T param(String key, long value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, boolean value) {
+        public T param(String key, boolean value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, char value) {
+        public T param(String key, char value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, double value) {
+        public T param(String key, double value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, float value) {
+        public T param(String key, float value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, short value) {
+        public T param(String key, short value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, CharSequence value) {
+        public T param(String key, CharSequence value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, String value) {
+        public T param(String key, String value)
+        {
             mUrl.addQuery(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, List<String> values) {
+        public T param(String key, List<String> values)
+        {
             mUrl.addQuery(key, values);
             return (T) this;
         }
@@ -169,7 +195,8 @@ public class UrlRequest extends Request {
         /**
          * Add parameters to url.
          */
-        public T params(Params params) {
+        public T params(Params params)
+        {
             mUrl.addQuery(params);
             return (T) this;
         }
@@ -177,31 +204,37 @@ public class UrlRequest extends Request {
         /**
          * Set parameters to url.
          */
-        public T setParams(Params params) {
+        public T setParams(Params params)
+        {
             mUrl.setQuery(params);
             return (T) this;
         }
 
         @Override
-        public T removeParam(String key) {
+        public T removeParam(String key)
+        {
             mUrl.removeQuery(key);
             return (T) this;
         }
 
         @Override
-        public T clearParams() {
+        public T clearParams()
+        {
             mUrl.clearQuery();
             return (T) this;
         }
     }
 
-    public static class Builder extends UrlRequest.Api<UrlRequest.Builder> {
+    public static class Builder extends UrlRequest.Api<UrlRequest.Builder>
+    {
 
-        private Builder(Url.Builder builder, RequestMethod method) {
+        private Builder(Url.Builder builder, RequestMethod method)
+        {
             super(builder, method);
         }
 
-        public UrlRequest build() {
+        public UrlRequest build()
+        {
             return new UrlRequest(this);
         }
     }

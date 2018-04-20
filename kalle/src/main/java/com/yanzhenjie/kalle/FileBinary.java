@@ -33,26 +33,31 @@ import java.io.OutputStream;
  * </p>
  * Created in Oct 17, 2015 12:40:54 PM.
  */
-public class FileBinary extends BasicOutData<FileBinary> implements Binary {
+public class FileBinary extends BasicOutData<FileBinary> implements Binary
+{
 
     private File mFile;
 
-    public FileBinary(File file) {
+    public FileBinary(File file)
+    {
         this.mFile = file;
     }
 
     @Override
-    public long length() {
+    public long length()
+    {
         return mFile.length();
     }
 
     @Override
-    public String name() {
+    public String name()
+    {
         return mFile.getName();
     }
 
     @Override
-    public String contentType() {
+    public String contentType()
+    {
         String fileName = mFile.getName();
         String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
@@ -62,7 +67,8 @@ public class FileBinary extends BasicOutData<FileBinary> implements Binary {
 
 
     @Override
-    protected void onWrite(OutputStream writer) throws IOException {
+    protected void onWrite(OutputStream writer) throws IOException
+    {
         InputStream stream = new FileInputStream(mFile);
         IOUtils.write(stream, writer);
         IOUtils.closeQuietly(stream);

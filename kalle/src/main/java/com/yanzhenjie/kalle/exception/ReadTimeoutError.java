@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/24.
  */
-public class ReadTimeoutError extends ReadException {
-    public ReadTimeoutError(String message) {
+public class ReadTimeoutError extends ReadException
+{
+    public ReadTimeoutError(String message)
+    {
         super(message);
     }
 
-    public ReadTimeoutError(String message, Throwable cause) {
+    public ReadTimeoutError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

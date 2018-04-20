@@ -21,11 +21,13 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/27.
  */
-public class CancelerManager {
+public class CancelerManager
+{
 
     private final List<CancelEntity> mRequestList;
 
-    public CancelerManager() {
+    public CancelerManager()
+    {
         this.mRequestList = new ArrayList<>();
     }
 
@@ -35,7 +37,8 @@ public class CancelerManager {
      * @param request   target request.
      * @param canceller canceller.
      */
-    public void addCancel(Request request, Canceller canceller) {
+    public void addCancel(Request request, Canceller canceller)
+    {
         CancelEntity cancelTag = new CancelEntity(request, canceller);
         mRequestList.add(cancelTag);
     }
@@ -45,11 +48,14 @@ public class CancelerManager {
      *
      * @param request target request.
      */
-    public void removeCancel(Request request) {
+    public void removeCancel(Request request)
+    {
         CancelEntity cancelEntity = null;
-        for (CancelEntity entity : mRequestList) {
+        for (CancelEntity entity : mRequestList)
+        {
             Request newRequest = entity.mRequest;
-            if (request == newRequest) {
+            if (request == newRequest)
+            {
                 cancelEntity = entity;
                 break;
             }
@@ -62,20 +68,25 @@ public class CancelerManager {
      *
      * @param tag tag.
      */
-    public void cancel(Object tag) {
-        for (CancelEntity entity : mRequestList) {
+    public void cancel(Object tag)
+    {
+        for (CancelEntity entity : mRequestList)
+        {
             Object newTag = entity.mRequest.tag();
-            if (tag == newTag || (tag != null && newTag != null && tag.equals(newTag))) {
+            if (tag == newTag || (tag != null && newTag != null && tag.equals(newTag)))
+            {
                 entity.mCanceller.cancel();
             }
         }
     }
 
-    private static class CancelEntity {
+    private static class CancelEntity
+    {
         private final Request mRequest;
         private final Canceller mCanceller;
 
-        private CancelEntity(Request request, Canceller canceller) {
+        private CancelEntity(Request request, Canceller canceller)
+        {
             this.mRequest = request;
             this.mCanceller = canceller;
         }

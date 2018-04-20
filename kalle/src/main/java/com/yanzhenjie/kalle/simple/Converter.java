@@ -22,14 +22,17 @@ import java.lang.reflect.Type;
 /**
  * Created by YanZhenjie on 2018/2/12.
  */
-public interface Converter {
+public interface Converter
+{
 
     /**
      * Default converter.
      */
-    Converter DEFAULT = new Converter() {
+    Converter DEFAULT = new Converter()
+    {
         @Override
-        public <S, F> SimpleResponse<S, F> convert(Type succeed, Type failed, Response response, boolean fromCache) throws Exception {
+        public <S, F> SimpleResponse<S, F> convert(Type succeed, Type failed, Response response, boolean fromCache) throws Exception
+        {
             S succeedData = null;
 
             if (succeed == String.class) succeedData = (S) response.body().string();

@@ -30,9 +30,11 @@ import static com.yanzhenjie.kalle.simple.cache.CacheMode.HTTP;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class SimpleBodyRequest extends BodyRequest implements SimpleRequest {
+public class SimpleBodyRequest extends BodyRequest implements SimpleRequest
+{
 
-    public static SimpleBodyRequest.Api newApi(Url.Builder builder, RequestMethod method) {
+    public static SimpleBodyRequest.Api newApi(Url.Builder builder, RequestMethod method)
+    {
         return new SimpleBodyRequest.Api(builder, method);
     }
 
@@ -41,7 +43,8 @@ public class SimpleBodyRequest extends BodyRequest implements SimpleRequest {
 
     private final Converter mConverter;
 
-    private SimpleBodyRequest(Api api) {
+    private SimpleBodyRequest(Api api)
+    {
         super(api);
         this.mCacheMode = api.mCacheMode == null ? HTTP : api.mCacheMode;
         this.mCacheKey = TextUtils.isEmpty(api.mCacheKey) ? url().toString() : api.mCacheKey;
@@ -50,51 +53,61 @@ public class SimpleBodyRequest extends BodyRequest implements SimpleRequest {
     }
 
     @Override
-    public CacheMode cacheMode() {
+    public CacheMode cacheMode()
+    {
         return mCacheMode;
     }
 
     @Override
-    public String cacheKey() {
+    public String cacheKey()
+    {
         return mCacheKey;
     }
 
     @Override
-    public Converter converter() {
+    public Converter converter()
+    {
         return mConverter;
     }
 
-    public static class Api extends BodyRequest.Api<Api> {
+    public static class Api extends BodyRequest.Api<Api>
+    {
 
         private CacheMode mCacheMode;
         private String mCacheKey;
 
         private Converter mConverter;
 
-        private Api(Url.Builder builder, RequestMethod method) {
+        private Api(Url.Builder builder, RequestMethod method)
+        {
             super(builder, method);
         }
 
-        public Api cacheMode(CacheMode cacheMode) {
+        public Api cacheMode(CacheMode cacheMode)
+        {
             this.mCacheMode = cacheMode;
             return this;
         }
 
-        public Api cacheKey(String cacheKey) {
+        public Api cacheKey(String cacheKey)
+        {
             this.mCacheKey = cacheKey;
             return this;
         }
 
-        public Api converter(Converter converter) {
+        public Api converter(Converter converter)
+        {
             this.mConverter = converter;
             return this;
         }
 
-        public <S, F> SimpleResponse<S, F> perform(Type succeed, Type failed) throws Exception {
+        public <S, F> SimpleResponse<S, F> perform(Type succeed, Type failed) throws Exception
+        {
             return RequestManager.getInstance().perform(new SimpleBodyRequest(this), succeed, failed);
         }
 
-        public <S, F> Canceller perform(Callback<S, F> callback) {
+        public <S, F> Canceller perform(Callback<S, F> callback)
+        {
             return RequestManager.getInstance().perform(new SimpleBodyRequest(this), callback);
         }
     }

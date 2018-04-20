@@ -35,7 +35,8 @@ import static com.yanzhenjie.kalle.Headers.KEY_IF_NONE_MATCH;
 /**
  * Created by YanZhenjie on 2018/2/18.
  */
-abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements Callable<SimpleResponse<Succeed, Failed>> {
+abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements Callable<SimpleResponse<Succeed, Failed>>
+{
 
     private static final long MAX_EXPIRES = System.currentTimeMillis() + 100L * 365L * 24L * 60L * 60L * 1000L;
 
@@ -45,7 +46,8 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
     private final Type mSucceed;
     private final Type mFailed;
 
-    BasicWorker(T request, Type succeed, Type failed) {
+    BasicWorker(T request, Type succeed, Type failed)
+    {
         this.mRequest = request;
         this.mSucceed = succeed;
         this.mFailed = failed;
@@ -54,17 +56,20 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
     }
 
     @Override
-    public final SimpleResponse<Succeed, Failed> call() throws Exception {
+    public final SimpleResponse<Succeed, Failed> call() throws Exception
+    {
         Response response = tryReadCacheBefore();
         if (response != null) return buildSimpleResponse(response, true);
 
         tryAttachCache();
 
-        try {
+        try
+        {
             response = requestNetwork(mRequest);
 
             int code = response.code();
-            if (code == 304) {
+            if (code == 304)
+            {
                 Response cacheResponse = tryReadCacheAfter(-1);
                 if (cacheResponse != null) return buildSimpleResponse(cacheResponse, true);
                 else return buildSimpleResponse(response, false);
@@ -77,13 +82,16 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
 
             response = buildResponse(code, headers, body);
             return buildSimpleResponse(response, false);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             Response cacheResponse = tryReadCacheAfter(-1);
-            if (cacheResponse != null) {
+            if (cacheResponse != null)
+            {
                 return buildSimpleResponse(cacheResponse, true);
             }
             throw e;
-        } finally {
+        } finally
+        {
             IOUtils.closeQuietly(response);
         }
     }
@@ -97,13 +105,17 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
      */
     protected abstract Response requestNetwork(T request) throws IOException;
 
-    private Response tryReadCacheBefore() throws NoCacheError {
+    private Response tryReadCacheBefore() throws NoCacheError
+    {
         CacheMode cacheMode = mRequest.cacheMode();
-        switch (cacheMode) {
-            case HTTP: {
+        switch (cacheMode)
+        {
+            case HTTP:
+            {
                 Cache cache = mCacheStore.get(mRequest.cacheKey());
                 if (cache == null) return null;
-                if (cache.getExpires() > System.currentTimeMillis()) {
+                if (cache.getExpires() > System.currentTimeMillis())
+                {
                     return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                 }
                 break;
@@ -112,21 +124,26 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
             case NETWORK:
             case NETWORK_YES_THEN_HTTP:
             case NETWORK_YES_THEN_WRITE_CACHE:
-            case NETWORK_NO_THEN_READ_CACHE: {
+            case NETWORK_NO_THEN_READ_CACHE:
+            {
                 // Nothing.
                 return null;
             }
-            case READ_CACHE: {
+            case READ_CACHE:
+            {
                 Cache cache = mCacheStore.get(mRequest.cacheKey());
-                if (cache != null) {
+                if (cache != null)
+                {
                     return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                 }
                 throw new NoCacheError("No cache found.");
             }
             case READ_CACHE_NO_THEN_NETWORK:
-            case READ_CACHE_NO_THEN_HTTP: {
+            case READ_CACHE_NO_THEN_HTTP:
+            {
                 Cache cache = mCacheStore.get(mRequest.cacheKey());
-                if (cache != null) {
+                if (cache != null)
+                {
                     return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                 }
                 break;
@@ -135,11 +152,14 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
         return null;
     }
 
-    private void tryAttachCache() {
+    private void tryAttachCache()
+    {
         CacheMode cacheMode = mRequest.cacheMode();
-        switch (cacheMode) {
+        switch (cacheMode)
+        {
             case HTTP:
-            case HTTP_YES_THEN_WRITE_CACHE: {
+            case HTTP_YES_THEN_WRITE_CACHE:
+            {
                 Cache cacheEntity = mCacheStore.get(mRequest.cacheKey());
                 if (cacheEntity != null) attachCache(cacheEntity.getHeaders());
                 break;
@@ -150,49 +170,62 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
             case NETWORK_NO_THEN_READ_CACHE:
             case READ_CACHE:
             case READ_CACHE_NO_THEN_NETWORK:
-            case READ_CACHE_NO_THEN_HTTP: {
+            case READ_CACHE_NO_THEN_HTTP:
+            {
                 // Nothing.
                 break;
             }
         }
     }
 
-    private void tryDetachCache(int code, Headers headers, byte[] body) {
+    private void tryDetachCache(int code, Headers headers, byte[] body)
+    {
         CacheMode cacheMode = mRequest.cacheMode();
-        switch (cacheMode) {
-            case HTTP: {
+        switch (cacheMode)
+        {
+            case HTTP:
+            {
                 long expires = Headers.analysisCacheExpires(headers);
-                if (expires > 0 || headers.getLastModified() > 0) {
+                if (expires > 0 || headers.getLastModified() > 0)
+                {
                     detachCache(code, headers, body, expires);
                 }
                 break;
             }
-            case HTTP_YES_THEN_WRITE_CACHE: {
+            case HTTP_YES_THEN_WRITE_CACHE:
+            {
                 detachCache(code, headers, body, MAX_EXPIRES);
                 break;
             }
-            case NETWORK: {
+            case NETWORK:
+            {
                 break;
             }
-            case NETWORK_YES_THEN_HTTP: {
+            case NETWORK_YES_THEN_HTTP:
+            {
                 long expires = Headers.analysisCacheExpires(headers);
-                if (expires > 0 || headers.getLastModified() > 0) {
+                if (expires > 0 || headers.getLastModified() > 0)
+                {
                     detachCache(code, headers, body, expires);
                 }
                 break;
             }
-            case NETWORK_YES_THEN_WRITE_CACHE: {
+            case NETWORK_YES_THEN_WRITE_CACHE:
+            {
                 detachCache(code, headers, body, MAX_EXPIRES);
                 break;
             }
             case NETWORK_NO_THEN_READ_CACHE:
             case READ_CACHE:
-            case READ_CACHE_NO_THEN_NETWORK: {
+            case READ_CACHE_NO_THEN_NETWORK:
+            {
                 break;
             }
-            case READ_CACHE_NO_THEN_HTTP: {
+            case READ_CACHE_NO_THEN_HTTP:
+            {
                 long expires = Headers.analysisCacheExpires(headers);
-                if (expires > 0 || headers.getLastModified() > 0) {
+                if (expires > 0 || headers.getLastModified() > 0)
+                {
                     detachCache(code, headers, body, expires);
                 }
                 break;
@@ -200,13 +233,18 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
         }
     }
 
-    private Response tryReadCacheAfter(int code) {
+    private Response tryReadCacheAfter(int code)
+    {
         CacheMode cacheMode = mRequest.cacheMode();
-        switch (cacheMode) {
-            case HTTP: {
-                if (code == 304) {
+        switch (cacheMode)
+        {
+            case HTTP:
+            {
+                if (code == 304)
+                {
                     Cache cache = mCacheStore.get(mRequest.cacheKey());
-                    if (cache != null) {
+                    if (cache != null)
+                    {
                         return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                     }
                 }
@@ -215,24 +253,31 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
             case HTTP_YES_THEN_WRITE_CACHE:
             case NETWORK:
             case NETWORK_YES_THEN_HTTP:
-            case NETWORK_YES_THEN_WRITE_CACHE: {
+            case NETWORK_YES_THEN_WRITE_CACHE:
+            {
                 break;
             }
-            case NETWORK_NO_THEN_READ_CACHE: {
+            case NETWORK_NO_THEN_READ_CACHE:
+            {
                 Cache cache = mCacheStore.get(mRequest.cacheKey());
-                if (cache != null) {
+                if (cache != null)
+                {
                     return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                 }
                 break;
             }
             case READ_CACHE:
-            case READ_CACHE_NO_THEN_NETWORK: {
+            case READ_CACHE_NO_THEN_NETWORK:
+            {
                 break;
             }
-            case READ_CACHE_NO_THEN_HTTP: {
-                if (code == 304) {
+            case READ_CACHE_NO_THEN_HTTP:
+            {
+                if (code == 304)
+                {
                     Cache cache = mCacheStore.get(mRequest.cacheKey());
-                    if (cache != null) {
+                    if (cache != null)
+                    {
                         return buildResponse(cache.getCode(), cache.getHeaders(), cache.getBody());
                     }
                 }
@@ -242,7 +287,8 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
         return null;
     }
 
-    private void attachCache(Headers cacheHeaders) {
+    private void attachCache(Headers cacheHeaders)
+    {
         Headers headers = mRequest.headers();
         String eTag = cacheHeaders.getETag();
         if (eTag != null) headers.set(KEY_IF_NONE_MATCH, eTag);
@@ -252,7 +298,8 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
             headers.set(KEY_IF_MODIFIED_SINCE, Headers.formatMillisToGMT(lastModified));
     }
 
-    private void detachCache(int code, Headers headers, byte[] body, long expires) {
+    private void detachCache(int code, Headers headers, byte[] body, long expires)
+    {
         String cacheKey = mRequest.cacheKey();
 
         Cache entity = new Cache();
@@ -264,7 +311,8 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
         mCacheStore.replace(cacheKey, entity);
     }
 
-    private Response buildResponse(int code, Headers headers, byte[] body) {
+    private Response buildResponse(int code, Headers headers, byte[] body)
+    {
         return Response.newBuilder()
                 .code(code)
                 .headers(headers)
@@ -272,12 +320,16 @@ abstract class BasicWorker<T extends SimpleRequest, Succeed, Failed> implements 
                 .build();
     }
 
-    private SimpleResponse<Succeed, Failed> buildSimpleResponse(Response response, boolean cache) throws IOException {
-        try {
+    private SimpleResponse<Succeed, Failed> buildSimpleResponse(Response response, boolean cache) throws IOException
+    {
+        try
+        {
             return mConverter.convert(mSucceed, mFailed, response, cache);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw e;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ParseError("An exception occurred while parsing the data.", e);
         }
     }

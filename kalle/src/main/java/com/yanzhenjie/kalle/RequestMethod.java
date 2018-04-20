@@ -23,7 +23,8 @@ import java.util.Locale;
  * </p>
  * Created in Oct 10, 2015 8:00:48 PM.
  */
-public enum RequestMethod {
+public enum RequestMethod
+{
 
     GET("GET"),
 
@@ -43,57 +44,74 @@ public enum RequestMethod {
 
     private final String value;
 
-    RequestMethod(String value) {
+    RequestMethod(String value)
+    {
         this.value = value;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return value;
     }
 
-    public boolean allowBody() {
-        switch (this) {
+    public boolean allowBody()
+    {
+        switch (this)
+        {
             case POST:
             case PUT:
             case PATCH:
-            case DELETE: {
+            case DELETE:
+            {
                 return true;
             }
-            default: {
+            default:
+            {
                 return false;
             }
         }
     }
 
-    public static RequestMethod reverse(String method) {
+    public static RequestMethod reverse(String method)
+    {
         method = method.toUpperCase(Locale.ENGLISH);
-        switch (method) {
-            case "GET": {
+        switch (method)
+        {
+            case "GET":
+            {
                 return GET;
             }
-            case "POST": {
+            case "POST":
+            {
                 return POST;
             }
-            case "PUT": {
+            case "PUT":
+            {
                 return PUT;
             }
-            case "DELETE": {
+            case "DELETE":
+            {
                 return DELETE;
             }
-            case "HEAD": {
+            case "HEAD":
+            {
                 return HEAD;
             }
-            case "PATCH": {
+            case "PATCH":
+            {
                 return PATCH;
             }
-            case "OPTIONS": {
+            case "OPTIONS":
+            {
                 return OPTIONS;
             }
-            case "TRACE": {
+            case "TRACE":
+            {
                 return TRACE;
             }
-            default: {
+            default:
+            {
                 return GET;
             }
         }

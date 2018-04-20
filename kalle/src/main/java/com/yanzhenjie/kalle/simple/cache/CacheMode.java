@@ -18,7 +18,8 @@ package com.yanzhenjie.kalle.simple.cache;
 /**
  * Created by YanZhenjie on 2018/2/18.
  */
-public enum CacheMode {
+public enum CacheMode
+{
     /**
      * Follow the Http standard protocol.
      */

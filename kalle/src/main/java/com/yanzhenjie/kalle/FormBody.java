@@ -31,9 +31,11 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_FORM;
 /**
  * Created by YanZhenjie on 2018/2/9.
  */
-public class FormBody extends BasicOutData<FormBody> implements RequestBody {
+public class FormBody extends BasicOutData<FormBody> implements RequestBody
+{
 
-    public static Builder newBuilder() {
+    public static Builder newBuilder()
+    {
         return new Builder();
     }
 
@@ -43,7 +45,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
 
     private String mBoundary;
 
-    private FormBody(Builder builder) {
+    private FormBody(Builder builder)
+    {
         this.mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
         this.mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_FORM : builder.mContentType;
         this.mParams = builder.mParams.build();
@@ -53,34 +56,44 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
     /**
      * Copy parameters from form body.
      */
-    private Params copyParams() {
+    private Params copyParams()
+    {
         return mParams;
     }
 
     @Override
-    public long length() {
+    public long length()
+    {
         CounterStream stream = new CounterStream();
-        try {
+        try
+        {
             onWrite(stream);
-        } catch (IOException ignored) {
+        } catch (IOException ignored)
+        {
         }
         return stream.getLength();
     }
 
     @Override
-    public String contentType() {
+    public String contentType()
+    {
         return mContentType + "; boundary=" + mBoundary;
     }
 
     @Override
-    protected void onWrite(OutputStream writer) throws IOException {
+    protected void onWrite(OutputStream writer) throws IOException
+    {
         Set<String> keys = mParams.keySet();
-        for (String key : keys) {
+        for (String key : keys)
+        {
             List<Object> values = mParams.get(key);
-            for (Object value : values) {
-                if (value instanceof String) {
+            for (Object value : values)
+            {
+                if (value instanceof String)
+                {
                     writeFormString(writer, key, (String) value);
-                } else if (value instanceof Binary) {
+                } else if (value instanceof Binary)
+                {
                     writeFormBinary(writer, key, (Binary) value);
                 }
                 IOUtils.write(writer, "\r\n", mCharset);
@@ -89,7 +102,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         IOUtils.write(writer, "--" + mBoundary + "--", mCharset);
     }
 
-    private void writeFormString(OutputStream writer, String key, String value) throws IOException {
+    private void writeFormString(OutputStream writer, String key, String value) throws IOException
+    {
         IOUtils.write(writer, "--" + mBoundary + "\r\n", mCharset);
         IOUtils.write(writer, "Content-Disposition: form-data; name=\"", mCharset);
         IOUtils.write(writer, key, mCharset);
@@ -97,7 +111,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         IOUtils.write(writer, value, mCharset);
     }
 
-    private void writeFormBinary(OutputStream writer, String key, Binary value) throws IOException {
+    private void writeFormBinary(OutputStream writer, String key, Binary value) throws IOException
+    {
         IOUtils.write(writer, "--" + mBoundary + "\r\n", mCharset);
         IOUtils.write(writer, "Content-Disposition: form-data; name=\"", mCharset);
         IOUtils.write(writer, key, mCharset);
@@ -105,42 +120,52 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         IOUtils.write(writer, value.name(), mCharset);
         IOUtils.write(writer, "\"\r\n", mCharset);
         IOUtils.write(writer, "Content-Type: " + value.contentType() + "\r\n\r\n", mCharset);
-        if (writer instanceof CounterStream) {
+        if (writer instanceof CounterStream)
+        {
             ((CounterStream) writer).write(value.length());
-        } else {
+        } else
+        {
             value.writeTo(writer);
         }
     }
 
-    private static String createBoundary() {
+    private static String createBoundary()
+    {
         StringBuilder sb = new StringBuilder("-------FormBoundary");
-        for (int t = 1; t < 12; t++) {
+        for (int t = 1; t < 12; t++)
+        {
             long time = System.currentTimeMillis() + t;
-            if (time % 3L == 0L) {
+            if (time % 3L == 0L)
+            {
                 sb.append((char) (int) time % '\t');
-            } else if (time % 3L == 1L) {
+            } else if (time % 3L == 1L)
+            {
                 sb.append((char) (int) (65L + time % 26L));
-            } else {
+            } else
+            {
                 sb.append((char) (int) (97L + time % 26L));
             }
         }
         return sb.toString();
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         private Charset mCharset;
         private String mContentType;
         private Params.Builder mParams;
 
-        private Builder() {
+        private Builder()
+        {
             this.mParams = Params.newBuilder();
         }
 
         /**
          * Data charset.
          */
-        public Builder charset(Charset charset) {
+        public Builder charset(Charset charset)
+        {
             this.mCharset = charset;
             return this;
         }
@@ -148,7 +173,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Content type.
          */
-        public Builder contentType(String contentType) {
+        public Builder contentType(String contentType)
+        {
             this.mContentType = contentType;
             return this;
         }
@@ -156,7 +182,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, int value) {
+        public Builder param(String key, int value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -164,7 +191,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, long value) {
+        public Builder param(String key, long value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -172,7 +200,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, boolean value) {
+        public Builder param(String key, boolean value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -180,7 +209,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, char value) {
+        public Builder param(String key, char value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -188,7 +218,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, double value) {
+        public Builder param(String key, double value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -196,7 +227,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, float value) {
+        public Builder param(String key, float value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -204,7 +236,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, short value) {
+        public Builder param(String key, short value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -212,7 +245,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, CharSequence value) {
+        public Builder param(String key, CharSequence value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -220,7 +254,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameter.
          */
-        public Builder param(String key, String value) {
+        public Builder param(String key, String value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -228,7 +263,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameters.
          */
-        public Builder param(String key, List<String> values) {
+        public Builder param(String key, List<String> values)
+        {
             mParams.add(key, values);
             return this;
         }
@@ -236,7 +272,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add parameters.
          */
-        public Builder params(Params params) {
+        public Builder params(Params params)
+        {
             mParams.add(params);
             return this;
         }
@@ -244,7 +281,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add several file parameters.
          */
-        public Builder file(String key, File file) {
+        public Builder file(String key, File file)
+        {
             mParams.file(key, file);
             return this;
         }
@@ -252,7 +290,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add files parameter.
          */
-        public Builder files(String key, List<File> files) {
+        public Builder files(String key, List<File> files)
+        {
             mParams.files(key, files);
             return this;
         }
@@ -260,7 +299,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add binary parameter.
          */
-        public Builder binary(String key, Binary binary) {
+        public Builder binary(String key, Binary binary)
+        {
             mParams.binary(key, binary);
             return this;
         }
@@ -268,7 +308,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Add several binary parameters.
          */
-        public Builder binaries(String key, List<Binary> binaries) {
+        public Builder binaries(String key, List<Binary> binaries)
+        {
             mParams.binaries(key, binaries);
             return this;
         }
@@ -276,7 +317,8 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Remove parameters.
          */
-        public Builder removeParam(String key) {
+        public Builder removeParam(String key)
+        {
             mParams.remove(key);
             return this;
         }
@@ -284,12 +326,14 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody {
         /**
          * Clear parameters.
          */
-        public Builder clearParams() {
+        public Builder clearParams()
+        {
             mParams.clear();
             return this;
         }
 
-        public FormBody build() {
+        public FormBody build()
+        {
             return new FormBody(this);
         }
     }

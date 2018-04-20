@@ -23,24 +23,30 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public interface CookieStore {
+public interface CookieStore
+{
 
-    CookieStore DEFAULT = new CookieStore() {
+    CookieStore DEFAULT = new CookieStore()
+    {
         @Override
-        public List<HttpCookie> get(URI uri) {
+        public List<HttpCookie> get(URI uri)
+        {
             return Collections.emptyList();
         }
 
         @Override
-        public void add(URI uri, HttpCookie httpCookie) {
+        public void add(URI uri, HttpCookie httpCookie)
+        {
         }
 
         @Override
-        public void remove(HttpCookie httpCookie) {
+        public void remove(HttpCookie httpCookie)
+        {
         }
 
         @Override
-        public void clear() {
+        public void clear()
+        {
         }
     };
 

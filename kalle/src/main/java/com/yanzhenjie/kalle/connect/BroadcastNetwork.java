@@ -25,12 +25,14 @@ import android.net.wifi.WifiManager;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public class BroadcastNetwork implements Network {
+public class BroadcastNetwork implements Network
+{
 
     private final Context mContext;
     private final NetworkReceiver mReceiver;
 
-    public BroadcastNetwork(Context context) {
+    public BroadcastNetwork(Context context)
+    {
         this.mContext = context.getApplicationContext();
         this.mReceiver = new NetworkReceiver(new NetworkChecker(mContext));
 
@@ -44,25 +46,30 @@ public class BroadcastNetwork implements Network {
     }
 
     @Override
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return mReceiver.mAvailable;
     }
 
-    public void destroy() {
+    public void destroy()
+    {
         mContext.unregisterReceiver(mReceiver);
     }
 
-    private static class NetworkReceiver extends BroadcastReceiver {
+    private static class NetworkReceiver extends BroadcastReceiver
+    {
 
         private boolean mAvailable;
         private NetworkChecker mChecker;
 
-        public NetworkReceiver(NetworkChecker checker) {
+        public NetworkReceiver(NetworkChecker checker)
+        {
             this.mChecker = checker;
         }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             mAvailable = mChecker.isWifiConnected() || mChecker.isWiredConnected() || mChecker.isMobileConnected();
         }
     }

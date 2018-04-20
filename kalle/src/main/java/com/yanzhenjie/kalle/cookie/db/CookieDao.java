@@ -30,25 +30,31 @@ import java.util.List;
 /**
  * Created in Jan 10, 2016 8:18:28 PM.
  */
-public class CookieDao implements Field {
+public class CookieDao implements Field
+{
 
     private SQLHelper mSQLHelper;
 
-    public CookieDao(Context context) {
+    public CookieDao(Context context)
+    {
         this.mSQLHelper = new SQLHelper(context);
     }
 
-    protected final SQLiteDatabase getDateBase() {
+    protected final SQLiteDatabase getDateBase()
+    {
         return mSQLHelper.getReadableDatabase();
     }
 
-    protected final void closeDateBase(SQLiteDatabase database) {
+    protected final void closeDateBase(SQLiteDatabase database)
+    {
         if (database != null && database.isOpen())
             database.close();
     }
 
-    protected final void closeCursor(Cursor cursor) {
-        if (cursor != null && !cursor.isClosed()) {
+    protected final void closeCursor(Cursor cursor)
+    {
+        if (cursor != null && !cursor.isClosed())
+        {
             cursor.close();
         }
     }
@@ -56,19 +62,23 @@ public class CookieDao implements Field {
     /**
      * Query the number of records.
      */
-    public int count() {
+    public int count()
+    {
         return count("SELECT COUNT(" + ID + ") FROM " + TABLE_NAME);
     }
 
     /**
      * Query the number of records.
      */
-    public int count(String sql) {
+    public int count(String sql)
+    {
         SQLiteDatabase database = getDateBase();
         Cursor cursor = database.rawQuery(sql, null);
-        try {
+        try
+        {
             return cursor.moveToNext() ? cursor.getInt(0) : 0;
-        } finally {
+        } finally
+        {
             closeCursor(cursor);
             closeDateBase(database);
         }
@@ -77,16 +87,19 @@ public class CookieDao implements Field {
     /**
      * Delete all cookie.
      */
-    public boolean deleteAll() {
+    public boolean deleteAll()
+    {
         return delete("1=1");
     }
 
     /**
      * Delete the cookie in the specified list.
      */
-    public boolean delete(List<Cookie> cookies) {
+    public boolean delete(List<Cookie> cookies)
+    {
         List<Long> idList = new ArrayList<>();
-        for (Cookie cookie : cookies) {
+        for (Cookie cookie : cookies)
+        {
             idList.add(cookie.getId());
         }
         Where where = Where.newBuilder().in(ID, idList).build();
@@ -96,17 +109,21 @@ public class CookieDao implements Field {
     /**
      * Delete cookies based on the conditions.
      */
-    public boolean delete(String where) {
+    public boolean delete(String where)
+    {
         SQLiteDatabase database = getDateBase();
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + where;
         database.beginTransaction();
-        try {
+        try
+        {
             database.execSQL(sql);
             database.setTransactionSuccessful();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             return false;
-        } finally {
+        } finally
+        {
             database.endTransaction();
             closeDateBase(database);
         }
@@ -115,28 +132,34 @@ public class CookieDao implements Field {
     /**
      * Query all cookie.
      */
-    public List<Cookie> getAll() {
+    public List<Cookie> getAll()
+    {
         return getList(null, null, null, null);
     }
 
     /**
      * Query the cookie list based on the conditions.
      */
-    public List<Cookie> getList(String where, String orderBy, String limit, String offset) {
+    public List<Cookie> getList(String where, String orderBy, String limit, String offset)
+    {
         StringBuilder sqlBuild = new StringBuilder("SELECT ").append("*").append(" FROM ").append(TABLE_NAME);
-        if (!TextUtils.isEmpty(where)) {
+        if (!TextUtils.isEmpty(where))
+        {
             sqlBuild.append(" WHERE ");
             sqlBuild.append(where);
         }
-        if (!TextUtils.isEmpty(orderBy)) {
+        if (!TextUtils.isEmpty(orderBy))
+        {
             sqlBuild.append(" ORDER BY ");
             sqlBuild.append(orderBy);
         }
-        if (!TextUtils.isEmpty(limit)) {
+        if (!TextUtils.isEmpty(limit))
+        {
             sqlBuild.append(" LIMIT ");
             sqlBuild.append(limit);
 
-            if (!TextUtils.isEmpty(offset)) {
+            if (!TextUtils.isEmpty(offset))
+            {
                 sqlBuild.append(" OFFSET ");
                 sqlBuild.append(offset);
             }
@@ -147,7 +170,8 @@ public class CookieDao implements Field {
     /**
      * Save or set cookies.
      */
-    public long replace(Cookie cookie) {
+    public long replace(Cookie cookie)
+    {
         SQLiteDatabase database = getDateBase();
         database.beginTransaction();
 
@@ -164,13 +188,16 @@ public class CookieDao implements Field {
         values.put(PORT_LIST, cookie.getPortList());
         values.put(SECURE, String.valueOf(cookie.isSecure()));
         values.put(VERSION, cookie.getVersion());
-        try {
+        try
+        {
             long result = database.replace(TABLE_NAME, null, values);
             database.setTransactionSuccessful();
             return result;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             return -1;
-        } finally {
+        } finally
+        {
             database.endTransaction();
             closeDateBase(database);
         }
@@ -179,11 +206,13 @@ public class CookieDao implements Field {
     /**
      * According to the unique index adds or updates a row data.
      */
-    public List<Cookie> getList(String querySql) {
+    public List<Cookie> getList(String querySql)
+    {
         SQLiteDatabase database = getDateBase();
         List<Cookie> cookieList = new ArrayList<>();
         Cursor cursor = database.rawQuery(querySql, null);
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext())
+        {
             Cookie cookie = new Cookie();
             cookie.setId(cursor.getInt(cursor.getColumnIndex(ID)));
             cookie.setUrl(cursor.getString(cursor.getColumnIndex(URL)));

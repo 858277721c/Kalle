@@ -33,9 +33,11 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created in Dec 17, 2015 7:20:52 PM.
  */
-public class DBCookieStore implements CookieStore, Field {
+public class DBCookieStore implements CookieStore, Field
+{
 
-    public static Builder newBuilder(Context context) {
+    public static Builder newBuilder(Context context)
+    {
         return new Builder(context);
     }
 
@@ -43,7 +45,8 @@ public class DBCookieStore implements CookieStore, Field {
     private Lock mLock;
     private CookieDao mCookieDao;
 
-    private DBCookieStore(Builder builder) {
+    private DBCookieStore(Builder builder)
+    {
         mLock = new ReentrantLock();
         mCookieDao = new CookieDao(builder.mContext);
 
@@ -54,24 +57,29 @@ public class DBCookieStore implements CookieStore, Field {
     }
 
     @Override
-    public List<HttpCookie> get(URI uri) {
+    public List<HttpCookie> get(URI uri)
+    {
         mLock.lock();
-        try {
+        try
+        {
             uri = getEffectiveURI(uri);
 
             Where.Builder whereBuilder = Where.newBuilder();
 
             String host = uri.getHost();
-            if (!TextUtils.isEmpty(host)) {
+            if (!TextUtils.isEmpty(host))
+            {
                 Where.Builder subBuilder = Where.newBuilder()
                         .add(DOMAIN, Where.Options.EQUAL, host)
                         .or(DOMAIN, Where.Options.EQUAL, "." + host);
 
                 int firstDot = host.indexOf(".");
                 int lastDot = host.lastIndexOf(".");
-                if (firstDot > 0 && lastDot > firstDot) {
+                if (firstDot > 0 && lastDot > firstDot)
+                {
                     String domain = host.substring(firstDot, host.length());
-                    if (!TextUtils.isEmpty(domain)) {
+                    if (!TextUtils.isEmpty(domain))
+                    {
                         subBuilder.or(DOMAIN, Where.Options.EQUAL, domain);
                     }
                 }
@@ -79,13 +87,15 @@ public class DBCookieStore implements CookieStore, Field {
             }
 
             String path = uri.getPath();
-            if (!TextUtils.isEmpty(path)) {
+            if (!TextUtils.isEmpty(path))
+            {
                 Where.Builder subBuilder = Where.newBuilder()
                         .add(PATH, Where.Options.EQUAL, path)
                         .or(PATH, Where.Options.EQUAL, "/")
                         .orNull(PATH);
                 int lastSplit = path.lastIndexOf("/");
-                while (lastSplit > 0) {
+                while (lastSplit > 0)
+                {
                     path = path.substring(0, lastSplit);
                     subBuilder.or(PATH, Where.Options.EQUAL, path);
                     lastSplit = path.lastIndexOf("/");
@@ -99,89 +109,111 @@ public class DBCookieStore implements CookieStore, Field {
             Where where = whereBuilder.build();
             List<Cookie> cookieList = mCookieDao.getList(where.toString(), null, null, null);
             List<HttpCookie> returnedCookies = new ArrayList<>();
-            for (Cookie cookie : cookieList) {
+            for (Cookie cookie : cookieList)
+            {
                 if (!Cookie.isExpired(cookie)) returnedCookies.add(Cookie.toHttpCookie(cookie));
             }
             return returnedCookies;
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
     @Override
-    public void add(URI uri, HttpCookie httpCookie) {
+    public void add(URI uri, HttpCookie httpCookie)
+    {
         mLock.lock();
-        try {
-            if (uri != null && httpCookie != null) {
+        try
+        {
+            if (uri != null && httpCookie != null)
+            {
                 uri = getEffectiveURI(uri);
                 mCookieDao.replace(Cookie.toCookie(uri.toString(), httpCookie));
                 trimSize();
             }
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
     @Override
-    public void remove(HttpCookie httpCookie) {
+    public void remove(HttpCookie httpCookie)
+    {
         mLock.lock();
-        try {
+        try
+        {
             Where.Builder whereBuilder = Where.newBuilder().add(NAME, Where.Options.EQUAL, httpCookie.getName());
 
             String domain = httpCookie.getDomain();
             if (!TextUtils.isEmpty(domain)) whereBuilder.and(DOMAIN, Where.Options.EQUAL, domain);
 
             String path = httpCookie.getPath();
-            if (!TextUtils.isEmpty(path)) {
-                if (path.length() > 1 && path.endsWith("/")) {
+            if (!TextUtils.isEmpty(path))
+            {
+                if (path.length() > 1 && path.endsWith("/"))
+                {
                     path = path.substring(0, path.length() - 1);
                 }
                 whereBuilder.and(PATH, Where.Options.EQUAL, path);
             }
             mCookieDao.delete(whereBuilder.build().toString());
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
         mLock.lock();
-        try {
+        try
+        {
             mCookieDao.deleteAll();
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
-    private void trimSize() {
+    private void trimSize()
+    {
         int count = mCookieDao.count();
-        if (count > MAX_COOKIE_SIZE) {
+        if (count > MAX_COOKIE_SIZE)
+        {
             List<Cookie> rmList = mCookieDao.getList(null, null, Integer.toString(count - MAX_COOKIE_SIZE), null);
             if (rmList != null)
                 mCookieDao.delete(rmList);
         }
     }
 
-    private static URI getEffectiveURI(final URI uri) {
+    private static URI getEffectiveURI(final URI uri)
+    {
         URI effectiveURI;
-        try {
+        try
+        {
             effectiveURI = new URI("http", uri.getHost(), uri.getPath(), null, null);
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             effectiveURI = uri;
         }
         return effectiveURI;
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         private Context mContext;
 
-        private Builder(Context context) {
+        private Builder(Context context)
+        {
             this.mContext = context;
         }
 
-        public DBCookieStore build() {
+        public DBCookieStore build()
+        {
             return new DBCookieStore(this);
         }
     }

@@ -22,7 +22,8 @@ import com.yanzhenjie.kalle.simple.cache.CacheMode;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public interface SimpleRequest {
+public interface SimpleRequest
+{
     /**
      * Get the file download address.
      */

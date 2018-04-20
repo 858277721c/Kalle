@@ -25,7 +25,8 @@ import java.util.Map;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public interface Connection extends Closeable {
+public interface Connection extends Closeable
+{
 
     /**
      * Gets output stream for socket.

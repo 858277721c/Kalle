@@ -27,34 +27,40 @@ import java.io.InputStream;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class StreamBody implements ResponseBody {
+public class StreamBody implements ResponseBody
+{
 
     private String mContentType;
     private InputStream mStream;
 
-    public StreamBody(String contentType, InputStream stream) {
+    public StreamBody(String contentType, InputStream stream)
+    {
         this.mContentType = contentType;
         this.mStream = stream;
     }
 
     @Override
-    public String string() throws IOException {
+    public String string() throws IOException
+    {
         String charset = Headers.parseSubValue(mContentType, "charset", null);
         return TextUtils.isEmpty(charset) ? IOUtils.toString(mStream) : IOUtils.toString(mStream, charset);
     }
 
     @Override
-    public byte[] byteArray() throws IOException {
+    public byte[] byteArray() throws IOException
+    {
         return IOUtils.toByteArray(mStream);
     }
 
     @Override
-    public InputStream stream() throws IOException {
+    public InputStream stream() throws IOException
+    {
         return mStream;
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() throws IOException
+    {
         mStream.close();
     }
 }

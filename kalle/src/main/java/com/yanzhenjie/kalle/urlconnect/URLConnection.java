@@ -35,56 +35,68 @@ import java.util.zip.GZIPInputStream;
  * </p>
  * Created by Yan Zhenjie on 2017/2/12.
  */
-public class URLConnection implements Connection {
+public class URLConnection implements Connection
+{
 
     private HttpURLConnection mConnection;
 
-    public URLConnection(HttpURLConnection connection) {
+    public URLConnection(HttpURLConnection connection)
+    {
         this.mConnection = connection;
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
+    public OutputStream getOutputStream() throws IOException
+    {
         return mConnection.getOutputStream();
     }
 
     @Override
-    public int getCode() throws IOException {
+    public int getCode() throws IOException
+    {
         return mConnection.getResponseCode();
     }
 
     @Override
-    public Map<String, List<String>> getHeaders() throws IOException {
+    public Map<String, List<String>> getHeaders() throws IOException
+    {
         return mConnection.getHeaderFields();
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() throws IOException
+    {
         int code = mConnection.getResponseCode();
         if (!hasBody(mConnection.getRequestMethod(), code)) return new NullStream(this);
-        if (code >= 400) {
+        if (code >= 400)
+        {
             return getInputStream(mConnection.getContentEncoding(), new SourceStream(this, mConnection.getErrorStream()));
         }
         return getInputStream(mConnection.getContentEncoding(), new SourceStream(this, mConnection.getInputStream()));
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() throws IOException
+    {
         mConnection.disconnect();
     }
 
-    private static InputStream getInputStream(String contentEncoding, InputStream stream) throws IOException {
-        if (!TextUtils.isEmpty(contentEncoding) && contentEncoding.contains("gzip")) {
+    private static InputStream getInputStream(String contentEncoding, InputStream stream) throws IOException
+    {
+        if (!TextUtils.isEmpty(contentEncoding) && contentEncoding.contains("gzip"))
+        {
             stream = new GZIPInputStream(stream);
         }
         return stream;
     }
 
-    private static boolean hasBody(String method, int code) {
+    private static boolean hasBody(String method, int code)
+    {
         return !"HEAD".equalsIgnoreCase(method) && hasBody(code);
     }
 
-    private static boolean hasBody(int code) {
+    private static boolean hasBody(int code)
+    {
         return code > 100 && code != 204 && code != 205 && !(code >= 300 && code < 400);
     }
 }

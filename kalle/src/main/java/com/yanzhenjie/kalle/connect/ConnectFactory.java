@@ -22,7 +22,8 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public interface ConnectFactory {
+public interface ConnectFactory
+{
     /**
      * According to the request attribute,
      * and the server to establish a connection.

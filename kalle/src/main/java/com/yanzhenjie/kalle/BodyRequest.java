@@ -21,9 +21,11 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class BodyRequest extends Request {
+public class BodyRequest extends Request
+{
 
-    public static BodyRequest.Builder newBuilder(Url.Builder builder, RequestMethod method) {
+    public static BodyRequest.Builder newBuilder(Url.Builder builder, RequestMethod method)
+    {
         return new BodyRequest.Builder(builder, method);
     }
 
@@ -31,7 +33,8 @@ public class BodyRequest extends Request {
     private final RequestBody mBody;
     private final Params mParams;
 
-    protected BodyRequest(Api api) {
+    protected BodyRequest(Api api)
+    {
         super(api);
         this.mUrl = api.mUrlBuilder.build();
         this.mParams = api.mParams.build();
@@ -39,12 +42,14 @@ public class BodyRequest extends Request {
     }
 
     @Override
-    public Url url() {
+    public Url url()
+    {
         return mUrl;
     }
 
     @Override
-    public Params copyParams() {
+    public Params copyParams()
+    {
         return mParams;
     }
 
@@ -52,18 +57,21 @@ public class BodyRequest extends Request {
      * Get the define body to send.
      */
     @Override
-    public RequestBody body() {
+    public RequestBody body()
+    {
         return mBody;
     }
 
-    public static class Api<T extends Api<T>> extends Request.Api<T> {
+    public static class Api<T extends Api<T>> extends Request.Api<T>
+    {
 
         private Url.Builder mUrlBuilder;
 
         private Params.Builder mParams;
         private RequestBody mBody;
 
-        protected Api(Url.Builder builder, RequestMethod method) {
+        protected Api(Url.Builder builder, RequestMethod method)
+        {
             super(method);
             this.mUrlBuilder = builder;
             this.mParams = Params.newBuilder();
@@ -72,49 +80,57 @@ public class BodyRequest extends Request {
         }
 
         @Override
-        public T path(int value) {
+        public T path(int value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(long value) {
+        public T path(long value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(boolean value) {
+        public T path(boolean value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(char value) {
+        public T path(char value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(double value) {
+        public T path(double value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(float value) {
+        public T path(float value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(CharSequence value) {
+        public T path(CharSequence value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
 
         @Override
-        public T path(String value) {
+        public T path(String value)
+        {
             mUrlBuilder.addPath(value);
             return (T) this;
         }
@@ -122,7 +138,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, int value) {
+        public T urlParam(String key, int value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -130,7 +147,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, long value) {
+        public T urlParam(String key, long value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -138,7 +156,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, boolean value) {
+        public T urlParam(String key, boolean value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -146,7 +165,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, char value) {
+        public T urlParam(String key, char value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -154,7 +174,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, double value) {
+        public T urlParam(String key, double value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -162,7 +183,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, float value) {
+        public T urlParam(String key, float value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -170,7 +192,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, short value) {
+        public T urlParam(String key, short value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -178,7 +201,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, CharSequence value) {
+        public T urlParam(String key, CharSequence value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -186,7 +210,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, String value) {
+        public T urlParam(String key, String value)
+        {
             mUrlBuilder.addQuery(key, value);
             return (T) this;
         }
@@ -194,7 +219,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameter to url.
          */
-        public T urlParam(String key, List<String> values) {
+        public T urlParam(String key, List<String> values)
+        {
             mUrlBuilder.addQuery(key, values);
             return (T) this;
         }
@@ -202,7 +228,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameters to url.
          */
-        public T urlParam(Params params) {
+        public T urlParam(Params params)
+        {
             mUrlBuilder.addQuery(params);
             return (T) this;
         }
@@ -210,66 +237,77 @@ public class BodyRequest extends Request {
         /**
          * Set parameter to url.
          */
-        public T setUrlParam(Params params) {
+        public T setUrlParam(Params params)
+        {
             mUrlBuilder.setQuery(params);
             return (T) this;
         }
 
         @Override
-        public T param(String key, int value) {
+        public T param(String key, int value)
+        {
             return param(key, Integer.toString(value));
         }
 
         @Override
-        public T param(String key, long value) {
+        public T param(String key, long value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, boolean value) {
+        public T param(String key, boolean value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, char value) {
+        public T param(String key, char value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, double value) {
+        public T param(String key, double value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, float value) {
+        public T param(String key, float value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, short value) {
+        public T param(String key, short value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, CharSequence value) {
+        public T param(String key, CharSequence value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, String value) {
+        public T param(String key, String value)
+        {
             mParams.add(key, value);
             return (T) this;
         }
 
         @Override
-        public T param(String key, List<String> values) {
+        public T param(String key, List<String> values)
+        {
             mParams.add(key, values);
             return (T) this;
         }
@@ -277,7 +315,8 @@ public class BodyRequest extends Request {
         /**
          * Add parameters to body.
          */
-        public T params(Params params) {
+        public T params(Params params)
+        {
             mParams.add(params);
             return (T) this;
         }
@@ -285,19 +324,22 @@ public class BodyRequest extends Request {
         /**
          * Set parameters to body.
          */
-        public T setParams(Params params) {
+        public T setParams(Params params)
+        {
             mParams.set(params);
             return (T) this;
         }
 
         @Override
-        public T removeParam(String key) {
+        public T removeParam(String key)
+        {
             mParams.remove(key);
             return (T) this;
         }
 
         @Override
-        public T clearParams() {
+        public T clearParams()
+        {
             mParams.clear();
             return (T) this;
         }
@@ -305,7 +347,8 @@ public class BodyRequest extends Request {
         /**
          * Add several file parameters.
          */
-        public T file(String key, File file) {
+        public T file(String key, File file)
+        {
             mParams.file(key, file);
             return (T) this;
         }
@@ -313,7 +356,8 @@ public class BodyRequest extends Request {
         /**
          * Add files parameter.
          */
-        public T files(String key, List<File> files) {
+        public T files(String key, List<File> files)
+        {
             mParams.files(key, files);
             return (T) this;
         }
@@ -321,7 +365,8 @@ public class BodyRequest extends Request {
         /**
          * Add binary parameter.
          */
-        public T binary(String key, Binary binary) {
+        public T binary(String key, Binary binary)
+        {
             mParams.binary(key, binary);
             return (T) this;
         }
@@ -329,7 +374,8 @@ public class BodyRequest extends Request {
         /**
          * Add several binary parameters.
          */
-        public T binaries(String key, List<Binary> binaries) {
+        public T binaries(String key, List<Binary> binaries)
+        {
             mParams.binaries(key, binaries);
             return (T) this;
         }
@@ -337,19 +383,23 @@ public class BodyRequest extends Request {
         /**
          * Set request body.
          */
-        public T body(RequestBody body) {
+        public T body(RequestBody body)
+        {
             this.mBody = body;
             return (T) this;
         }
     }
 
-    public static class Builder extends BodyRequest.Api<BodyRequest.Builder> {
+    public static class Builder extends BodyRequest.Api<BodyRequest.Builder>
+    {
 
-        private Builder(Url.Builder builder, RequestMethod method) {
+        private Builder(Url.Builder builder, RequestMethod method)
+        {
             super(builder, method);
         }
 
-        public BodyRequest build() {
+        public BodyRequest build()
+        {
             return new BodyRequest(this);
         }
     }

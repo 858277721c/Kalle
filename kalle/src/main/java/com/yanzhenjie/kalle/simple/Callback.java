@@ -21,11 +21,13 @@ import java.lang.reflect.Type;
 /**
  * Created by YanZhenjie on 2018/2/17.
  */
-public abstract class Callback<Succeed, Failed> {
+public abstract class Callback<Succeed, Failed>
+{
 
     private final Type[] mTypeArguments;
 
-    public Callback() {
+    public Callback()
+    {
         Type superClass = getClass().getGenericSuperclass();
         mTypeArguments = ((ParameterizedType) superClass).getActualTypeArguments();
     }
@@ -33,14 +35,16 @@ public abstract class Callback<Succeed, Failed> {
     /**
      * Get the data type when the business was successful.
      */
-    public Type getSucceed() {
+    public Type getSucceed()
+    {
         return mTypeArguments[0];
     }
 
     /**
      * Get the data type when the business failed.
      */
-    public Type getFailed() {
+    public Type getFailed()
+    {
         return mTypeArguments[1];
     }
 

@@ -27,11 +27,13 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class CookieManager {
+public class CookieManager
+{
 
     private CookieStore cookieJar;
 
-    public CookieManager(CookieStore store) {
+    public CookieManager(CookieStore store)
+    {
         this.cookieJar = store;
     }
 
@@ -41,15 +43,19 @@ public class CookieManager {
      * @param uri uri.
      * @return all cookies that match the rules.
      */
-    public List<String> get(URI uri) {
+    public List<String> get(URI uri)
+    {
         boolean secureLink = "https".equalsIgnoreCase(uri.getScheme());
         List<HttpCookie> outCookieList = new ArrayList<>();
         List<HttpCookie> inCookieList = cookieJar.get(uri);
-        for (HttpCookie cookie : inCookieList) {
-            if (pathMatches(uri, cookie) && (secureLink || !cookie.getSecure())) {
+        for (HttpCookie cookie : inCookieList)
+        {
+            if (pathMatches(uri, cookie) && (secureLink || !cookie.getSecure()))
+            {
                 String portList = cookie.getPortlist();
                 int port = getPort(uri);
-                if (TextUtils.isEmpty(portList) || containsPort(portList, port)) {
+                if (TextUtils.isEmpty(portList) || containsPort(portList, port))
+                {
                     outCookieList.add(cookie);
                 }
             }
@@ -67,14 +73,19 @@ public class CookieManager {
      * @param uri        uri.
      * @param cookieList all you want to save the Cookie, does not meet the rules will not be saved.
      */
-    public void add(URI uri, List<String> cookieList) {
-        for (String cookieValue : cookieList) {
+    public void add(URI uri, List<String> cookieList)
+    {
+        for (String cookieValue : cookieList)
+        {
             List<HttpCookie> cookies = HttpCookie.parse(cookieValue);
-            for (HttpCookie cookie : cookies) {
-                if (cookie.getPath() == null) {
+            for (HttpCookie cookie : cookies)
+            {
+                if (cookie.getPath() == null)
+                {
                     String path = normalizePath(uri.getPath());
                     cookie.setPath(path);
-                } else if (!pathMatches(uri, cookie)) {
+                } else if (!pathMatches(uri, cookie))
+                {
                     continue;
                 }
 
@@ -82,24 +93,30 @@ public class CookieManager {
 
                 String portList = cookie.getPortlist();
                 int port = getPort(uri);
-                if (TextUtils.isEmpty(portList) || containsPort(portList, port)) {
+                if (TextUtils.isEmpty(portList) || containsPort(portList, port))
+                {
                     cookieJar.add(uri, cookie);
                 }
             }
         }
     }
 
-    private static int getPort(URI uri) {
+    private static int getPort(URI uri)
+    {
         int port = uri.getPort();
         return (port == -1) ? ("https".equals(uri.getScheme()) ? 443 : 80) : port;
     }
 
-    private static boolean containsPort(String portList, int port) {
-        if (portList.contains(",")) {
+    private static boolean containsPort(String portList, int port)
+    {
+        if (portList.contains(","))
+        {
             String[] portArray = portList.split(",");
             String inPort = Integer.toString(port);
-            for (String outPort : portArray) {
-                if (outPort.equals(inPort)) {
+            for (String outPort : portArray)
+            {
+                if (outPort.equals(inPort))
+                {
                     return true;
                 }
             }
@@ -108,37 +125,47 @@ public class CookieManager {
         return portList.equalsIgnoreCase(Integer.toString(port));
     }
 
-    private static boolean pathMatches(URI uri, HttpCookie cookie) {
+    private static boolean pathMatches(URI uri, HttpCookie cookie)
+    {
         return normalizePath(uri.getPath()).startsWith(normalizePath(cookie.getPath()));
     }
 
-    private static String normalizePath(String path) {
-        if (path == null) {
+    private static String normalizePath(String path)
+    {
+        if (path == null)
+        {
             path = "";
         }
-        if (!path.endsWith("/")) {
+        if (!path.endsWith("/"))
+        {
             path = path + "/";
         }
         return path;
     }
 
 
-    private String sortByPath(List<HttpCookie> cookies) {
+    private String sortByPath(List<HttpCookie> cookies)
+    {
         Collections.sort(cookies, new CookiePathComparator());
         final StringBuilder result = new StringBuilder();
         int minVersion = 1;
-        for (HttpCookie cookie : cookies) {
-            if (cookie.getVersion() < minVersion) {
+        for (HttpCookie cookie : cookies)
+        {
+            if (cookie.getVersion() < minVersion)
+            {
                 minVersion = cookie.getVersion();
             }
         }
 
-        if (minVersion == 1) {
+        if (minVersion == 1)
+        {
             result.append("$Version=\"1\"; ");
         }
 
-        for (int i = 0; i < cookies.size(); ++i) {
-            if (i != 0) {
+        for (int i = 0; i < cookies.size(); ++i)
+        {
+            if (i != 0)
+            {
                 result.append("; ");
             }
 
@@ -149,9 +176,11 @@ public class CookieManager {
     }
 
 
-    private static class CookiePathComparator implements Comparator<HttpCookie> {
+    private static class CookiePathComparator implements Comparator<HttpCookie>
+    {
         @Override
-        public int compare(HttpCookie c1, HttpCookie c2) {
+        public int compare(HttpCookie c1, HttpCookie c2)
+        {
             if (c1 == c2) return 0;
             if (c1 == null) return -1;
             if (c2 == null) return 1;

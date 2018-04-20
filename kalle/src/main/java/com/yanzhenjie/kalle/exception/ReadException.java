@@ -20,17 +20,21 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class ReadException extends IOException {
+public class ReadException extends IOException
+{
 
-    public ReadException(String message) {
+    public ReadException(String message)
+    {
         super(message);
     }
 
-    public ReadException(String message, Throwable cause) {
+    public ReadException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 
-    public ReadException(Throwable cause) {
+    public ReadException(Throwable cause)
+    {
         super(cause);
     }
 }

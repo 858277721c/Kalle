@@ -22,13 +22,16 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_XML;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public class XmlBody extends StringBody {
+public class XmlBody extends StringBody
+{
 
-    public XmlBody(String body) {
+    public XmlBody(String body)
+    {
         this(body, Kalle.getConfig().getCharset());
     }
 
-    public XmlBody(String body, Charset charset) {
+    public XmlBody(String body, Charset charset)
+    {
         super(body, charset, VALUE_APPLICATION_XML);
     }
 }

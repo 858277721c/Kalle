@@ -21,26 +21,32 @@ package com.yanzhenjie.kalle.simple.cache;
  * </p>
  * Created in Dec 14, 2015 5:52:41 PM.
  */
-public interface CacheStore {
+public interface CacheStore
+{
 
-    CacheStore DEFAULT = new CacheStore() {
+    CacheStore DEFAULT = new CacheStore()
+    {
         @Override
-        public Cache get(String key) {
+        public Cache get(String key)
+        {
             return null;
         }
 
         @Override
-        public boolean replace(String key, Cache cache) {
+        public boolean replace(String key, Cache cache)
+        {
             return true;
         }
 
         @Override
-        public boolean remove(String key) {
+        public boolean remove(String key)
+        {
             return true;
         }
 
         @Override
-        public boolean clear() {
+        public boolean clear()
+        {
             return true;
         }
     };

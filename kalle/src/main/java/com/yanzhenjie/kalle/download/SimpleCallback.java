@@ -18,24 +18,30 @@ package com.yanzhenjie.kalle.download;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class SimpleCallback implements Callback {
+public class SimpleCallback implements Callback
+{
     @Override
-    public void onStart() {
+    public void onStart()
+    {
     }
 
     @Override
-    public void onFinish(String path) {
+    public void onFinish(String path)
+    {
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(Exception e)
+    {
     }
 
     @Override
-    public void onCancel() {
+    public void onCancel()
+    {
     }
 
     @Override
-    public void onEnd() {
+    public void onEnd()
+    {
     }
 }

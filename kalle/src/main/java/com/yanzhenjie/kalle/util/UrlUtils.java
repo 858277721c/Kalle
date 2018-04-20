@@ -23,29 +23,38 @@ import java.nio.charset.Charset;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public class UrlUtils {
-    
-    public static String urlEncode(String target, String charset) {
-        try {
+public class UrlUtils
+{
+
+    public static String urlEncode(String target, String charset)
+    {
+        try
+        {
             return URLEncoder.encode(target, charset);
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             return target;
         }
     }
 
-    public static String urlEncode(String target, Charset charset) {
+    public static String urlEncode(String target, Charset charset)
+    {
         return urlEncode(target, charset.name());
     }
 
-    public static String urlDecode(String target, String charset) {
-        try {
+    public static String urlDecode(String target, String charset)
+    {
+        try
+        {
             return URLDecoder.decode(target, charset);
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             return target;
         }
     }
 
-    public static String urlDecode(String target, Charset charset) {
+    public static String urlDecode(String target, Charset charset)
+    {
         return urlDecode(target, charset.name());
     }
 }

@@ -23,16 +23,19 @@ import java.util.concurrent.Executor;
 /**
  * Created by YanZhenjie on 2018/3/14.
  */
-public class MainExecutor implements Executor {
+public class MainExecutor implements Executor
+{
 
     private Handler mHandler;
 
-    public MainExecutor() {
+    public MainExecutor()
+    {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
-    public void execute(Runnable command) {
+    public void execute(Runnable command)
+    {
         mHandler.post(command);
     }
 }

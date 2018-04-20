@@ -23,11 +23,13 @@ import java.util.Set;
 /**
  * Created on 2016/6/23.
  */
-public class ListMap<K, V> {
+public class ListMap<K, V>
+{
 
     private Map<K, List<V>> mSource;
 
-    public ListMap(Map<K, List<V>> source) {
+    public ListMap(Map<K, List<V>> source)
+    {
         this.mSource = source;
     }
 
@@ -37,7 +39,8 @@ public class ListMap<K, V> {
      * @param key   key, unique.
      * @param value value, a key has multiple values.
      */
-    public void add(K key, V value) {
+    public void add(K key, V value)
+    {
         if (!mSource.containsKey(key))
             mSource.put(key, new ArrayList<V>(1));
         mSource.get(key).add(value);
@@ -49,8 +52,10 @@ public class ListMap<K, V> {
      * @param key    key, unique.
      * @param values values, a key has multiple values.
      */
-    public void add(K key, List<V> values) {
-        for (V value : values) {
+    public void add(K key, List<V> values)
+    {
+        for (V value : values)
+        {
             add(key, value);
         }
     }
@@ -62,7 +67,8 @@ public class ListMap<K, V> {
      * @param key   key, unique.
      * @param value value, a key has multiple values.
      */
-    public void set(K key, V value) {
+    public void set(K key, V value)
+    {
         mSource.remove(key);
         add(key, value);
     }
@@ -74,7 +80,8 @@ public class ListMap<K, V> {
      * @param key    key, unique.
      * @param values values, a key has multiple values.
      */
-    public void set(K key, List<V> values) {
+    public void set(K key, List<V> values)
+    {
         mSource.put(key, values);
     }
 
@@ -84,7 +91,8 @@ public class ListMap<K, V> {
      * @param key key.
      * @return if the key does not exist, it may be null.
      */
-    public List<V> get(K key) {
+    public List<V> get(K key)
+    {
         return mSource.get(key);
     }
 
@@ -94,7 +102,8 @@ public class ListMap<K, V> {
      * @param key key.
      * @return if the key does not exist, it may be null.
      */
-    public V getFirst(K key) {
+    public V getFirst(K key)
+    {
         List<V> values = mSource.get(key);
         if (values != null && values.size() > 0)
             return values.get(0);
@@ -107,7 +116,8 @@ public class ListMap<K, V> {
      * @return a set view of the mappings.
      * @see Map#entrySet()
      */
-    public Set<Map.Entry<K, List<V>>> entrySet() {
+    public Set<Map.Entry<K, List<V>>> entrySet()
+    {
         return mSource.entrySet();
     }
 
@@ -117,7 +127,8 @@ public class ListMap<K, V> {
      * @return a set view of the keys.
      * @see Map#keySet()
      */
-    public Set<K> keySet() {
+    public Set<K> keySet()
+    {
         return mSource.keySet();
     }
 
@@ -127,7 +138,8 @@ public class ListMap<K, V> {
      * @return always greater than or equal to 0.
      * @see Map#size()
      */
-    public int size() {
+    public int size()
+    {
         return mSource.size();
     }
 
@@ -137,7 +149,8 @@ public class ListMap<K, V> {
      * @return true if there are no key-values pairs.
      * @see Map#isEmpty()
      */
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return mSource.isEmpty();
     }
 
@@ -147,7 +160,8 @@ public class ListMap<K, V> {
      * @param key key.
      * @return true if there contains the key.
      */
-    public boolean containsKey(K key) {
+    public boolean containsKey(K key)
+    {
         return mSource.containsKey(key);
     }
 
@@ -157,21 +171,24 @@ public class ListMap<K, V> {
      * @param key key.
      * @return all values.
      */
-    public List<V> remove(K key) {
+    public List<V> remove(K key)
+    {
         return mSource.remove(key);
     }
 
     /**
      * Remove all key and all values.
      */
-    public void clear() {
+    public void clear()
+    {
         mSource.clear();
     }
 
     /**
      * Convert to Map.
      */
-    public Map<K, List<V>> toMap() {
+    public Map<K, List<V>> toMap()
+    {
         return mSource;
     }
 }

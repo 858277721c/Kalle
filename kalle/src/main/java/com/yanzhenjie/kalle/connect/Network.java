@@ -18,14 +18,17 @@ package com.yanzhenjie.kalle.connect;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public interface Network {
+public interface Network
+{
 
     /**
      * The network has always been available.
      */
-    Network DEFAULT = new Network() {
+    Network DEFAULT = new Network()
+    {
         @Override
-        public boolean isAvailable() {
+        public boolean isAvailable()
+        {
             return true;
         }
     };

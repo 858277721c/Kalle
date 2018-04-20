@@ -26,7 +26,8 @@ import java.io.IOException;
  * </p>
  * Created by YanZhenjie on 2018/2/11.
  */
-public interface Interceptor {
+public interface Interceptor
+{
 
     /**
      * When intercepting the {@link Chain},

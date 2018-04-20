@@ -37,7 +37,8 @@ import static com.yanzhenjie.kalle.Headers.KEY_RANGE;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public abstract class BasicWorker<T extends Download> implements Callable<String> {
+public abstract class BasicWorker<T extends Download> implements Callable<String>
+{
 
     private final T mDownload;
 
@@ -46,7 +47,8 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
     private Download.ProgressBar mProgressBar;
     private Download.Policy mPolicy;
 
-    BasicWorker(T download) {
+    BasicWorker(T download)
+    {
         this.mDownload = download;
         this.mDirectory = mDownload.directory();
         this.mFileName = mDownload.fileName();
@@ -55,32 +57,38 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
     }
 
     @Override
-    public String call() throws Exception {
+    public String call() throws Exception
+    {
         if (TextUtils.isEmpty(mDirectory)) throw new IOException("Please specify the directory.");
         File directory = new File(mDirectory);
         IOUtils.createFolder(directory);
 
         Response response = null;
-        try {
+        try
+        {
             int code;
             Headers comeHeaders;
             File tempFile;
 
-            if (TextUtils.isEmpty(mFileName)) {
+            if (TextUtils.isEmpty(mFileName))
+            {
                 response = requestNetwork(mDownload);
                 code = response.code();
                 comeHeaders = response.headers();
                 mFileName = getRealFileName(comeHeaders);
                 tempFile = new File(mDirectory, mFileName + ".kalle");
-            } else {
+            } else
+            {
                 tempFile = new File(mDirectory, mFileName + ".kalle");
-                if (mPolicy.isRange() && tempFile.exists()) {
+                if (mPolicy.isRange() && tempFile.exists())
+                {
                     Headers toHeaders = mDownload.headers();
                     toHeaders.set(KEY_RANGE, "bytes=" + tempFile.length() + "-");
                     response = requestNetwork(mDownload);
                     code = response.code();
                     comeHeaders = response.headers();
-                } else {
+                } else
+                {
                     response = requestNetwork(mDownload);
                     code = response.code();
                     comeHeaders = response.headers();
@@ -89,27 +97,33 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
                 }
             }
 
-            if (!mPolicy.allowDownload(code, comeHeaders)) {
+            if (!mPolicy.allowDownload(code, comeHeaders))
+            {
                 throw new DownloadError(code, comeHeaders, "The download policy prohibits the program from continuing to download.");
             }
 
             File file = new File(mDirectory, mFileName);
-            if (file.exists()) {
+            if (file.exists())
+            {
                 String filePath = file.getAbsolutePath();
-                if (mPolicy.oldAvailable(filePath, code, comeHeaders)) {
+                if (mPolicy.oldAvailable(filePath, code, comeHeaders))
+                {
                     mProgressBar.onProgress(100, file.length(), 0);
                     return filePath;
-                } else {
+                } else
+                {
                     IOUtils.delFileOrFolder(file);
                 }
             }
 
             long contentLength;
 
-            if (code == 206) {
+            if (code == 206)
+            {
                 String range = comeHeaders.getContentRange();
                 contentLength = Long.parseLong(range.substring(range.indexOf('/') + 1));
-            } else {
+            } else
+            {
                 IOUtils.createNewFile(tempFile);
                 contentLength = comeHeaders.getContentLength();
             }
@@ -129,7 +143,8 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
 
             InputStream stream = response.body().stream();
 
-            while (((len = stream.read(buffer)) != -1)) {
+            while (((len = stream.read(buffer)) != -1))
+            {
                 randomFile.write(buffer, 0, len);
 
                 oldCount += len;
@@ -140,9 +155,11 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
 
                 long speed = speedCount * 1000 / totalTime;
 
-                if (contentLength != 0) {
+                if (contentLength != 0)
+                {
                     int progress = (int) (oldCount * 100 / contentLength);
-                    if (progress != oldProgress || speed != oldSpeed) {
+                    if (progress != oldProgress || speed != oldSpeed)
+                    {
                         oldProgress = progress;
                         oldSpeed = speed;
                         speedCount = 0;
@@ -150,13 +167,15 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
 
                         mProgressBar.onProgress(oldProgress, oldCount, oldSpeed);
                     }
-                } else if (oldSpeed != speed) {
+                } else if (oldSpeed != speed)
+                {
                     speedCount = 0;
                     oldSpeed = speed;
                     speedTime = System.currentTimeMillis();
 
                     mProgressBar.onProgress(0, oldCount, oldSpeed);
-                } else {
+                } else
+                {
                     mProgressBar.onProgress(0, oldCount, oldSpeed);
                 }
             }
@@ -165,7 +184,8 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
             //noinspection ResultOfMethodCallIgnored
             tempFile.renameTo(file);
             return file.getAbsolutePath();
-        } finally {
+        } finally
+        {
             IOUtils.closeQuietly(response);
         }
     }
@@ -179,26 +199,33 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
      */
     protected abstract Response requestNetwork(T download) throws IOException;
 
-    private String getRealFileName(Headers headers) throws IOException {
+    private String getRealFileName(Headers headers) throws IOException
+    {
         String fileName = null;
         String contentDisposition = headers.getContentDisposition();
-        if (!TextUtils.isEmpty(contentDisposition)) {
+        if (!TextUtils.isEmpty(contentDisposition))
+        {
             fileName = Headers.parseSubValue(contentDisposition, "filename", null);
-            if (!TextUtils.isEmpty(fileName)) {
+            if (!TextUtils.isEmpty(fileName))
+            {
                 fileName = UrlUtils.urlDecode(fileName, "utf-8");
-                if (fileName.startsWith("\"") && fileName.endsWith("\"")) {
+                if (fileName.startsWith("\"") && fileName.endsWith("\""))
+                {
                     fileName = fileName.substring(1, fileName.length() - 1);
                 }
             }
         }
 
         // From url.
-        if (TextUtils.isEmpty(fileName)) {
+        if (TextUtils.isEmpty(fileName))
+        {
             Url url = mDownload.url();
             String path = url.getPath();
-            if (TextUtils.isEmpty(path)) {
+            if (TextUtils.isEmpty(path))
+            {
                 fileName = Integer.toString(url.toString().hashCode());
-            } else {
+            } else
+            {
                 String[] slash = path.split("/");
                 fileName = slash[slash.length - 1];
             }
@@ -206,21 +233,26 @@ public abstract class BasicWorker<T extends Download> implements Callable<String
         return fileName;
     }
 
-    private static class AsyncProgressBar implements Download.ProgressBar {
+    private static class AsyncProgressBar implements Download.ProgressBar
+    {
 
         private final Download.ProgressBar mProgressBar;
         private final Executor mExecutor;
 
-        AsyncProgressBar(Download.ProgressBar bar) {
+        AsyncProgressBar(Download.ProgressBar bar)
+        {
             this.mProgressBar = bar;
             this.mExecutor = Kalle.getConfig().getMainExecutor();
         }
 
         @Override
-        public void onProgress(final int progress, final long byteCount, final long speed) {
-            mExecutor.execute(new Runnable() {
+        public void onProgress(final int progress, final long byteCount, final long speed)
+        {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mProgressBar.onProgress(progress, byteCount, speed);
                 }
             });

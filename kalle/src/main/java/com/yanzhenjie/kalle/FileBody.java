@@ -29,21 +29,25 @@ import java.io.OutputStream;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class FileBody extends BasicOutData<FileBody> implements RequestBody {
+public class FileBody extends BasicOutData<FileBody> implements RequestBody
+{
 
     private final File mFile;
 
-    public FileBody(File file) {
+    public FileBody(File file)
+    {
         this.mFile = file;
     }
 
     @Override
-    public long length() {
+    public long length()
+    {
         return mFile.length();
     }
 
     @Override
-    public String contentType() {
+    public String contentType()
+    {
         String fileName = mFile.getName();
         String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
@@ -53,7 +57,8 @@ public class FileBody extends BasicOutData<FileBody> implements RequestBody {
 
 
     @Override
-    protected void onWrite(OutputStream writer) throws IOException {
+    protected void onWrite(OutputStream writer) throws IOException
+    {
         InputStream reader = new FileInputStream(mFile);
         IOUtils.write(reader, writer);
         IOUtils.closeQuietly(reader);

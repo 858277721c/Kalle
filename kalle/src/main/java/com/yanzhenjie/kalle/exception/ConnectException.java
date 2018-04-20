@@ -20,17 +20,21 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-public class ConnectException extends IOException {
+public class ConnectException extends IOException
+{
 
-    public ConnectException(String message) {
+    public ConnectException(String message)
+    {
         super(message);
     }
 
-    public ConnectException(String message, Throwable cause) {
+    public ConnectException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 
-    public ConnectException(Throwable cause) {
+    public ConnectException(Throwable cause)
+    {
         super(cause);
     }
 }

@@ -23,14 +23,17 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class UrlWorker extends BasicWorker<UrlDownload> {
+public class UrlWorker extends BasicWorker<UrlDownload>
+{
 
-    UrlWorker(UrlDownload download) {
+    UrlWorker(UrlDownload download)
+    {
         super(download);
     }
 
     @Override
-    protected Response requestNetwork(UrlDownload download) throws IOException {
+    protected Response requestNetwork(UrlDownload download) throws IOException
+    {
         return new Call(download).execute();
     }
 }

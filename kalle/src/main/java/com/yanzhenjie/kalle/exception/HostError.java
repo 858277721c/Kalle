@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class HostError extends ConnectException {
-    public HostError(String message) {
+public class HostError extends ConnectException
+{
+    public HostError(String message)
+    {
         super(message);
     }
 
-    public HostError(String message, Throwable cause) {
+    public HostError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

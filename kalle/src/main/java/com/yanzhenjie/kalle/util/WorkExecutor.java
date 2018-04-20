@@ -25,21 +25,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by YanZhenjie on 2018/2/26.
  */
-public class WorkExecutor implements Executor {
+public class WorkExecutor implements Executor
+{
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
-    private static final ThreadFactory THREAD_FACTORY = new ThreadFactory() {
+    private static final ThreadFactory THREAD_FACTORY = new ThreadFactory()
+    {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
-        public Thread newThread(Runnable r) {
+        public Thread newThread(Runnable r)
+        {
             return new Thread(r, "Request #" + mCount.getAndIncrement());
         }
     };
 
     private ThreadPoolExecutor mPoolExecutor;
 
-    public WorkExecutor() {
+    public WorkExecutor()
+    {
         mPoolExecutor = new ThreadPoolExecutor(
                 Math.max(2, Math.min(CPU_COUNT - 1, 4)),
                 CPU_COUNT * 2 + 1,
@@ -51,7 +55,8 @@ public class WorkExecutor implements Executor {
     }
 
     @Override
-    public void execute(Runnable command) {
+    public void execute(Runnable command)
+    {
         mPoolExecutor.execute(command);
     }
 }

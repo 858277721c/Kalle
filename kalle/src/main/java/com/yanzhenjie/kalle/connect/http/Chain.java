@@ -23,7 +23,8 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/3/6.
  */
-public interface Chain {
+public interface Chain
+{
     /**
      * Get the request in the chain.
      *

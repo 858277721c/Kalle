@@ -18,7 +18,8 @@ package com.yanzhenjie.kalle;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public interface ProgressBar<T> {
+public interface ProgressBar<T>
+{
     /**
      * Progress has changed.
      */

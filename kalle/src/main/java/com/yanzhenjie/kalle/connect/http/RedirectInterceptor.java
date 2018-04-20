@@ -32,16 +32,20 @@ import static com.yanzhenjie.kalle.Headers.KEY_COOKIE;
 /**
  * Created by YanZhenjie on 2018/3/6.
  */
-public class RedirectInterceptor implements Interceptor {
+public class RedirectInterceptor implements Interceptor
+{
 
-    public RedirectInterceptor() {
+    public RedirectInterceptor()
+    {
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(Chain chain) throws IOException
+    {
         Request request = chain.request();
         Response response = chain.proceed(request);
-        if (response.isRedirect()) {
+        if (response.isRedirect())
+        {
             Url oldUrl = request.url();
             Url url = oldUrl.location(response.headers().getLocation());
             Headers headers = request.headers();
@@ -49,13 +53,15 @@ public class RedirectInterceptor implements Interceptor {
 
             RequestMethod method = request.method();
             Request newRequest;
-            if (method.allowBody()) {
+            if (method.allowBody())
+            {
                 newRequest = BodyRequest.newBuilder(url.builder(), method)
                         .setHeaders(headers)
                         .setParams(request.copyParams())
                         .body(request.body())
                         .build();
-            } else {
+            } else
+            {
                 newRequest = UrlRequest.newBuilder(url.builder(), method)
                         .setHeaders(headers)
                         .build();

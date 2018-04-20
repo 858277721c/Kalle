@@ -47,7 +47,8 @@ import java.util.TreeMap;
  * </p>
  * Created in Jan 10, 2016 2:29:42 PM.
  */
-public class Headers extends ListMap<String, String> {
+public class Headers extends ListMap<String, String>
+{
 
     public static final String TIME_FORMAT_HTTP = "EEE, dd MMM y HH:mm:ss 'GMT'";
     public static final TimeZone TIME_ZONE_GMT = TimeZone.getTimeZone("GMT");
@@ -87,74 +88,90 @@ public class Headers extends ListMap<String, String> {
     public static final String KEY_USER_AGENT = "User-Agent";
     public static final String VALUE_USER_AGENT = getUserAgent();
 
-    public Headers() {
-        super(new TreeMap<String, List<String>>(new Comparator<String>() {
+    public Headers()
+    {
+        super(new TreeMap<String, List<String>>(new Comparator<String>()
+        {
             @Override
-            public int compare(String o1, String o2) {
+            public int compare(String o1, String o2)
+            {
                 return o1.compareTo(o2);
             }
         }));
     }
 
     @Override
-    public void add(String key, String value) {
+    public void add(String key, String value)
+    {
         if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value))
             super.add(formatKey(key), value);
     }
 
     @Override
-    public void set(String key, String value) {
+    public void set(String key, String value)
+    {
         if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value))
             super.set(formatKey(key), value);
     }
 
     @Override
-    public void add(String key, List<String> values) {
+    public void add(String key, List<String> values)
+    {
         if (!TextUtils.isEmpty(key) && !values.isEmpty())
             super.add(formatKey(key), values);
     }
 
     @Override
-    public void set(String key, List<String> values) {
+    public void set(String key, List<String> values)
+    {
         if (!TextUtils.isEmpty(key) && !values.isEmpty())
             super.set(formatKey(key), values);
     }
 
-    public void add(Headers headers) {
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+    public void add(Headers headers)
+    {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet())
+        {
             String key = entry.getKey();
             List<String> values = entry.getValue();
-            for (String value : values) {
+            for (String value : values)
+            {
                 add(key, value);
             }
         }
     }
 
     @Override
-    public List<String> remove(String key) {
+    public List<String> remove(String key)
+    {
         return super.remove(formatKey(key));
     }
 
     @Override
-    public List<String> get(String key) {
+    public List<String> get(String key)
+    {
         return super.get(formatKey(key));
     }
 
     @Override
-    public String getFirst(String key) {
+    public String getFirst(String key)
+    {
         return super.getFirst(formatKey(key));
     }
 
     @Override
-    public boolean containsKey(String key) {
+    public boolean containsKey(String key)
+    {
         return super.containsKey(formatKey(key));
     }
 
     /**
      * Replace all.
      */
-    public void set(Headers headers) {
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+    public void set(Headers headers)
+    {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet())
+        {
             set(entry.getKey(), entry.getValue());
         }
     }
@@ -164,7 +181,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return CacheControl.
      */
-    public String getCacheControl() {
+    public String getCacheControl()
+    {
         List<String> cacheControls = get(KEY_CACHE_CONTROL);
         if (cacheControls == null) cacheControls = Collections.emptyList();
         return TextUtils.join(",", cacheControls);
@@ -175,7 +193,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return {@value KEY_CONTENT_DISPOSITION}.
      */
-    public String getContentDisposition() {
+    public String getContentDisposition()
+    {
         return getFirst(KEY_CONTENT_DISPOSITION);
     }
 
@@ -184,7 +203,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return ContentEncoding.
      */
-    public String getContentEncoding() {
+    public String getContentEncoding()
+    {
         return getFirst(KEY_CONTENT_ENCODING);
     }
 
@@ -193,7 +213,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return ContentLength.
      */
-    public long getContentLength() {
+    public long getContentLength()
+    {
         String contentLength = getFirst(KEY_CONTENT_LENGTH);
         if (TextUtils.isEmpty(contentLength)) contentLength = "0";
         return Long.parseLong(contentLength);
@@ -204,7 +225,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return ContentType.
      */
-    public String getContentType() {
+    public String getContentType()
+    {
         return getFirst(KEY_CONTENT_TYPE);
     }
 
@@ -213,7 +235,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return ContentRange.
      */
-    public String getContentRange() {
+    public String getContentRange()
+    {
         return getFirst(KEY_CONTENT_RANGE);
     }
 
@@ -222,7 +245,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return Date.
      */
-    public long getDate() {
+    public long getDate()
+    {
         return getDateField(KEY_DATE);
     }
 
@@ -231,7 +255,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return ETag.
      */
-    public String getETag() {
+    public String getETag()
+    {
         return getFirst(KEY_E_TAG);
     }
 
@@ -240,7 +265,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return Expiration.
      */
-    public long getExpires() {
+    public long getExpires()
+    {
         return getDateField(KEY_EXPIRES);
     }
 
@@ -249,7 +275,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return LastModified.
      */
-    public long getLastModified() {
+    public long getLastModified()
+    {
         return getDateField(KEY_LAST_MODIFIED);
     }
 
@@ -258,7 +285,8 @@ public class Headers extends ListMap<String, String> {
      *
      * @return Location.
      */
-    public String getLocation() {
+    public String getLocation()
+    {
         return getFirst(KEY_LOCATION);
     }
 
@@ -271,12 +299,15 @@ public class Headers extends ListMap<String, String> {
      * @param key the header field name.
      * @return the header field represented in milliseconds since January 1, 1970 GMT.
      */
-    private long getDateField(String key) {
+    private long getDateField(String key)
+    {
         String value = getFirst(key);
         if (!TextUtils.isEmpty(value))
-            try {
+            try
+            {
                 return formatGMTToMillis(value);
-            } catch (ParseException ignored) {
+            } catch (ParseException ignored)
+            {
             }
         return 0;
     }
@@ -284,19 +315,22 @@ public class Headers extends ListMap<String, String> {
     /**
      * Format to Hump-shaped words.
      */
-    public static String formatKey(String key) {
+    public static String formatKey(String key)
+    {
         if (TextUtils.isEmpty(key)) return null;
 
         key = key.toLowerCase(Locale.ENGLISH);
         String[] words = key.split("-");
 
         StringBuilder builder = new StringBuilder();
-        for (String word : words) {
+        for (String word : words)
+        {
             String first = word.substring(0, 1);
             String end = word.substring(1, word.length());
             builder.append(first.toUpperCase(Locale.ENGLISH)).append(end).append("-");
         }
-        if (builder.length() > 0) {
+        if (builder.length() > 0)
+        {
             builder.deleteCharAt(builder.lastIndexOf("-"));
         }
         return builder.toString();
@@ -305,15 +339,18 @@ public class Headers extends ListMap<String, String> {
     /**
      * From the json format String parsing out the {@code Map<String, List<String>>} data.
      */
-    public static Headers fromJSONString(String jsonString) throws JSONException {
+    public static Headers fromJSONString(String jsonString) throws JSONException
+    {
         Headers headers = new Headers();
         JSONObject jsonObject = new JSONObject(jsonString);
         Iterator<String> keySet = jsonObject.keys();
-        while (keySet.hasNext()) {
+        while (keySet.hasNext())
+        {
             String key = keySet.next();
             String value = jsonObject.optString(key);
             JSONArray values = new JSONArray(value);
-            for (int i = 0; i < values.length(); i++) {
+            for (int i = 0; i < values.length(); i++)
+            {
                 headers.add(key, values.optString(i));
             }
         }
@@ -323,16 +360,20 @@ public class Headers extends ListMap<String, String> {
     /**
      * Into a json format string.
      */
-    public static String toJSONString(Headers headers) {
+    public static String toJSONString(Headers headers)
+    {
         JSONObject jsonObject = new JSONObject();
         Set<Map.Entry<String, List<String>>> entrySet = headers.entrySet();
-        for (Map.Entry<String, List<String>> entry : entrySet) {
+        for (Map.Entry<String, List<String>> entry : entrySet)
+        {
             String key = entry.getKey();
             List<String> values = entry.getValue();
             JSONArray value = new JSONArray(values);
-            try {
+            try
+            {
                 jsonObject.put(key, value);
-            } catch (JSONException ignored) {
+            } catch (JSONException ignored)
+            {
             }
         }
         return jsonObject.toString();
@@ -341,9 +382,11 @@ public class Headers extends ListMap<String, String> {
     /**
      * Into a single key-value map.
      */
-    public static Map<String, String> getRequestHeaders(Headers headers) {
+    public static Map<String, String> getRequestHeaders(Headers headers)
+    {
         Map<String, String> headerMap = new LinkedHashMap<>();
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet())
+        {
             String key = entry.getKey();
             List<String> value = entry.getValue();
             String trueValue = TextUtils.join("; ", value);
@@ -355,12 +398,16 @@ public class Headers extends ListMap<String, String> {
     /**
      * All the cookies in header information.
      */
-    public static List<HttpCookie> getHttpCookieList(Headers headers) {
+    public static List<HttpCookie> getHttpCookieList(Headers headers)
+    {
         List<HttpCookie> cookies = new ArrayList<>();
-        for (String key : headers.keySet()) {
-            if (key.equalsIgnoreCase(KEY_SET_COOKIE)) {
+        for (String key : headers.keySet())
+        {
+            if (key.equalsIgnoreCase(KEY_SET_COOKIE))
+            {
                 List<String> cookieValues = headers.get(key);
-                for (String cookieStr : cookieValues) {
+                for (String cookieStr : cookieValues)
+                {
                     cookies.addAll(HttpCookie.parse(cookieStr));
                 }
             }
@@ -376,15 +423,20 @@ public class Headers extends ListMap<String, String> {
      * @param defaultValue list {@code utf-8}.
      * @return If you have a value key, you will return the parsed value if you don't return the default value.
      */
-    public static String parseSubValue(String content, String key, String defaultValue) {
-        if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(key)) {
+    public static String parseSubValue(String content, String key, String defaultValue)
+    {
+        if (!TextUtils.isEmpty(content) && !TextUtils.isEmpty(key))
+        {
             StringTokenizer stringTokenizer = new StringTokenizer(content, ";");
-            while (stringTokenizer.hasMoreElements()) {
+            while (stringTokenizer.hasMoreElements())
+            {
                 String valuePair = stringTokenizer.nextToken();
                 int index = valuePair.indexOf('=');
-                if (index > 0) {
+                if (index > 0)
+                {
                     String name = valuePair.substring(0, index).trim();
-                    if (key.equalsIgnoreCase(name)) {
+                    if (key.equalsIgnoreCase(name))
+                    {
                         defaultValue = valuePair.substring(index + 1).trim();
                         break;
                     }
@@ -397,7 +449,8 @@ public class Headers extends ListMap<String, String> {
     /**
      * Parse the time in GMT format to milliseconds.
      */
-    public static long formatGMTToMillis(String gmtTime) throws ParseException {
+    public static long formatGMTToMillis(String gmtTime) throws ParseException
+    {
         SimpleDateFormat formatter = new SimpleDateFormat(TIME_FORMAT_HTTP, Locale.US);
         formatter.setTimeZone(TIME_ZONE_GMT);
         Date date = formatter.parse(gmtTime);
@@ -407,7 +460,8 @@ public class Headers extends ListMap<String, String> {
     /**
      * Parse the time in milliseconds to GMT format.
      */
-    public static String formatMillisToGMT(long milliseconds) {
+    public static String formatMillisToGMT(long milliseconds)
+    {
         Date date = new Date(milliseconds);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIME_FORMAT_HTTP, Locale.US);
         simpleDateFormat.setTimeZone(TIME_ZONE_GMT);
@@ -420,25 +474,32 @@ public class Headers extends ListMap<String, String> {
      * @param headers http headers header.
      * @return Time corresponding milliseconds.
      */
-    public static long analysisCacheExpires(Headers headers) {
+    public static long analysisCacheExpires(Headers headers)
+    {
         final long now = System.currentTimeMillis();
 
         long maxAge = 0;
         long staleWhileRevalidate = 0;
 
         String cacheControl = headers.getCacheControl();
-        if (!TextUtils.isEmpty(cacheControl)) {
+        if (!TextUtils.isEmpty(cacheControl))
+        {
             StringTokenizer tokens = new StringTokenizer(cacheControl, ",");
-            while (tokens.hasMoreTokens()) {
+            while (tokens.hasMoreTokens())
+            {
                 String token = tokens.nextToken().trim().toLowerCase(Locale.getDefault());
-                if ((token.equals("no-cache") || token.equals("no-store"))) {
+                if ((token.equals("no-cache") || token.equals("no-store")))
+                {
                     return 0;
-                } else if (token.startsWith("max-age=")) {
+                } else if (token.startsWith("max-age="))
+                {
                     maxAge = Long.parseLong(token.substring(8)) * 1000L;
-                } else if (token.startsWith("must-revalidate")) {
+                } else if (token.startsWith("must-revalidate"))
+                {
                     // If must-revalidate, It must be from the server to validate expired.
                     return 0;
-                } else if (token.startsWith("stale-while-revalidate=")) {
+                } else if (token.startsWith("stale-while-revalidate="))
+                {
                     staleWhileRevalidate = Long.parseLong(token.substring(23)) * 1000L;
                 }
             }
@@ -447,9 +508,11 @@ public class Headers extends ListMap<String, String> {
         long localExpire = now;// Local expires time of cache.
 
         // Have CacheControl.
-        if (!TextUtils.isEmpty(cacheControl)) {
+        if (!TextUtils.isEmpty(cacheControl))
+        {
             localExpire += maxAge;
-            if (staleWhileRevalidate > 0) {
+            if (staleWhileRevalidate > 0)
+            {
                 localExpire += staleWhileRevalidate;
             }
 
@@ -460,7 +523,8 @@ public class Headers extends ListMap<String, String> {
         final long date = headers.getDate();
 
         // If the server through control the cache Expires.
-        if (expires > date) {
+        if (expires > date)
+        {
             return now + expires - date;
         }
         return 0;
@@ -469,7 +533,8 @@ public class Headers extends ListMap<String, String> {
     /**
      * Get language.
      */
-    private static String getLanguage() {
+    private static String getLanguage()
+    {
         Locale locale = Locale.getDefault();
         String language = locale.getLanguage();
         String country = locale.getCountry();
@@ -482,7 +547,8 @@ public class Headers extends ListMap<String, String> {
     /**
      * Get User-Agent.
      */
-    private static String getUserAgent() {
+    private static String getUserAgent()
+    {
         String webUserAgent = "Mozilla/5.0 (Linux; U; Android %s) AppleWebKit/534.30 (KHTML, like Gecko) Version/5.0 %sSafari/534.30";
 
         StringBuffer buffer = new StringBuffer();
@@ -490,23 +556,29 @@ public class Headers extends ListMap<String, String> {
 
         Locale locale = Locale.getDefault();
         String language = locale.getLanguage();
-        if (TextUtils.isEmpty(language)) {
+        if (TextUtils.isEmpty(language))
+        {
             buffer.append(language.toLowerCase(locale));
             final String country = locale.getCountry();
-            if (!TextUtils.isEmpty(country)) {
+            if (!TextUtils.isEmpty(country))
+            {
                 buffer.append("-");
                 buffer.append(country.toLowerCase(locale));
             }
-        } else {
+        } else
+        {
             buffer.append("en");
         }
-        if ("REL".equals(Build.VERSION.CODENAME)) {
-            if (Build.MODEL.length() > 0) {
+        if ("REL".equals(Build.VERSION.CODENAME))
+        {
+            if (Build.MODEL.length() > 0)
+            {
                 buffer.append("; ");
                 buffer.append(Build.MODEL);
             }
         }
-        if (Build.ID.length() > 0) {
+        if (Build.ID.length() > 0)
+        {
             buffer.append(" Api/");
             buffer.append(Build.ID);
         }

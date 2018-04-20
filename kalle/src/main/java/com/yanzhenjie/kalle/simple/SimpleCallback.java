@@ -21,35 +21,43 @@ import java.lang.reflect.Type;
 /**
  * Created by YanZhenjie on 2018/2/26.
  */
-public abstract class SimpleCallback<V> extends Callback<V, String> {
+public abstract class SimpleCallback<V> extends Callback<V, String>
+{
 
-    public SimpleCallback() {
+    public SimpleCallback()
+    {
     }
 
     @Override
-    public Type getSucceed() {
+    public Type getSucceed()
+    {
         Type superClass = getClass().getGenericSuperclass();
         return ((ParameterizedType) superClass).getActualTypeArguments()[0];
     }
 
     @Override
-    public Type getFailed() {
+    public Type getFailed()
+    {
         return String.class;
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(Exception e)
+    {
     }
 
     @Override
-    public void onCancel() {
+    public void onCancel()
+    {
     }
 
     @Override
-    public void onEnd() {
+    public void onEnd()
+    {
     }
 }

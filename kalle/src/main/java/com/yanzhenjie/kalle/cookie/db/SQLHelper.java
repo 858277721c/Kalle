@@ -23,7 +23,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * <p>Cookie database operation class.</p>
  * Created in Dec 18, 2015 6:30:59 PM.
  */
-final class SQLHelper extends SQLiteOpenHelper implements Field {
+final class SQLHelper extends SQLiteOpenHelper implements Field
+{
 
     private static final String DB_COOKIE_NAME = "_kalle_cookies_db.db";
     private static final int DB_COOKIE_VERSION = 3;
@@ -34,32 +35,40 @@ final class SQLHelper extends SQLiteOpenHelper implements Field {
     private static final String SQL_CREATE_UNIQUE_INDEX = "CREATE UNIQUE INDEX COOKIE_UNIQUE_INDEX ON COOKIES_TABLE(\"" + NAME + "\", \"" + DOMAIN + "\", \"" + PATH + "\")";
     private static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    SQLHelper(Context context) {
+    SQLHelper(Context context)
+    {
         super(context.getApplicationContext(), DB_COOKIE_NAME, null, DB_COOKIE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db)
+    {
         db.beginTransaction();
-        try {
+        try
+        {
             db.execSQL(SQL_CREATE_TABLE);
             db.execSQL(SQL_CREATE_UNIQUE_INDEX);
             db.setTransactionSuccessful();
-        } finally {
+        } finally
+        {
             db.endTransaction();
         }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (newVersion != oldVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        if (newVersion != oldVersion)
+        {
             db.beginTransaction();
-            try {
+            try
+            {
                 db.execSQL(SQL_DELETE_TABLE);
                 db.execSQL(SQL_CREATE_TABLE);
                 db.execSQL(SQL_CREATE_UNIQUE_INDEX);
                 db.setTransactionSuccessful();
-            } finally {
+            } finally
+            {
                 db.endTransaction();
             }
         }

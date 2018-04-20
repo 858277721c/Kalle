@@ -23,35 +23,43 @@ import java.util.concurrent.FutureTask;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-final class Work<T extends SimpleRequest, S, F> extends FutureTask<SimpleResponse<S, F>> implements Canceller {
+final class Work<T extends SimpleRequest, S, F> extends FutureTask<SimpleResponse<S, F>> implements Canceller
+{
 
     private final Callback<S, F> mCallback;
 
-    Work(BasicWorker<T, S, F> work, Callback<S, F> callback) {
+    Work(BasicWorker<T, S, F> work, Callback<S, F> callback)
+    {
         super(work);
         this.mCallback = callback;
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         mCallback.onStart();
         super.run();
     }
 
     @Override
-    protected void done() {
-        try {
+    protected void done()
+    {
+        try
+        {
             mCallback.onResponse(get());
-        } catch (CancellationException e) {
+        } catch (CancellationException e)
+        {
             mCallback.onCancel();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             mCallback.onException(e);
         }
         mCallback.onEnd();
     }
 
     @Override
-    public void cancel() {
+    public void cancel()
+    {
         cancel(true);
     }
 }

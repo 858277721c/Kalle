@@ -25,32 +25,37 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/3/6.
  */
-public class AppChain implements Chain {
+public class AppChain implements Chain
+{
 
     private final List<Interceptor> mInterceptors;
     private final int mTargetIndex;
     private final Request mRequest;
 
-    public AppChain(List<Interceptor> interceptors, int targetIndex, Request request) {
+    public AppChain(List<Interceptor> interceptors, int targetIndex, Request request)
+    {
         this.mInterceptors = interceptors;
         this.mTargetIndex = targetIndex;
         this.mRequest = request;
     }
 
     @Override
-    public Request request() {
+    public Request request()
+    {
         return mRequest;
     }
 
     @Override
-    public Response proceed(Request request) throws IOException {
+    public Response proceed(Request request) throws IOException
+    {
         Interceptor interceptor = mInterceptors.get(mTargetIndex);
         AppChain chain = new AppChain(mInterceptors, mTargetIndex + 1, mRequest);
         return interceptor.intercept(chain);
     }
 
     @Override
-    public Call newCall() {
+    public Call newCall()
+    {
         return new Call(mRequest);
     }
 }

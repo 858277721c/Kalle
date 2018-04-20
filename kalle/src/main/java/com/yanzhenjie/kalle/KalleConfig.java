@@ -54,7 +54,8 @@ import static com.yanzhenjie.kalle.Headers.VALUE_USER_AGENT;
  * <p>Initialize the save parameters.</p>
  * Created by YanZhenjie on 2017/6/14.
  */
-public final class KalleConfig {
+public final class KalleConfig
+{
 
     private final Executor mWorkExecutor;
     private final Executor mMainExecutor;
@@ -77,7 +78,8 @@ public final class KalleConfig {
 
     private final Converter mConverter;
 
-    private KalleConfig(Builder builder) {
+    private KalleConfig(Builder builder)
+    {
         this.mWorkExecutor = builder.mWorkExecutor == null ? new WorkExecutor() : builder.mWorkExecutor;
         this.mMainExecutor = builder.mMainExecutor == null ? new MainExecutor() : builder.mMainExecutor;
 
@@ -100,71 +102,88 @@ public final class KalleConfig {
         this.mConverter = builder.mConverter == null ? Converter.DEFAULT : builder.mConverter;
     }
 
-    public Executor getWorkExecutor() {
+    public Executor getWorkExecutor()
+    {
         return mWorkExecutor;
     }
 
-    public Executor getMainExecutor() {
+    public Executor getMainExecutor()
+    {
         return mMainExecutor;
     }
 
-    public Charset getCharset() {
+    public Charset getCharset()
+    {
         return mCharset;
     }
 
-    public Headers getHeaders() {
+    public Headers getHeaders()
+    {
         return mHeaders;
     }
 
-    public Proxy getProxy() {
+    public Proxy getProxy()
+    {
         return mProxy;
     }
 
-    public SSLSocketFactory getSSLSocketFactory() {
+    public SSLSocketFactory getSSLSocketFactory()
+    {
         return mSSLSocketFactory;
     }
 
-    public HostnameVerifier getHostnameVerifier() {
+    public HostnameVerifier getHostnameVerifier()
+    {
         return mHostnameVerifier;
     }
 
-    public int getConnectTimeout() {
+    public int getConnectTimeout()
+    {
         return mConnectTimeout;
     }
 
-    public int getReadTimeout() {
+    public int getReadTimeout()
+    {
         return mReadTimeout;
     }
 
-    public Params getParams() {
+    public Params getParams()
+    {
         return mParams;
     }
 
-    public CacheStore getCacheStore() {
+    public CacheStore getCacheStore()
+    {
         return mCacheStore;
     }
 
-    public Network getNetwork() {
+    public Network getNetwork()
+    {
         return mNetwork;
     }
 
-    public ConnectFactory getConnectFactory() {
+    public ConnectFactory getConnectFactory()
+    {
         return mConnectFactory;
     }
 
-    public CookieStore getCookieStore() {
+    public CookieStore getCookieStore()
+    {
         return mCookieStore;
     }
 
-    public List<Interceptor> getInterceptor() {
+    public List<Interceptor> getInterceptor()
+    {
         return mInterceptors;
     }
 
-    public Converter getConverter() {
+    public Converter getConverter()
+    {
         return mConverter;
     }
 
-    public final static class Builder {
+    public final static class Builder
+    {
 
         private Executor mWorkExecutor;
         private Executor mMainExecutor;
@@ -187,7 +206,8 @@ public final class KalleConfig {
 
         private Converter mConverter;
 
-        public Builder() {
+        public Builder()
+        {
             this.mHeaders = new Headers();
             this.mParams = Params.newBuilder();
             this.mInterceptors = new ArrayList<>();
@@ -203,7 +223,8 @@ public final class KalleConfig {
         /**
          * Set global work thread executor.
          */
-        public Builder workThreadExecutor(Executor executor) {
+        public Builder workThreadExecutor(Executor executor)
+        {
             this.mWorkExecutor = executor;
             return this;
         }
@@ -211,7 +232,8 @@ public final class KalleConfig {
         /**
          * Set global main thread executor.
          */
-        public Builder mainThreadExecutor(Executor executor) {
+        public Builder mainThreadExecutor(Executor executor)
+        {
             this.mMainExecutor = executor;
             return this;
         }
@@ -219,7 +241,8 @@ public final class KalleConfig {
         /**
          * Global charset.
          */
-        public Builder charset(Charset charset) {
+        public Builder charset(Charset charset)
+        {
             this.mCharset = charset;
             return this;
         }
@@ -227,7 +250,8 @@ public final class KalleConfig {
         /**
          * Add the global header.
          */
-        public Builder addHeader(String key, String value) {
+        public Builder addHeader(String key, String value)
+        {
             mHeaders.add(key, value);
             return this;
         }
@@ -235,7 +259,8 @@ public final class KalleConfig {
         /**
          * Set the global header.
          */
-        public Builder setHeader(String key, String value) {
+        public Builder setHeader(String key, String value)
+        {
             mHeaders.set(key, value);
             return this;
         }
@@ -243,7 +268,8 @@ public final class KalleConfig {
         /**
          * Global proxy.
          */
-        public Builder proxy(Proxy proxy) {
+        public Builder proxy(Proxy proxy)
+        {
             this.mProxy = proxy;
             return this;
         }
@@ -251,7 +277,8 @@ public final class KalleConfig {
         /**
          * Global ssl socket factory.
          */
-        public Builder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        public Builder sslSocketFactory(SSLSocketFactory sslSocketFactory)
+        {
             this.mSSLSocketFactory = sslSocketFactory;
             return this;
         }
@@ -259,7 +286,8 @@ public final class KalleConfig {
         /**
          * Global hostname verifier.
          */
-        public Builder hostnameVerifier(HostnameVerifier hostnameVerifier) {
+        public Builder hostnameVerifier(HostnameVerifier hostnameVerifier)
+        {
             this.mHostnameVerifier = hostnameVerifier;
             return this;
         }
@@ -267,7 +295,8 @@ public final class KalleConfig {
         /**
          * Global connection timeout.
          */
-        public Builder connectionTimeout(int timeout, TimeUnit timeUnit) {
+        public Builder connectionTimeout(int timeout, TimeUnit timeUnit)
+        {
             long time = timeUnit.toMillis(timeout);
             this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return this;
@@ -276,7 +305,8 @@ public final class KalleConfig {
         /**
          * Global readResponse timeout.
          */
-        public Builder readTimeout(int timeout, TimeUnit timeUnit) {
+        public Builder readTimeout(int timeout, TimeUnit timeUnit)
+        {
             long time = timeUnit.toMillis(timeout);
             this.mReadTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return this;
@@ -285,7 +315,8 @@ public final class KalleConfig {
         /**
          * Add the global param.
          */
-        public Builder addParam(String key, String value) {
+        public Builder addParam(String key, String value)
+        {
             mParams.add(key, value);
             return this;
         }
@@ -293,7 +324,8 @@ public final class KalleConfig {
         /**
          * Global cache store.
          */
-        public Builder cacheStore(CacheStore cacheStore) {
+        public Builder cacheStore(CacheStore cacheStore)
+        {
             this.mCacheStore = cacheStore;
             return this;
         }
@@ -301,7 +333,8 @@ public final class KalleConfig {
         /**
          * Global network.
          */
-        public Builder network(Network network) {
+        public Builder network(Network network)
+        {
             this.mNetwork = network;
             return this;
         }
@@ -309,7 +342,8 @@ public final class KalleConfig {
         /**
          * Global cookie store.
          */
-        public Builder connectFactory(ConnectFactory factory) {
+        public Builder connectFactory(ConnectFactory factory)
+        {
             this.mConnectFactory = factory;
             return this;
         }
@@ -317,7 +351,8 @@ public final class KalleConfig {
         /**
          * Global cookie store.
          */
-        public Builder cookieStore(CookieStore cookieStore) {
+        public Builder cookieStore(CookieStore cookieStore)
+        {
             this.mCookieStore = cookieStore;
             return this;
         }
@@ -325,7 +360,8 @@ public final class KalleConfig {
         /**
          * Add the global interceptor.
          */
-        public Builder addInterceptor(Interceptor interceptor) {
+        public Builder addInterceptor(Interceptor interceptor)
+        {
             this.mInterceptors.add(interceptor);
             return this;
         }
@@ -333,7 +369,8 @@ public final class KalleConfig {
         /**
          * Add the global interceptor.
          */
-        public Builder addInterceptors(List<Interceptor> interceptors) {
+        public Builder addInterceptors(List<Interceptor> interceptors)
+        {
             this.mInterceptors.addAll(interceptors);
             return this;
         }
@@ -341,12 +378,14 @@ public final class KalleConfig {
         /**
          * The converter.
          */
-        public Builder converter(Converter converter) {
+        public Builder converter(Converter converter)
+        {
             this.mConverter = converter;
             return this;
         }
 
-        public KalleConfig build() {
+        public KalleConfig build()
+        {
             return new KalleConfig(this);
         }
     }

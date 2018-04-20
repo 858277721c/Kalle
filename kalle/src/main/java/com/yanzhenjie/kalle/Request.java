@@ -25,7 +25,8 @@ import javax.net.ssl.SSLSocketFactory;
 /**
  * Created in Nov 4, 2015 8:28:50 AM.
  */
-public abstract class Request {
+public abstract class Request
+{
 
     private final RequestMethod mMethod;
     private final Headers mHeaders;
@@ -37,7 +38,8 @@ public abstract class Request {
     private final int mReadTimeout;
     private final Object mTag;
 
-    protected <T extends Api<T>> Request(Api<T> api) {
+    protected <T extends Api<T>> Request(Api<T> api)
+    {
         this.mMethod = api.mMethod;
         this.mHeaders = api.mHeaders;
 
@@ -67,60 +69,69 @@ public abstract class Request {
     /**
      * Get method.
      */
-    public RequestMethod method() {
+    public RequestMethod method()
+    {
         return mMethod;
     }
 
     /**
      * Get headers.
      */
-    public Headers headers() {
+    public Headers headers()
+    {
         return mHeaders;
     }
 
     /**
      * Get proxy server.
      */
-    public Proxy proxy() {
+    public Proxy proxy()
+    {
         return mProxy;
     }
 
     /**
      * Get SSLSocketFactory.
      */
-    public SSLSocketFactory sslSocketFactory() {
+    public SSLSocketFactory sslSocketFactory()
+    {
         return mSSLSocketFactory;
     }
 
     /**
      * Get the HostnameVerifier.
      */
-    public HostnameVerifier hostnameVerifier() {
+    public HostnameVerifier hostnameVerifier()
+    {
         return mHostnameVerifier;
     }
 
     /**
      * Get the connection timeout time, Unit is a millisecond.
      */
-    public int connectTimeout() {
+    public int connectTimeout()
+    {
         return mConnectTimeout;
     }
 
     /**
      * Get the readResponse timeout time, Unit is a millisecond.
      */
-    public int readTimeout() {
+    public int readTimeout()
+    {
         return mReadTimeout;
     }
 
     /**
      * Get tag.
      */
-    public Object tag() {
+    public Object tag()
+    {
         return mTag;
     }
 
-    public static abstract class Api<T extends Api<T>> {
+    public static abstract class Api<T extends Api<T>>
+    {
 
         private final RequestMethod mMethod;
         private final Headers mHeaders = new Headers();
@@ -131,7 +142,8 @@ public abstract class Request {
         private int mReadTimeout = Kalle.getConfig().getReadTimeout();
         private Object mTag;
 
-        protected Api(RequestMethod method) {
+        protected Api(RequestMethod method)
+        {
             this.mMethod = method;
             this.mHeaders.add(Kalle.getConfig().getHeaders());
         }
@@ -179,7 +191,8 @@ public abstract class Request {
         /**
          * Add a new header.
          */
-        public T addHeader(String key, String value) {
+        public T addHeader(String key, String value)
+        {
             mHeaders.add(key, value);
             return (T) this;
         }
@@ -187,7 +200,8 @@ public abstract class Request {
         /**
          * If the target key exists, replace it, if not, add.
          */
-        public T setHeader(String key, String value) {
+        public T setHeader(String key, String value)
+        {
             mHeaders.set(key, value);
             return (T) this;
         }
@@ -195,7 +209,8 @@ public abstract class Request {
         /**
          * Set headers.
          */
-        public T setHeaders(Headers headers) {
+        public T setHeaders(Headers headers)
+        {
             mHeaders.set(headers);
             return (T) this;
         }
@@ -203,7 +218,8 @@ public abstract class Request {
         /**
          * Remove the key from the information.
          */
-        public T removeHeader(String key) {
+        public T removeHeader(String key)
+        {
             mHeaders.remove(key);
             return (T) this;
         }
@@ -211,7 +227,8 @@ public abstract class Request {
         /**
          * Remove all header.
          */
-        public T clearHeaders() {
+        public T clearHeaders()
+        {
             mHeaders.clear();
             return (T) this;
         }
@@ -279,7 +296,8 @@ public abstract class Request {
         /**
          * Proxy information for this request.
          */
-        public T proxy(Proxy proxy) {
+        public T proxy(Proxy proxy)
+        {
             this.mProxy = proxy;
             return (T) this;
         }
@@ -287,7 +305,8 @@ public abstract class Request {
         /**
          * SSLSocketFactory for this request.
          */
-        public T sslSocketFactory(SSLSocketFactory sslSocketFactory) {
+        public T sslSocketFactory(SSLSocketFactory sslSocketFactory)
+        {
             this.mSSLSocketFactory = sslSocketFactory;
             return (T) this;
         }
@@ -295,7 +314,8 @@ public abstract class Request {
         /**
          * HostnameVerifier for this request.
          */
-        public T hostnameVerifier(HostnameVerifier hostnameVerifier) {
+        public T hostnameVerifier(HostnameVerifier hostnameVerifier)
+        {
             this.mHostnameVerifier = hostnameVerifier;
             return (T) this;
         }
@@ -303,7 +323,8 @@ public abstract class Request {
         /**
          * Connect timeout for this request.
          */
-        public T connectTimeout(int timeout, TimeUnit timeUnit) {
+        public T connectTimeout(int timeout, TimeUnit timeUnit)
+        {
             long time = timeUnit.toMillis(timeout);
             this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return (T) this;
@@ -312,7 +333,8 @@ public abstract class Request {
         /**
          * Read timeout for this request.
          */
-        public T readTimeout(int timeout, TimeUnit timeUnit) {
+        public T readTimeout(int timeout, TimeUnit timeUnit)
+        {
             long time = timeUnit.toMillis(timeout);
             this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return (T) this;
@@ -321,7 +343,8 @@ public abstract class Request {
         /**
          * Tag.
          */
-        public T tag(Object tag) {
+        public T tag(Object tag)
+        {
             this.mTag = tag;
             return (T) this;
         }

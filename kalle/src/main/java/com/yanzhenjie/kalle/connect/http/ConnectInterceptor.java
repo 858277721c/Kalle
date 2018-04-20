@@ -57,32 +57,37 @@ import static com.yanzhenjie.kalle.Headers.KEY_SET_COOKIE;
 /**
  * Created by YanZhenjie on 2018/2/20.
  */
-public class ConnectInterceptor implements Interceptor {
+public class ConnectInterceptor implements Interceptor
+{
 
     private final CookieManager mCookieManager;
     private final ConnectFactory mFactory;
     private final Network mNetwork;
 
-    public ConnectInterceptor() {
+    public ConnectInterceptor()
+    {
         this.mCookieManager = new CookieManager(Kalle.getConfig().getCookieStore());
         this.mFactory = Kalle.getConfig().getConnectFactory();
         this.mNetwork = Kalle.getConfig().getNetwork();
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(Chain chain) throws IOException
+    {
         Request request = chain.request();
         RequestMethod method = request.method();
 
         Connection connection;
-        if (method.allowBody()) {
+        if (method.allowBody())
+        {
             Headers headers = request.headers();
             RequestBody body = request.body();
             headers.set(KEY_CONTENT_LENGTH, Long.toString(body.length()));
             headers.set(KEY_CONTENT_TYPE, body.contentType());
             connection = connect(request);
             writeBody(connection, body);
-        } else {
+        } else
+        {
             connection = connect(request);
         }
         return readResponse(connection, request);
@@ -95,11 +100,13 @@ public class ConnectInterceptor implements Interceptor {
      * @return connection between client and server.
      * @throws ConnectException anomalies that occurred during the connection.
      */
-    private Connection connect(Request request) throws ConnectException {
+    private Connection connect(Request request) throws ConnectException
+    {
         if (!mNetwork.isAvailable())
             throw new NetworkError(String.format("Network Unavailable: %1$s.", request.url()));
 
-        try {
+        try
+        {
             Headers headers = request.headers();
             URI uri = new URI(request.url().toString());
             List<String> cookieHeader = mCookieManager.get(uri);
@@ -107,31 +114,41 @@ public class ConnectInterceptor implements Interceptor {
                 headers.add(KEY_COOKIE, cookieHeader);
             headers.set(KEY_HOST, uri.getHost());
             return mFactory.connect(request);
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             throw new URLError(String.format("The url syntax error: %1$s.", request.url()), e);
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException e)
+        {
             throw new URLError(String.format("The url is malformed: %1$s.", request.url()), e);
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException e)
+        {
             throw new HostError(String.format("Hostname can not be resolved: %1$s.", request.url()), e);
-        } catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e)
+        {
             throw new ConnectTimeoutError(String.format("Connect time out: %1$s.", request.url()), e);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ConnectException(String.format("An unknown exception: %1$s.", request.url()), e);
         }
     }
 
-    private void writeBody(Connection connection, RequestBody body) throws WriteException {
-        try {
+    private void writeBody(Connection connection, RequestBody body) throws WriteException
+    {
+        try
+        {
             OutputStream stream = connection.getOutputStream();
             body.writeTo(IOUtils.toBufferedOutputStream(stream));
             IOUtils.closeQuietly(stream);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new WriteException(e);
         }
     }
 
-    private Response readResponse(Connection connection, Request request) throws ReadException {
-        try {
+    private Response readResponse(Connection connection, Request request) throws ReadException
+    {
+        try
+        {
             int code = connection.getCode();
             Headers headers = parseResponseHeaders(connection.getHeaders());
 
@@ -142,16 +159,20 @@ public class ConnectInterceptor implements Interceptor {
             String contentType = headers.getContentType();
             ResponseBody body = new StreamBody(contentType, connection.getInputStream());
             return Response.newBuilder().code(code).headers(headers).body(body).build();
-        } catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e)
+        {
             throw new ReadTimeoutError(String.format("Read data time out: %1$s.", request.url()), e);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ReadException(e);
         }
     }
 
-    private Headers parseResponseHeaders(Map<String, List<String>> headersMap) {
+    private Headers parseResponseHeaders(Map<String, List<String>> headersMap)
+    {
         Headers headers = new Headers();
-        for (Map.Entry<String, List<String>> entry : headersMap.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : headersMap.entrySet())
+        {
             headers.add(entry.getKey(), entry.getValue());
         }
         return headers;

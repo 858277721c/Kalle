@@ -24,14 +24,19 @@ import java.util.concurrent.Executor;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class DownloadManager {
+public class DownloadManager
+{
 
     private static DownloadManager sInstance;
 
-    public static DownloadManager getInstance() {
-        if (sInstance == null) {
-            synchronized (DownloadManager.class) {
-                if (sInstance == null) {
+    public static DownloadManager getInstance()
+    {
+        if (sInstance == null)
+        {
+            synchronized (DownloadManager.class)
+            {
+                if (sInstance == null)
+                {
                     sInstance = new DownloadManager();
                 }
             }
@@ -42,7 +47,8 @@ public class DownloadManager {
     private final Executor mExecutor;
     private final CancelerManager mCancelManager;
 
-    private DownloadManager() {
+    private DownloadManager()
+    {
         this.mExecutor = Kalle.getConfig().getWorkExecutor();
         this.mCancelManager = new CancelerManager();
     }
@@ -54,10 +60,13 @@ public class DownloadManager {
      * @param callback accept the result callback.
      * @return this request corresponds to the task cancel handle.
      */
-    public Canceller perform(final UrlDownload download, Callback callback) {
-        final Work<UrlDownload> work = new Work<>(new UrlWorker(download), new AsyncCallback(callback) {
+    public Canceller perform(final UrlDownload download, Callback callback)
+    {
+        final Work<UrlDownload> work = new Work<>(new UrlWorker(download), new AsyncCallback(callback)
+        {
             @Override
-            public void onEnd() {
+            public void onEnd()
+            {
                 super.onEnd();
                 mCancelManager.removeCancel(download);
             }
@@ -73,7 +82,8 @@ public class DownloadManager {
      * @param download download request.
      * @return download the completed file path.
      */
-    public String perform(UrlDownload download) throws Exception {
+    public String perform(UrlDownload download) throws Exception
+    {
         return new UrlWorker(download).call();
     }
 
@@ -84,10 +94,13 @@ public class DownloadManager {
      * @param callback accept the result callback.
      * @return this request corresponds to the task cancel handle.
      */
-    public Canceller perform(final BodyDownload download, Callback callback) {
-        final Work<BodyDownload> work = new Work<>(new BodyWorker(download), new AsyncCallback(callback) {
+    public Canceller perform(final BodyDownload download, Callback callback)
+    {
+        final Work<BodyDownload> work = new Work<>(new BodyWorker(download), new AsyncCallback(callback)
+        {
             @Override
-            public void onEnd() {
+            public void onEnd()
+            {
                 super.onEnd();
                 mCancelManager.removeCancel(download);
             }
@@ -103,7 +116,8 @@ public class DownloadManager {
      * @param download download request.
      * @return download the completed file path.
      */
-    public String perform(BodyDownload download) throws Exception {
+    public String perform(BodyDownload download) throws Exception
+    {
         return new BodyWorker(download).call();
     }
 
@@ -112,70 +126,88 @@ public class DownloadManager {
      *
      * @param tag Specified tag.
      */
-    public void cancel(Object tag) {
+    public void cancel(Object tag)
+    {
         mCancelManager.cancel(tag);
     }
 
-    private static class AsyncCallback implements Callback {
+    private static class AsyncCallback implements Callback
+    {
 
         private final Callback mCallback;
         private final Executor mExecutor;
 
-        AsyncCallback(Callback callback) {
+        AsyncCallback(Callback callback)
+        {
             this.mCallback = callback;
             this.mExecutor = Kalle.getConfig().getMainExecutor();
         }
 
         @Override
-        public void onStart() {
+        public void onStart()
+        {
             if (mCallback == null) return;
-            mExecutor.execute(new Runnable() {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mCallback.onStart();
                 }
             });
         }
 
         @Override
-        public void onFinish(final String path) {
+        public void onFinish(final String path)
+        {
             if (mCallback == null) return;
-            mExecutor.execute(new Runnable() {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mCallback.onFinish(path);
                 }
             });
         }
 
         @Override
-        public void onException(final Exception e) {
+        public void onException(final Exception e)
+        {
             if (mCallback == null) return;
-            mExecutor.execute(new Runnable() {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mCallback.onException(e);
                 }
             });
         }
 
         @Override
-        public void onCancel() {
+        public void onCancel()
+        {
             if (mCallback == null) return;
-            mExecutor.execute(new Runnable() {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mCallback.onCancel();
                 }
             });
         }
 
         @Override
-        public void onEnd() {
+        public void onEnd()
+        {
             if (mCallback == null) return;
-            mExecutor.execute(new Runnable() {
+            mExecutor.execute(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     mCallback.onEnd();
                 }
             });

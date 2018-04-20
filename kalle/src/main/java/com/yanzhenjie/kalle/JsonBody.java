@@ -22,13 +22,16 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_JSON;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public class JsonBody extends StringBody {
-    
-    public JsonBody(String body) {
+public class JsonBody extends StringBody
+{
+
+    public JsonBody(String body)
+    {
         this(body, Kalle.getConfig().getCharset());
     }
 
-    public JsonBody(String body, Charset charset) {
+    public JsonBody(String body, Charset charset)
+    {
         super(body, charset, VALUE_APPLICATION_JSON);
     }
 }

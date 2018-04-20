@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/26.
  */
-public class NoCacheError extends ReadException {
-    public NoCacheError(String message) {
+public class NoCacheError extends ReadException
+{
+    public NoCacheError(String message)
+    {
         super(message);
     }
 
-    public NoCacheError(String message, Throwable cause) {
+    public NoCacheError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

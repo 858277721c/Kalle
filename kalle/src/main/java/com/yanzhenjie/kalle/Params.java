@@ -29,15 +29,18 @@ import java.util.Set;
 /**
  * Created by YanZhenjie on 2018/2/23.
  */
-public class Params {
+public class Params
+{
 
-    public static Builder newBuilder() {
+    public static Builder newBuilder()
+    {
         return new Builder();
     }
 
     private final Map<String, List<Object>> mMap;
 
-    private Params(Builder builder) {
+    private Params(Builder builder)
+    {
         this.mMap = builder.mMap;
     }
 
@@ -47,7 +50,8 @@ public class Params {
      * @param key key.
      * @return if the key does not exist, it may be null.
      */
-    public List<Object> get(String key) {
+    public List<Object> get(String key)
+    {
         List<Object> valueList = mMap.get(key);
         if (valueList == null) return null;
         return Collections.unmodifiableList(valueList);
@@ -59,7 +63,8 @@ public class Params {
      * @param key key.
      * @return if the key does not exist, it may be null.
      */
-    public Object getFirst(String key) {
+    public Object getFirst(String key)
+    {
         List<Object> values = mMap.get(key);
         if (values != null && values.size() > 0)
             return values.get(0);
@@ -72,7 +77,8 @@ public class Params {
      * @return a set view of the mappings.
      * @see Map#entrySet()
      */
-    public Set<Map.Entry<String, List<Object>>> entrySet() {
+    public Set<Map.Entry<String, List<Object>>> entrySet()
+    {
         return Collections.unmodifiableSet(mMap.entrySet());
     }
 
@@ -82,7 +88,8 @@ public class Params {
      * @return a set view of the keys.
      * @see Map#keySet()
      */
-    public Set<String> keySet() {
+    public Set<String> keySet()
+    {
         return Collections.unmodifiableSet(mMap.keySet());
     }
 
@@ -92,7 +99,8 @@ public class Params {
      * @return true if there are no key-values pairs.
      * @see Map#isEmpty()
      */
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return mMap.isEmpty();
     }
 
@@ -102,17 +110,21 @@ public class Params {
      * @param key key.
      * @return true if there contains the key.
      */
-    public boolean containsKey(String key) {
+    public boolean containsKey(String key)
+    {
         return mMap.containsKey(key);
     }
 
     /**
      * Does it contain {@link Binary}.
      */
-    public boolean hasBinary() {
-        for (Map.Entry<String, List<Object>> entry : entrySet()) {
+    public boolean hasBinary()
+    {
+        for (Map.Entry<String, List<Object>> entry : entrySet())
+        {
             List<Object> values = entry.getValue();
-            if (values.size() > 0) {
+            if (values.size() > 0)
+            {
                 for (Object value : values) if (value instanceof Binary) return true;
             }
         }
@@ -122,23 +134,27 @@ public class Params {
     /**
      * Convert to {@link UrlBody}
      */
-    public UrlBody toUrlBody() {
+    public UrlBody toUrlBody()
+    {
         return UrlBody.newBuilder().params(this).build();
     }
 
     /**
      * Convert to {@link FormBody}
      */
-    public FormBody toFormBody() {
+    public FormBody toFormBody()
+    {
         return FormBody.newBuilder().params(this).build();
     }
 
     /**
      * ReBuilder.
      */
-    public Builder builder() {
+    public Builder builder()
+    {
         Map<String, List<Object>> map = new LinkedHashMap<>();
-        for (Map.Entry<String, List<Object>> entry : mMap.entrySet()) {
+        for (Map.Entry<String, List<Object>> entry : mMap.entrySet())
+        {
             List<Object> valueList = new ArrayList<>();
             valueList.addAll(entry.getValue());
             map.put(entry.getKey(), valueList);
@@ -147,13 +163,17 @@ public class Params {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder builder = new StringBuilder();
         Set<String> keySet = keySet();
-        for (String key : keySet) {
+        for (String key : keySet)
+        {
             List<Object> values = get(key);
-            for (Object value : values) {
-                if (value != null && value instanceof CharSequence) {
+            for (Object value : values)
+            {
+                if (value != null && value instanceof CharSequence)
+                {
                     String textValue = Uri.encode(value.toString());
                     builder.append("&").append(key).append("=").append(textValue);
                 }
@@ -163,78 +183,90 @@ public class Params {
         return builder.toString();
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         private Map<String, List<Object>> mMap;
 
-        private Builder() {
+        private Builder()
+        {
             this.mMap = new LinkedHashMap<>();
         }
 
-        private Builder(Map<String, List<Object>> map) {
+        private Builder(Map<String, List<Object>> map)
+        {
             this.mMap = map;
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, int value) {
+        public Builder add(String key, int value)
+        {
             return add(key, Integer.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, long value) {
+        public Builder add(String key, long value)
+        {
             return add(key, Long.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, boolean value) {
+        public Builder add(String key, boolean value)
+        {
             return add(key, Boolean.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, char value) {
+        public Builder add(String key, char value)
+        {
             return add(key, String.valueOf(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, double value) {
+        public Builder add(String key, double value)
+        {
             return add(key, Double.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, float value) {
+        public Builder add(String key, float value)
+        {
             return add(key, Float.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, short value) {
+        public Builder add(String key, short value)
+        {
             return add(key, Integer.toString(value));
         }
 
         /**
          * Add parameter.
          */
-        public Builder add(String key, CharSequence value) {
+        public Builder add(String key, CharSequence value)
+        {
             return add(key, (Object) value);
         }
 
         /**
          * Add parameters.
          */
-        public Builder add(String key, List<String> values) {
+        public Builder add(String key, List<String> values)
+        {
             for (String value : values) add(key, value);
             return this;
         }
@@ -242,9 +274,12 @@ public class Params {
         /**
          * Add parameter.
          */
-        private Builder add(String key, Object value) {
-            if (!TextUtils.isEmpty(key)) {
-                if (!mMap.containsKey(key)) {
+        private Builder add(String key, Object value)
+        {
+            if (!TextUtils.isEmpty(key))
+            {
+                if (!mMap.containsKey(key))
+                {
                     mMap.put(key, new ArrayList<>(1));
                 }
                 if (value == null) value = "";
@@ -257,8 +292,10 @@ public class Params {
         /**
          * Add parameters.
          */
-        public Builder add(Params params) {
-            for (Map.Entry<String, List<Object>> entry : params.entrySet()) {
+        public Builder add(Params params)
+        {
+            for (Map.Entry<String, List<Object>> entry : params.entrySet())
+            {
                 String key = entry.getKey();
                 List<Object> valueList = entry.getValue();
                 for (Object value : valueList) add(key, value);
@@ -269,21 +306,24 @@ public class Params {
         /**
          * Add parameters.
          */
-        public Builder set(Params params) {
+        public Builder set(Params params)
+        {
             return clear().add(params);
         }
 
         /**
          * Add a file parameter.
          */
-        public Builder file(String key, File file) {
+        public Builder file(String key, File file)
+        {
             return add(key, file);
         }
 
         /**
          * Add several file parameters.
          */
-        public Builder files(String key, List<File> files) {
+        public Builder files(String key, List<File> files)
+        {
             for (File file : files) add(key, file);
             return this;
         }
@@ -291,14 +331,16 @@ public class Params {
         /**
          * Add binary parameter.
          */
-        public Builder binary(String key, Binary binary) {
+        public Builder binary(String key, Binary binary)
+        {
             return add(key, binary);
         }
 
         /**
          * Add several binary parameters.
          */
-        public Builder binaries(String key, List<Binary> binaries) {
+        public Builder binaries(String key, List<Binary> binaries)
+        {
             for (Binary binary : binaries) binary(key, binary);
             return this;
         }
@@ -306,7 +348,8 @@ public class Params {
         /**
          * Remove parameters by key.
          */
-        public Builder remove(String key) {
+        public Builder remove(String key)
+        {
             mMap.remove(key);
             return this;
         }
@@ -314,12 +357,14 @@ public class Params {
         /**
          * Remove all parameters.
          */
-        public Builder clear() {
+        public Builder clear()
+        {
             mMap.clear();
             return this;
         }
 
-        public Params build() {
+        public Params build()
+        {
             return new Params(this);
         }
     }

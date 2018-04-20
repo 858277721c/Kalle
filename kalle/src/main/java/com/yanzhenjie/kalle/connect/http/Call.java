@@ -27,18 +27,21 @@ import java.util.List;
 /**
  * Created by YanZhenjie on 2018/2/24.
  */
-public class Call {
+public class Call
+{
 
     private final Request mRequest;
 
-    public Call(Request request) {
+    public Call(Request request)
+    {
         this.mRequest = request;
     }
 
     /**
      * Execute request.
      */
-    public Response execute() throws IOException {
+    public Response execute() throws IOException
+    {
         List<Interceptor> interceptors = new ArrayList<>(Kalle.getConfig().getInterceptor());
         interceptors.add(new ConnectInterceptor());
 

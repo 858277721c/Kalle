@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/27.
  */
-public class ParseError extends ReadException {
-    public ParseError(String message) {
+public class ParseError extends ReadException
+{
+    public ParseError(String message)
+    {
         super(message);
     }
 
-    public ParseError(String message, Throwable cause) {
+    public ParseError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

@@ -23,54 +23,65 @@ import java.io.InputStream;
 /**
  * Created by YanZhenjie on 2018/2/25.
  */
-public class NullStream extends InputStream {
+public class NullStream extends InputStream
+{
 
     private final Connection mConnection;
 
-    public NullStream(Connection connection) {
+    public NullStream(Connection connection)
+    {
         this.mConnection = connection;
     }
 
     @Override
-    public int read() {
+    public int read()
+    {
         return 0;
     }
 
     @Override
-    public int read(byte[] b) {
+    public int read(byte[] b)
+    {
         return 0;
     }
 
     @Override
-    public int read(byte[] b, int off, int len) {
+    public int read(byte[] b, int off, int len)
+    {
         return 0;
     }
 
     @Override
-    public void close() {
+    public void close()
+    {
         IOUtils.closeQuietly(mConnection);
     }
 
     @Override
-    public long skip(long n) {
+    public long skip(long n)
+    {
         return 0;
     }
 
     @Override
-    public int available() {
+    public int available()
+    {
         return 0;
     }
 
     @Override
-    public void reset() {
+    public void reset()
+    {
     }
 
     @Override
-    public boolean markSupported() {
+    public boolean markSupported()
+    {
         return false;
     }
 
     @Override
-    public void mark(int limit) {
+    public void mark(int limit)
+    {
     }
 }

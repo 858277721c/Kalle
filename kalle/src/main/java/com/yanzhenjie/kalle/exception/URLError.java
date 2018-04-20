@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class URLError extends ConnectException {
-    public URLError(String message) {
+public class URLError extends ConnectException
+{
+    public URLError(String message)
+    {
         super(message);
     }
 
-    public URLError(String message, Throwable cause) {
+    public URLError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

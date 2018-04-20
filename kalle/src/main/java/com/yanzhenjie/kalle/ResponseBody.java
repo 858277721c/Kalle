@@ -22,7 +22,8 @@ import java.io.InputStream;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public interface ResponseBody extends Closeable {
+public interface ResponseBody extends Closeable
+{
 
     /**
      * Transform the response data into a string.

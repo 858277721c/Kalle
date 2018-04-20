@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class NetworkError extends ConnectException {
-    public NetworkError(String message) {
+public class NetworkError extends ConnectException
+{
+    public NetworkError(String message)
+    {
         super(message);
     }
 
-    public NetworkError(String message, Throwable cause) {
+    public NetworkError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

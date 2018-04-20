@@ -21,7 +21,8 @@ import com.yanzhenjie.kalle.Url;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public interface Download {
+public interface Download
+{
 
     /**
      * Get the file download address.
@@ -53,21 +54,26 @@ public interface Download {
      */
     Policy policy();
 
-    interface Policy {
+    interface Policy
+    {
 
-        Policy DEFAULT = new Policy() {
+        Policy DEFAULT = new Policy()
+        {
             @Override
-            public boolean isRange() {
+            public boolean isRange()
+            {
                 return true;
             }
 
             @Override
-            public boolean allowDownload(int code, Headers headers) {
+            public boolean allowDownload(int code, Headers headers)
+            {
                 return true;
             }
 
             @Override
-            public boolean oldAvailable(String path, int code, Headers headers) {
+            public boolean oldAvailable(String path, int code, Headers headers)
+            {
                 return false;
             }
         };
@@ -98,11 +104,14 @@ public interface Download {
         boolean oldAvailable(String path, int code, Headers headers);
     }
 
-    interface ProgressBar {
+    interface ProgressBar
+    {
 
-        ProgressBar DEFAULT = new ProgressBar() {
+        ProgressBar DEFAULT = new ProgressBar()
+        {
             @Override
-            public void onProgress(int progress, long byteCount, long speed) {
+            public void onProgress(int progress, long byteCount, long speed)
+            {
             }
         };
 

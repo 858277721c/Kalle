@@ -24,14 +24,17 @@ import java.lang.reflect.Type;
 /**
  * Created by YanZhenjie on 2018/2/13.
  */
-final class BodyWorker<S, F> extends BasicWorker<SimpleBodyRequest, S, F> {
+final class BodyWorker<S, F> extends BasicWorker<SimpleBodyRequest, S, F>
+{
 
-    BodyWorker(SimpleBodyRequest request, Type succeed, Type failed) {
+    BodyWorker(SimpleBodyRequest request, Type succeed, Type failed)
+    {
         super(request, succeed, failed);
     }
 
     @Override
-    protected Response requestNetwork(SimpleBodyRequest request) throws IOException {
+    protected Response requestNetwork(SimpleBodyRequest request) throws IOException
+    {
         return new Call(request).execute();
     }
 }

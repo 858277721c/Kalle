@@ -18,12 +18,15 @@ package com.yanzhenjie.kalle.exception;
 /**
  * Created by YanZhenjie on 2018/2/22.
  */
-public class ConnectTimeoutError extends ConnectException {
-    public ConnectTimeoutError(String message) {
+public class ConnectTimeoutError extends ConnectException
+{
+    public ConnectTimeoutError(String message)
+    {
         super(message);
     }
 
-    public ConnectTimeoutError(String message, Throwable cause) {
+    public ConnectTimeoutError(String message, Throwable cause)
+    {
         super(message, cause);
     }
 }

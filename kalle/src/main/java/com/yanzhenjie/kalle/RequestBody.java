@@ -18,5 +18,6 @@ package com.yanzhenjie.kalle;
 /**
  * Created by YanZhenjie on 2018/2/9.
  */
-public interface RequestBody extends OutData {
+public interface RequestBody extends OutData
+{
 }

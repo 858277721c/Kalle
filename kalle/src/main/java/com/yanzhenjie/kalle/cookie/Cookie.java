@@ -24,7 +24,8 @@ import java.net.HttpCookie;
  * <p>Cookie entity.</p>
  * Created in Dec 17, 2015 7:21:16 PM.
  */
-public class Cookie implements Serializable {
+public class Cookie implements Serializable
+{
 
     private long id = -1;
     private String url;
@@ -40,114 +41,142 @@ public class Cookie implements Serializable {
     private boolean secure;
     private int version = 1;
 
-    public Cookie() {
+    public Cookie()
+    {
     }
 
-    public long getId() {
+    public long getId()
+    {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(long id)
+    {
         this.id = id;
     }
 
-    public String getUrl() {
+    public String getUrl()
+    {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(String url)
+    {
         this.url = url;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public String getValue() {
+    public String getValue()
+    {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(String value)
+    {
         this.value = value;
     }
 
-    public String getComment() {
+    public String getComment()
+    {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(String comment)
+    {
         this.comment = comment;
     }
 
-    public String getCommentURL() {
+    public String getCommentURL()
+    {
         return commentURL;
     }
 
-    public void setCommentURL(String commentURL) {
+    public void setCommentURL(String commentURL)
+    {
         this.commentURL = commentURL;
     }
 
-    public boolean isDiscard() {
+    public boolean isDiscard()
+    {
         return discard;
     }
 
-    public void setDiscard(boolean discard) {
+    public void setDiscard(boolean discard)
+    {
         this.discard = discard;
     }
 
-    public String getDomain() {
+    public String getDomain()
+    {
         return domain;
     }
 
-    public void setDomain(String domain) {
+    public void setDomain(String domain)
+    {
         this.domain = domain;
     }
 
-    public long getExpiry() {
+    public long getExpiry()
+    {
         return expiry;
     }
 
-    public void setExpiry(long expiry) {
+    public void setExpiry(long expiry)
+    {
         this.expiry = expiry;
     }
 
-    public String getPath() {
+    public String getPath()
+    {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(String path)
+    {
         this.path = path;
     }
 
-    public String getPortList() {
+    public String getPortList()
+    {
         return portList;
     }
 
-    public void setPortList(String portList) {
+    public void setPortList(String portList)
+    {
         this.portList = portList;
     }
 
-    public boolean isSecure() {
+    public boolean isSecure()
+    {
         return secure;
     }
 
-    public void setSecure(boolean secure) {
+    public void setSecure(boolean secure)
+    {
         this.secure = secure;
     }
 
-    public int getVersion() {
+    public int getVersion()
+    {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(int version)
+    {
         this.version = version;
     }
 
-    public static Cookie toCookie(String url, HttpCookie httpCookie) {
+    public static Cookie toCookie(String url, HttpCookie httpCookie)
+    {
         Cookie cookie = new Cookie();
         cookie.setUrl(url);
         cookie.setName(httpCookie.getName());
@@ -157,18 +186,22 @@ public class Cookie implements Serializable {
         cookie.setDiscard(httpCookie.getDiscard());
         cookie.setDomain(httpCookie.getDomain());
         long maxAge = httpCookie.getMaxAge();
-        if (maxAge != -1 && maxAge > 0) {
+        if (maxAge != -1 && maxAge > 0)
+        {
             long expiry = (maxAge * 1000L) + System.currentTimeMillis();
-            if (expiry < 0L) {
+            if (expiry < 0L)
+            {
                 expiry = System.currentTimeMillis() + 100L * 365L * 24L * 60L * 60L * 1000L;
             }
             cookie.setExpiry(expiry);
-        } else {
+        } else
+        {
             cookie.setExpiry(-1);
         }
 
         String path = httpCookie.getPath();
-        if (!TextUtils.isEmpty(path) && path.length() > 1 && path.endsWith("/")) {
+        if (!TextUtils.isEmpty(path) && path.length() > 1 && path.endsWith("/"))
+        {
             path = path.substring(0, path.length() - 1);
         }
         cookie.setPath(path);
@@ -178,7 +211,8 @@ public class Cookie implements Serializable {
         return cookie;
     }
 
-    public static HttpCookie toHttpCookie(Cookie cookie) {
+    public static HttpCookie toHttpCookie(Cookie cookie)
+    {
         HttpCookie httpCookie = new HttpCookie(cookie.name, cookie.value);
         httpCookie.setComment(cookie.comment);
         httpCookie.setCommentURL(cookie.commentURL);
@@ -195,7 +229,8 @@ public class Cookie implements Serializable {
         return httpCookie;
     }
 
-    public static boolean isExpired(Cookie entity) {
+    public static boolean isExpired(Cookie entity)
+    {
         return entity.expiry != -1L && entity.expiry < System.currentTimeMillis();
     }
 }

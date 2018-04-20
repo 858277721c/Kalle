@@ -25,7 +25,8 @@ import java.io.Serializable;
  * </p>
  * Created in Jan 10, 2016 12:43:10 AM.
  */
-public class Cache implements Serializable {
+public class Cache implements Serializable
+{
 
     private String mKey;
     private int mCode;
@@ -33,46 +34,57 @@ public class Cache implements Serializable {
     private byte[] mBody;
     private long mExpires;
 
-    public Cache() {
+    public Cache()
+    {
     }
 
-    public String getKey() {
+    public String getKey()
+    {
         return mKey;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key)
+    {
         this.mKey = key;
     }
 
-    public int getCode() {
+    public int getCode()
+    {
         return mCode;
     }
 
-    public void setCode(int code) {
+    public void setCode(int code)
+    {
         mCode = code;
     }
 
-    public Headers getHeaders() {
+    public Headers getHeaders()
+    {
         return mHeaders;
     }
 
-    public void setHeaders(Headers headers) {
+    public void setHeaders(Headers headers)
+    {
         mHeaders = headers;
     }
 
-    public byte[] getBody() {
+    public byte[] getBody()
+    {
         return mBody;
     }
 
-    public void setBody(byte[] body) {
+    public void setBody(byte[] body)
+    {
         this.mBody = body;
     }
 
-    public long getExpires() {
+    public long getExpires()
+    {
         return mExpires;
     }
 
-    public void setExpires(long expires) {
+    public void setExpires(long expires)
+    {
         this.mExpires = expires;
     }
 }

@@ -37,9 +37,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * </p>
  * Created by Yan Zhenjie on 2016/10/15.
  */
-public class DiskCacheStore implements CacheStore {
+public class DiskCacheStore implements CacheStore
+{
 
-    public static Builder newBuilder(String directory) {
+    public static Builder newBuilder(String directory)
+    {
         return new Builder(directory);
     }
 
@@ -48,7 +50,8 @@ public class DiskCacheStore implements CacheStore {
     private Secret mSecret;
     private String mDirectory;
 
-    private DiskCacheStore(Builder builder) {
+    private DiskCacheStore(Builder builder)
+    {
         mLock = new ReentrantLock();
 
         mDirectory = builder.mDirectory;
@@ -57,12 +60,14 @@ public class DiskCacheStore implements CacheStore {
     }
 
     @Override
-    public Cache get(String key) {
+    public Cache get(String key)
+    {
         mLock.lock();
         key = uniqueKey(key);
 
         BufferedReader bufferedReader = null;
-        try {
+        try
+        {
             File file = new File(mDirectory, key);
             if (!file.exists() || file.isDirectory()) return null;
 
@@ -73,9 +78,11 @@ public class DiskCacheStore implements CacheStore {
             cache.setBody(Encryption.hexToByteArray(decrypt(bufferedReader.readLine())));
             cache.setExpires(Long.parseLong(decrypt(bufferedReader.readLine())));
             return cache;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             IOUtils.delFileOrFolder(new File(mDirectory, key));
-        } finally {
+        } finally
+        {
             IOUtils.closeQuietly(bufferedReader);
             mLock.unlock();
         }
@@ -83,12 +90,14 @@ public class DiskCacheStore implements CacheStore {
     }
 
     @Override
-    public boolean replace(String key, Cache cache) {
+    public boolean replace(String key, Cache cache)
+    {
         mLock.lock();
         key = uniqueKey(key);
 
         BufferedWriter writer = null;
-        try {
+        try
+        {
             if (TextUtils.isEmpty(key) || cache == null) return false;
             if (!IOUtils.createFolder(mDirectory)) return false;
 
@@ -105,9 +114,11 @@ public class DiskCacheStore implements CacheStore {
             writer.write(encrypt(Long.toString(cache.getExpires())));
             writer.flush();
             return true;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             IOUtils.delFileOrFolder(new File(mDirectory, key));
-        } finally {
+        } finally
+        {
             IOUtils.closeQuietly(writer);
             mLock.unlock();
         }
@@ -115,54 +126,67 @@ public class DiskCacheStore implements CacheStore {
     }
 
     @Override
-    public boolean remove(String key) {
+    public boolean remove(String key)
+    {
         mLock.lock();
         key = uniqueKey(key);
 
-        try {
+        try
+        {
             return IOUtils.delFileOrFolder(new File(mDirectory, key));
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
     @Override
-    public boolean clear() {
+    public boolean clear()
+    {
         mLock.lock();
-        try {
+        try
+        {
             return IOUtils.delFileOrFolder(mDirectory);
-        } finally {
+        } finally
+        {
             mLock.unlock();
         }
     }
 
-    private String encrypt(String encryptionText) throws GeneralSecurityException {
+    private String encrypt(String encryptionText) throws GeneralSecurityException
+    {
         return mSecret.encrypt(encryptionText);
     }
 
-    private String decrypt(String cipherText) throws GeneralSecurityException {
+    private String decrypt(String cipherText) throws GeneralSecurityException
+    {
         return mSecret.decrypt(cipherText);
     }
 
-    private String uniqueKey(String key) {
+    private String uniqueKey(String key)
+    {
         return Encryption.getMD5ForString(mDirectory + key);
     }
 
-    public static class Builder {
+    public static class Builder
+    {
 
         private String mDirectory;
         private String mPassword;
 
-        private Builder(String directory) {
+        private Builder(String directory)
+        {
             this.mDirectory = directory;
         }
 
-        public Builder password(String password) {
+        public Builder password(String password)
+        {
             this.mPassword = password;
             return this;
         }
 
-        public DiskCacheStore build() {
+        public DiskCacheStore build()
+        {
             return new DiskCacheStore(this);
         }
     }

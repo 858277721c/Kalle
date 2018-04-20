@@ -22,15 +22,19 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created in 2016/4/10 11:27.
  */
-public class Encryption {
+public class Encryption
+{
 
     /**
      * Create a secret of encryption and decryption.
      */
-    public static Secret createSecret(String key) {
-        try {
+    public static Secret createSecret(String key)
+    {
+        try
+        {
             return new AESSecret(key);
-        } catch (GeneralSecurityException e) {
+        } catch (GeneralSecurityException e)
+        {
             return new SafeSecret();
         }
     }
@@ -38,15 +42,19 @@ public class Encryption {
     /**
      * Byte array turn to hex string.
      */
-    public static String byteArrayToHex(byte[] byteArray) {
+    public static String byteArrayToHex(byte[] byteArray)
+    {
         int len = byteArray.length;
         StringBuilder sb = new StringBuilder(len * 2);
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++)
+        {
             int intTmp = byteArray[i];
-            while (intTmp < 0) {
+            while (intTmp < 0)
+            {
                 intTmp = intTmp + 256;
             }
-            if (intTmp < 16) {
+            if (intTmp < 16)
+            {
                 sb.append("0");
             }
             sb.append(Integer.toString(intTmp, 16));
@@ -57,11 +65,13 @@ public class Encryption {
     /**
      * Hex string turn to byte array.
      */
-    public static byte[] hexToByteArray(String hexString) {
+    public static byte[] hexToByteArray(String hexString)
+    {
         byte[] byteArrayIn = hexString.getBytes();
         int iLen = byteArrayIn.length;
         byte[] byteArrayOut = new byte[iLen / 2];
-        for (int i = 0; i < iLen; i = i + 2) {
+        for (int i = 0; i < iLen; i = i + 2)
+        {
             String strTmp = new String(byteArrayIn, i, 2);
             byteArrayOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);
         }
@@ -71,24 +81,30 @@ public class Encryption {
     /**
      * Get the md5 value of string.
      */
-    public static String getMD5ForString(String content) {
-        try {
+    public static String getMD5ForString(String content)
+    {
+        try
+        {
             StringBuilder md5Builder = new StringBuilder();
             MessageDigest digest = MessageDigest.getInstance("MD5");
             byte[] tempBytes = digest.digest(content.getBytes());
             int digital;
-            for (byte tempByte : tempBytes) {
+            for (byte tempByte : tempBytes)
+            {
                 digital = tempByte;
-                if (digital < 0) {
+                if (digital < 0)
+                {
                     digital += 256;
                 }
-                if (digital < 16) {
+                if (digital < 16)
+                {
                     md5Builder.append("0");
                 }
                 md5Builder.append(Integer.toHexString(digital));
             }
             return md5Builder.toString();
-        } catch (NoSuchAlgorithmException ignored) {
+        } catch (NoSuchAlgorithmException ignored)
+        {
         }
         return content;
     }

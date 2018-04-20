@@ -23,20 +23,26 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/3/6.
  */
-public class RetryInterceptor implements Interceptor {
+public class RetryInterceptor implements Interceptor
+{
 
     private int mCount;
 
-    public RetryInterceptor(int count) {
+    public RetryInterceptor(int count)
+    {
         this.mCount = count;
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
-        try {
+    public Response intercept(Chain chain) throws IOException
+    {
+        try
+        {
             return chain.proceed(chain.request());
-        } catch (IOException e) {
-            if (mCount > 0) {
+        } catch (IOException e)
+        {
+            if (mCount > 0)
+            {
                 mCount--;
                 return intercept(chain);
             }

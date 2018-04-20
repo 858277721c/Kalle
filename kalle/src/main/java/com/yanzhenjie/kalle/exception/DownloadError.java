@@ -20,28 +20,33 @@ import com.yanzhenjie.kalle.Headers;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class DownloadError extends ReadException {
+public class DownloadError extends ReadException
+{
 
     private int mCode;
     private Headers mHeaders;
 
-    public DownloadError(int code, Headers headers, String message) {
+    public DownloadError(int code, Headers headers, String message)
+    {
         super(message);
         this.mCode = code;
         this.mHeaders = headers;
     }
 
-    public DownloadError(int code, Headers headers, Throwable cause) {
+    public DownloadError(int code, Headers headers, Throwable cause)
+    {
         super(cause);
         this.mCode = code;
         this.mHeaders = headers;
     }
 
-    public int getCode() {
+    public int getCode()
+    {
         return mCode;
     }
 
-    public Headers getHeaders() {
+    public Headers getHeaders()
+    {
         return mHeaders;
     }
 }

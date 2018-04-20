@@ -43,17 +43,21 @@ import static com.yanzhenjie.kalle.Headers.VALUE_CLOSE;
  * </p>
  * Created by Yan Zhenjie on 2016/10/15.
  */
-public class URLConnectionFactory implements ConnectFactory {
+public class URLConnectionFactory implements ConnectFactory
+{
 
-    public static Builder newBuilder() {
+    public static Builder newBuilder()
+    {
         return new Builder();
     }
 
-    private URLConnectionFactory(Builder builder) {
+    private URLConnectionFactory(Builder builder)
+    {
     }
 
     @Override
-    public Connection connect(Request request) throws IOException {
+    public Connection connect(Request request) throws IOException
+    {
         HttpURLConnection connection;
         URL url = new URL(request.url().toString());
 
@@ -67,7 +71,8 @@ public class URLConnectionFactory implements ConnectFactory {
         connection.setReadTimeout(request.readTimeout());
         connection.setInstanceFollowRedirects(false);
 
-        if (connection instanceof HttpsURLConnection) {
+        if (connection instanceof HttpsURLConnection)
+        {
             SSLSocketFactory sslSocketFactory = request.sslSocketFactory();
             if (sslSocketFactory != null)
                 ((HttpsURLConnection) connection).setSSLSocketFactory(sslSocketFactory);
@@ -84,7 +89,8 @@ public class URLConnectionFactory implements ConnectFactory {
 
         Headers headers = request.headers();
 
-        if (isAllowBody) {
+        if (isAllowBody)
+        {
             long contentLength = headers.getContentLength();
             if (contentLength <= Integer.MAX_VALUE)
                 connection.setFixedLengthStreamingMode((int) contentLength);
@@ -96,7 +102,8 @@ public class URLConnectionFactory implements ConnectFactory {
         List<String> values = headers.get(KEY_CONNECTION);
         headers.set(KEY_CONNECTION, Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT ? values.get(0) : VALUE_CLOSE);
         Map<String, String> requestHeaders = Headers.getRequestHeaders(headers);
-        for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+        for (Map.Entry<String, String> entry : requestHeaders.entrySet())
+        {
             connection.setRequestProperty(entry.getKey(), entry.getValue());
         }
 
@@ -104,18 +111,22 @@ public class URLConnectionFactory implements ConnectFactory {
         return new URLConnection(connection);
     }
 
-    private boolean isAllowBody(RequestMethod method) {
+    private boolean isAllowBody(RequestMethod method)
+    {
         boolean allowRequestBody = method.allowBody();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return allowRequestBody && method != RequestMethod.DELETE;
         return allowRequestBody;
     }
 
-    public static class Builder {
-        private Builder() {
+    public static class Builder
+    {
+        private Builder()
+        {
         }
 
-        public URLConnectionFactory build() {
+        public URLConnectionFactory build()
+        {
             return new URLConnectionFactory(this);
         }
     }

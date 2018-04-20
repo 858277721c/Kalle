@@ -20,16 +20,20 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/2/24.
  */
-public class WriteException extends IOException {
-    public WriteException(String message) {
+public class WriteException extends IOException
+{
+    public WriteException(String message)
+    {
         super(message);
     }
 
-    public WriteException(String message, Throwable cause) {
+    public WriteException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 
-    public WriteException(Throwable cause) {
+    public WriteException(Throwable cause)
+    {
         super(cause);
     }
 }

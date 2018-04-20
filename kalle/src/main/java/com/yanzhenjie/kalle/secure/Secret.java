@@ -20,7 +20,8 @@ import java.security.GeneralSecurityException;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public interface Secret {
+public interface Secret
+{
 
     String encrypt(String data) throws GeneralSecurityException;
 

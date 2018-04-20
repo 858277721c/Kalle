@@ -23,14 +23,17 @@ import java.io.IOException;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public class BodyWorker extends BasicWorker<BodyDownload> {
+public class BodyWorker extends BasicWorker<BodyDownload>
+{
 
-    BodyWorker(BodyDownload download) {
+    BodyWorker(BodyDownload download)
+    {
         super(download);
     }
 
     @Override
-    protected Response requestNetwork(BodyDownload download) throws IOException {
+    protected Response requestNetwork(BodyDownload download) throws IOException
+    {
         return new Call(download).execute();
     }
 }

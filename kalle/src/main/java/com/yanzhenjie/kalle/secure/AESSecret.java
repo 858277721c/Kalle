@@ -24,12 +24,14 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public class AESSecret implements Secret {
+public class AESSecret implements Secret
+{
 
     private Cipher encrypt;
     private Cipher decrypt;
 
-    public AESSecret(String key) throws GeneralSecurityException {
+    public AESSecret(String key) throws GeneralSecurityException
+    {
         Key cryptKey = getKey(key.getBytes());
         encrypt = Cipher.getInstance("AES");
         encrypt.init(Cipher.ENCRYPT_MODE, cryptKey);
@@ -38,28 +40,34 @@ public class AESSecret implements Secret {
     }
 
     @Override
-    public String encrypt(String data) throws GeneralSecurityException {
+    public String encrypt(String data) throws GeneralSecurityException
+    {
         return Encryption.byteArrayToHex(encrypt(data.getBytes()));
     }
 
     @Override
-    public byte[] encrypt(byte[] data) throws GeneralSecurityException {
+    public byte[] encrypt(byte[] data) throws GeneralSecurityException
+    {
         return encrypt.doFinal(data);
     }
 
     @Override
-    public String decrypt(String data) throws GeneralSecurityException {
+    public String decrypt(String data) throws GeneralSecurityException
+    {
         return new String(decrypt(Encryption.hexToByteArray(data)));
     }
 
     @Override
-    public byte[] decrypt(byte[] data) throws GeneralSecurityException {
+    public byte[] decrypt(byte[] data) throws GeneralSecurityException
+    {
         return decrypt.doFinal(data);
     }
 
-    private Key getKey(byte[] keyData) {
+    private Key getKey(byte[] keyData)
+    {
         byte[] arrB = new byte[8];
-        for (int i = 0; i < keyData.length && i < arrB.length; i++) {
+        for (int i = 0; i < keyData.length && i < arrB.length; i++)
+        {
             arrB[i] = keyData[i];
         }
         return new SecretKeySpec(arrB, "AES");

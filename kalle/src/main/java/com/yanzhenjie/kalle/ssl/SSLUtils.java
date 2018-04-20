@@ -22,10 +22,13 @@ import javax.net.ssl.SSLSocketFactory;
 /**
  * Created by YanZhenjie on 2017/6/13.
  */
-public class SSLUtils {
+public class SSLUtils
+{
 
-    public static final HostnameVerifier HOSTNAME_VERIFIER = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
+    public static final HostnameVerifier HOSTNAME_VERIFIER = new HostnameVerifier()
+    {
+        public boolean verify(String hostname, SSLSession session)
+        {
             return true;
         }
     };

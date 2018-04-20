@@ -21,7 +21,8 @@ import java.io.OutputStream;
 /**
  * Created by YanZhenjie on 2018/2/11.
  */
-public interface OutData {
+public interface OutData
+{
 
     /**
      * Returns the size of the data.

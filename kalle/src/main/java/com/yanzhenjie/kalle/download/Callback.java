@@ -18,7 +18,8 @@ package com.yanzhenjie.kalle.download;
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
-public interface Callback {
+public interface Callback
+{
     /**
      * Time dimensions: The request started.
      */
