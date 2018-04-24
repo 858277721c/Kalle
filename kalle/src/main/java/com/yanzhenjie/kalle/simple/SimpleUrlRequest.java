@@ -19,7 +19,7 @@ import android.text.TextUtils;
 
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.UrlRequest;
+import com.yanzhenjie.kalle.request.UrlRequest;
 import com.yanzhenjie.kalle.simple.cache.CacheMode;
 
 import java.lang.reflect.Type;

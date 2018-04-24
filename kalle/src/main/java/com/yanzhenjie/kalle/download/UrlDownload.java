@@ -17,8 +17,7 @@ package com.yanzhenjie.kalle.download;
 
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.Url;
-import com.yanzhenjie.kalle.UrlRequest;
+import com.yanzhenjie.kalle.request.UrlRequest;
 
 /**
  * Created by YanZhenjie on 2018/3/18.

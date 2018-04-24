@@ -18,7 +18,7 @@ package com.yanzhenjie.kalle.urlconnect;
 import android.os.Build;
 
 import com.yanzhenjie.kalle.Headers;
-import com.yanzhenjie.kalle.Request;
+import com.yanzhenjie.kalle.request.Request;
 import com.yanzhenjie.kalle.RequestMethod;
 import com.yanzhenjie.kalle.connect.ConnectFactory;
 import com.yanzhenjie.kalle.connect.Connection;

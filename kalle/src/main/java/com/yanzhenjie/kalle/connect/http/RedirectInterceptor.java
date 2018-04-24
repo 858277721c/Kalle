@@ -15,13 +15,13 @@
  */
 package com.yanzhenjie.kalle.connect.http;
 
-import com.yanzhenjie.kalle.BodyRequest;
+import com.yanzhenjie.kalle.request.BodyRequest;
 import com.yanzhenjie.kalle.Headers;
-import com.yanzhenjie.kalle.Request;
+import com.yanzhenjie.kalle.request.Request;
 import com.yanzhenjie.kalle.RequestMethod;
 import com.yanzhenjie.kalle.Response;
 import com.yanzhenjie.kalle.Url;
-import com.yanzhenjie.kalle.UrlRequest;
+import com.yanzhenjie.kalle.request.UrlRequest;
 import com.yanzhenjie.kalle.connect.Interceptor;
 import com.yanzhenjie.kalle.util.IOUtils;
 

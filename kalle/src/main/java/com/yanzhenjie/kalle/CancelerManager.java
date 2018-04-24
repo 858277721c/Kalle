@@ -15,6 +15,8 @@
  */
 package com.yanzhenjie.kalle;
 
+import com.yanzhenjie.kalle.request.Request;
+
 import java.util.ArrayList;
 import java.util.List;
 

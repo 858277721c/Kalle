@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.yanzhenjie.kalle.Headers;
-import com.yanzhenjie.kalle.Request;
+import com.yanzhenjie.kalle.request.Request;
 import com.yanzhenjie.kalle.Response;
 import com.yanzhenjie.kalle.connect.Interceptor;
 

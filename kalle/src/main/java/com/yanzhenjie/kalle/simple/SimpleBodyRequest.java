@@ -17,10 +17,9 @@ package com.yanzhenjie.kalle.simple;
 
 import android.text.TextUtils;
 
-import com.yanzhenjie.kalle.BodyRequest;
+import com.yanzhenjie.kalle.request.BodyRequest;
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.Url;
 import com.yanzhenjie.kalle.simple.cache.CacheMode;
 
 import java.lang.reflect.Type;

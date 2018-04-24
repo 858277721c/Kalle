@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request;
+
+import com.yanzhenjie.kalle.Headers;
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.Params;
+import com.yanzhenjie.kalle.RequestBody;
+import com.yanzhenjie.kalle.RequestMethod;
+import com.yanzhenjie.kalle.Url;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;

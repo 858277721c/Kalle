@@ -15,7 +15,7 @@
  */
 package com.yanzhenjie.kalle.connect;
 
-import com.yanzhenjie.kalle.Request;
+import com.yanzhenjie.kalle.request.Request;
 
 import java.io.IOException;
 

@@ -15,7 +15,7 @@
  */
 package com.yanzhenjie.kalle.download;
 
-import com.yanzhenjie.kalle.BodyRequest;
+import com.yanzhenjie.kalle.request.BodyRequest;
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
 

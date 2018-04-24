@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class BasicOutData<T extends BasicOutData<T>> implements OutData
 {
-
     private ProgressBar<T> mProgressBar;
 
     public T onProgress(ProgressBar<T> progressBar)
