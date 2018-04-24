@@ -1,4 +1,4 @@
-apply plugin: rootProject.ext.plugins.android
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
