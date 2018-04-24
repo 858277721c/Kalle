@@ -111,7 +111,10 @@ public class DBCookieStore implements CookieStore, Field
             List<HttpCookie> returnedCookies = new ArrayList<>();
             for (Cookie cookie : cookieList)
             {
-                if (!Cookie.isExpired(cookie)) returnedCookies.add(Cookie.toHttpCookie(cookie));
+                if (!cookie.hasExpired())
+                {
+                    returnedCookies.add(cookie.toHttpCookie());
+                }
             }
             return returnedCookies;
         } finally
@@ -129,7 +132,10 @@ public class DBCookieStore implements CookieStore, Field
             if (uri != null && httpCookie != null)
             {
                 uri = getEffectiveURI(uri);
-                mCookieDao.replace(Cookie.toCookie(uri.toString(), httpCookie));
+
+                final Cookie cookie = new Cookie();
+                cookie.from(uri.toString(), httpCookie);
+                mCookieDao.replace(cookie);
                 trimSize();
             }
         } finally

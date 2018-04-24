@@ -26,7 +26,6 @@ import java.net.HttpCookie;
  */
 public class Cookie implements Serializable
 {
-
     private long id = -1;
     private String url;
     private String name;
@@ -175,28 +174,31 @@ public class Cookie implements Serializable
         this.version = version;
     }
 
-    public static Cookie toCookie(String url, HttpCookie httpCookie)
+    public void from(String url, HttpCookie httpCookie)
     {
-        Cookie cookie = new Cookie();
-        cookie.setUrl(url);
-        cookie.setName(httpCookie.getName());
-        cookie.setValue(httpCookie.getValue());
-        cookie.setComment(httpCookie.getComment());
-        cookie.setCommentURL(httpCookie.getCommentURL());
-        cookie.setDiscard(httpCookie.getDiscard());
-        cookie.setDomain(httpCookie.getDomain());
-        long maxAge = httpCookie.getMaxAge();
-        if (maxAge != -1 && maxAge > 0)
+        setUrl(url);
+        setName(httpCookie.getName());
+        setValue(httpCookie.getValue());
+        setComment(httpCookie.getComment());
+        setCommentURL(httpCookie.getCommentURL());
+        setDiscard(httpCookie.getDiscard());
+        setDomain(httpCookie.getDomain());
+
+        final long maxAge = httpCookie.getMaxAge();
+        if (maxAge == 0)
+        {
+            setExpiry(System.currentTimeMillis());
+        } else if (maxAge > 0)
         {
             long expiry = (maxAge * 1000L) + System.currentTimeMillis();
-            if (expiry < 0L)
+            if (expiry < 0)
             {
-                expiry = System.currentTimeMillis() + 100L * 365L * 24L * 60L * 60L * 1000L;
+                expiry = Long.MAX_VALUE;
             }
-            cookie.setExpiry(expiry);
+            setExpiry(expiry);
         } else
         {
-            cookie.setExpiry(-1);
+            setExpiry(-1);
         }
 
         String path = httpCookie.getPath();
@@ -204,33 +206,48 @@ public class Cookie implements Serializable
         {
             path = path.substring(0, path.length() - 1);
         }
-        cookie.setPath(path);
-        cookie.setPortList(httpCookie.getPortlist());
-        cookie.setSecure(httpCookie.getSecure());
-        cookie.setVersion(httpCookie.getVersion());
-        return cookie;
+        setPath(path);
+        setPortList(httpCookie.getPortlist());
+        setSecure(httpCookie.getSecure());
+        setVersion(httpCookie.getVersion());
     }
 
-    public static HttpCookie toHttpCookie(Cookie cookie)
+    public HttpCookie toHttpCookie()
     {
-        HttpCookie httpCookie = new HttpCookie(cookie.name, cookie.value);
-        httpCookie.setComment(cookie.comment);
-        httpCookie.setCommentURL(cookie.commentURL);
-        httpCookie.setDiscard(cookie.discard);
-        httpCookie.setDomain(cookie.domain);
-        if (cookie.expiry == -1L)
+        final HttpCookie httpCookie = new HttpCookie(name, value);
+        httpCookie.setComment(comment);
+        httpCookie.setCommentURL(commentURL);
+        httpCookie.setDiscard(discard);
+        httpCookie.setDomain(domain);
+
+        if (expiry == -1L)
+        {
             httpCookie.setMaxAge(-1L);
-        else
-            httpCookie.setMaxAge((cookie.expiry - System.currentTimeMillis()) / 1000L);
-        httpCookie.setPath(cookie.path);
-        httpCookie.setPortlist(cookie.portList);
-        httpCookie.setSecure(cookie.secure);
-        httpCookie.setVersion(cookie.version);
+        } else
+        {
+            final long leftSecond = (expiry - System.currentTimeMillis()) / 1000L;
+            if (leftSecond > 0)
+            {
+                httpCookie.setMaxAge(leftSecond);
+            } else
+            {
+                httpCookie.setMaxAge(0);
+            }
+        }
+
+        httpCookie.setPath(path);
+        httpCookie.setPortlist(portList);
+        httpCookie.setSecure(secure);
+        httpCookie.setVersion(version);
         return httpCookie;
     }
 
-    public static boolean isExpired(Cookie entity)
+    public boolean hasExpired()
     {
-        return entity.expiry != -1L && entity.expiry < System.currentTimeMillis();
+        if (expiry == -1L)
+        {
+            return false;
+        }
+        return System.currentTimeMillis() > expiry;
     }
 }
