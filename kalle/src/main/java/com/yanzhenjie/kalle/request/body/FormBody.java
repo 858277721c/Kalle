@@ -34,11 +34,12 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_FORM;
  */
 public class FormBody extends BasicOutData<FormBody> implements RequestBody
 {
+    private static final String BOUNDARY = createBoundary();
+    private static final String NEXTLINE = "\r\n";
+
     private final Params mParams;
     private final Charset mCharset;
     private final String mContentType;
-
-    private final String mBoundary;
 
     private FormBody(Builder builder)
     {
@@ -50,7 +51,6 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
         mParams = builder.mParams;
         mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
         mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_FORM : builder.mContentType;
-        mBoundary = createBoundary();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
     @Override
     public String contentType()
     {
-        return mContentType + "; boundary=" + mBoundary;
+        return mContentType + "; boundary=" + BOUNDARY;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
         {
             final String value = mParams.getString(key);
             writeFormString(writer, key, value);
-            IOUtils.write(writer, "\r\n", mCharset);
+            IOUtils.write(writer, NEXTLINE, mCharset);
         }
 
         final Set<String> setBinary = mParams.keySetBinary();
@@ -90,31 +90,36 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
             for (Binary value : values)
             {
                 writeFormBinary(writer, key, value);
-                IOUtils.write(writer, "\r\n", mCharset);
+                IOUtils.write(writer, NEXTLINE, mCharset);
             }
         }
 
-        IOUtils.write(writer, "--" + mBoundary + "--", mCharset);
+        IOUtils.write(writer, "--" + BOUNDARY + "--", mCharset);
     }
 
     private void writeFormString(OutputStream writer, String key, String value) throws IOException
     {
-        IOUtils.write(writer, "--" + mBoundary + "\r\n", mCharset);
-        IOUtils.write(writer, "Content-Disposition: form-data; name=\"", mCharset);
-        IOUtils.write(writer, key, mCharset);
-        IOUtils.write(writer, "\"\r\n\r\n", mCharset);
+        IOUtils.write(writer, "--" + BOUNDARY, mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+        IOUtils.write(writer, "Content-Disposition: form-data", mCharset);
+        IOUtils.write(writer, "; name=\"" + key + "\"", mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
         IOUtils.write(writer, value, mCharset);
     }
 
     private void writeFormBinary(OutputStream writer, String key, Binary value) throws IOException
     {
-        IOUtils.write(writer, "--" + mBoundary + "\r\n", mCharset);
-        IOUtils.write(writer, "Content-Disposition: form-data; name=\"", mCharset);
-        IOUtils.write(writer, key, mCharset);
-        IOUtils.write(writer, "\"; filename=\"", mCharset);
-        IOUtils.write(writer, value.name(), mCharset);
-        IOUtils.write(writer, "\"\r\n", mCharset);
-        IOUtils.write(writer, "Content-Type: " + value.contentType() + "\r\n\r\n", mCharset);
+        IOUtils.write(writer, "--" + BOUNDARY, mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+        IOUtils.write(writer, "Content-Disposition: form-data", mCharset);
+        IOUtils.write(writer, "; name=\"" + key + "\"", mCharset);
+        IOUtils.write(writer, "; filename=\"" + value.name() + "\"", mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+        IOUtils.write(writer, "Content-Type: " + value.contentType(), mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+        IOUtils.write(writer, NEXTLINE, mCharset);
+
         if (writer instanceof CounterStream)
         {
             ((CounterStream) writer).write(value.length());
