@@ -73,22 +73,9 @@ public class Params
         return Collections.unmodifiableSet(mMapBinary.keySet());
     }
 
-    public int sizeString()
+    public boolean hasBinary()
     {
-        return mMapString.size();
-    }
-
-    public int sizeBinary()
-    {
-        return mMapBinary.size();
-    }
-
-    /**
-     * ReBuilder.
-     */
-    public Builder builder()
-    {
-        return new Builder().putParams(this);
+        return mMapBinary.size() > 0;
     }
 
     @Override
