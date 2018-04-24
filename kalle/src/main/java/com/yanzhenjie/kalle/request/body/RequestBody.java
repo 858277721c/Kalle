@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
 
 /**
  * Created by YanZhenjie on 2018/2/9.

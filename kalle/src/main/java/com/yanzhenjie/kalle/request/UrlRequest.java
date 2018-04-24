@@ -15,7 +15,7 @@
  */
 package com.yanzhenjie.kalle.request;
 
-import com.yanzhenjie.kalle.RequestBody;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.RequestMethod;
 
 /**

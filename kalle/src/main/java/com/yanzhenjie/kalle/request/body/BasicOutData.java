@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
+
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.ProgressBar;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,7 +53,6 @@ public abstract class BasicOutData<T extends BasicOutData<T>> implements OutData
      */
     private static class ProgressStream<T extends BasicOutData<T>> extends OutputStream
     {
-
         private OutputStream mWriter;
         private T mOrigin;
         private ProgressBar<T> mProgressBar;
@@ -58,7 +60,6 @@ public abstract class BasicOutData<T extends BasicOutData<T>> implements OutData
         private long mAllLength;
         private long mWriteCount;
         private int mOldProgress;
-
 
         private ProgressStream(OutputStream writer, T origin, ProgressBar<T> progressBar)
         {

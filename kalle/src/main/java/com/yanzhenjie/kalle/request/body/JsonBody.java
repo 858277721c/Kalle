@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
+
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.request.body.StringBody;
 
 import java.nio.charset.Charset;
 
@@ -24,7 +27,6 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_JSON;
  */
 public class JsonBody extends StringBody
 {
-
     public JsonBody(String body)
     {
         this(body, Kalle.getConfig().getCharset());

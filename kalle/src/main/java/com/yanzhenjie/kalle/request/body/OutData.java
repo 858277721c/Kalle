@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,7 +23,6 @@ import java.io.OutputStream;
  */
 public interface OutData
 {
-
     /**
      * Returns the size of the data.
      */

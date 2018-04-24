@@ -18,6 +18,8 @@ package com.yanzhenjie.kalle;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.yanzhenjie.kalle.request.body.Binary;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
 
 /**
  * <p>File interface. All the methods are called in thread.</p>

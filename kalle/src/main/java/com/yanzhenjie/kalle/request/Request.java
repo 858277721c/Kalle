@@ -18,7 +18,7 @@ package com.yanzhenjie.kalle.request;
 import com.yanzhenjie.kalle.Headers;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.Params;
-import com.yanzhenjie.kalle.RequestBody;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.RequestMethod;
 import com.yanzhenjie.kalle.Url;
 

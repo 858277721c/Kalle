@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.kalle;
+package com.yanzhenjie.kalle.request.body;
 
 import android.text.TextUtils;
 
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.Params;
 import com.yanzhenjie.kalle.util.IOUtils;
 
 import java.io.IOException;

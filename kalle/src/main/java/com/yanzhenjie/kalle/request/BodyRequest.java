@@ -15,12 +15,12 @@
  */
 package com.yanzhenjie.kalle.request;
 
-import com.yanzhenjie.kalle.FormBody;
+import com.yanzhenjie.kalle.request.body.FormBody;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.Params;
-import com.yanzhenjie.kalle.RequestBody;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.UrlBody;
+import com.yanzhenjie.kalle.request.body.UrlBody;
 
 /**
  * Created by YanZhenjie on 2018/2/13.
