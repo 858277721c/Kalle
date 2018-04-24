@@ -101,7 +101,10 @@ public class Params
             final String valueEncode = Uri.encode(value);
             builder.append("&").append(key).append("=").append(valueEncode);
         }
-        if (builder.length() > 0) builder.deleteCharAt(0);
+        if (builder.length() > 0)
+        {
+            builder.deleteCharAt(0);
+        }
         return builder.toString();
     }
 
