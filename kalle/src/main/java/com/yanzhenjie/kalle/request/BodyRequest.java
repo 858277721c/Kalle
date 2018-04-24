@@ -15,11 +15,11 @@
  */
 package com.yanzhenjie.kalle.request;
 
-import com.yanzhenjie.kalle.request.body.FormBody;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.Params;
-import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.RequestMethod;
+import com.yanzhenjie.kalle.request.body.FormBody;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.request.body.UrlBody;
 
 /**
@@ -33,10 +33,7 @@ public class BodyRequest extends Request
     {
         super(api);
 
-        if (api.mBody != null)
-        {
-            mBody = api.mBody;
-        } else
+        if (api.mBody == null)
         {
             final Params params = params();
             if (params.sizeBinary() > 0)
@@ -46,6 +43,9 @@ public class BodyRequest extends Request
             {
                 mBody = new UrlBody.Builder().params(params).build();
             }
+        } else
+        {
+            mBody = api.mBody;
         }
     }
 
