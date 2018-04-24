@@ -32,15 +32,19 @@ import com.yanzhenjie.kalle.simple.SimpleUrlRequest;
  */
 public final class Kalle
 {
-
     private static KalleConfig sConfig;
 
     public static void setConfig(KalleConfig config)
     {
-        if (sConfig == null) sConfig = config;
-        else
+        synchronized (KalleConfig.class)
         {
-            Log.w("Kalle", new IllegalStateException("Illegal operation, only allowed to configure once."));
+            if (sConfig == null)
+            {
+                sConfig = config;
+            } else
+            {
+                Log.w("Kalle", new IllegalStateException("Illegal operation, only allowed to configure once."));
+            }
         }
     }
 
@@ -61,42 +65,42 @@ public final class Kalle
 
     public static SimpleUrlRequest.Api get(String url)
     {
-        return SimpleUrlRequest.newApi(Url.newBuilder(url), RequestMethod.GET);
+        return new SimpleUrlRequest.Api(url, RequestMethod.GET);
     }
 
     public static SimpleUrlRequest.Api head(String url)
     {
-        return SimpleUrlRequest.newApi(Url.newBuilder(url), RequestMethod.HEAD);
+        return new SimpleUrlRequest.Api(url, RequestMethod.HEAD);
     }
 
     public static SimpleUrlRequest.Api options(String url)
     {
-        return SimpleUrlRequest.newApi(Url.newBuilder(url), RequestMethod.OPTIONS);
+        return new SimpleUrlRequest.Api(url, RequestMethod.OPTIONS);
     }
 
     public static SimpleUrlRequest.Api trace(String url)
     {
-        return SimpleUrlRequest.newApi(Url.newBuilder(url), RequestMethod.TRACE);
+        return new SimpleUrlRequest.Api(url, RequestMethod.TRACE);
     }
 
     public static SimpleBodyRequest.Api post(String url)
     {
-        return SimpleBodyRequest.newApi(Url.newBuilder(url), RequestMethod.POST);
+        return new SimpleBodyRequest.Api(url, RequestMethod.POST);
     }
 
     public static SimpleBodyRequest.Api put(String url)
     {
-        return SimpleBodyRequest.newApi(Url.newBuilder(url), RequestMethod.PUT);
+        return new SimpleBodyRequest.Api(url, RequestMethod.PUT);
     }
 
     public static SimpleBodyRequest.Api patch(String url)
     {
-        return SimpleBodyRequest.newApi(Url.newBuilder(url), RequestMethod.PATCH);
+        return new SimpleBodyRequest.Api(url, RequestMethod.PATCH);
     }
 
     public static SimpleBodyRequest.Api delete(String url)
     {
-        return SimpleBodyRequest.newApi(Url.newBuilder(url), RequestMethod.DELETE);
+        return new SimpleBodyRequest.Api(url, RequestMethod.DELETE);
     }
 
     public static void cancel(Object tag)
@@ -106,45 +110,44 @@ public final class Kalle
 
     public static class Download
     {
-
         public static UrlDownload.Api get(String url)
         {
-            return UrlDownload.newApi(Url.newBuilder(url), RequestMethod.GET);
+            return new UrlDownload.Api(url, RequestMethod.GET);
         }
 
         public static UrlDownload.Api head(String url)
         {
-            return UrlDownload.newApi(Url.newBuilder(url), RequestMethod.HEAD);
+            return new UrlDownload.Api(url, RequestMethod.HEAD);
         }
 
         public static UrlDownload.Api options(String url)
         {
-            return UrlDownload.newApi(Url.newBuilder(url), RequestMethod.OPTIONS);
+            return new UrlDownload.Api(url, RequestMethod.OPTIONS);
         }
 
         public static UrlDownload.Api trace(String url)
         {
-            return UrlDownload.newApi(Url.newBuilder(url), RequestMethod.TRACE);
+            return new UrlDownload.Api(url, RequestMethod.TRACE);
         }
 
         public static BodyDownload.Api post(String url)
         {
-            return BodyDownload.newApi(Url.newBuilder(url), RequestMethod.POST);
+            return new BodyDownload.Api(url, RequestMethod.POST);
         }
 
         public static BodyDownload.Api put(String url)
         {
-            return BodyDownload.newApi(Url.newBuilder(url), RequestMethod.PUT);
+            return new BodyDownload.Api(url, RequestMethod.PUT);
         }
 
         public static BodyDownload.Api patch(String url)
         {
-            return BodyDownload.newApi(Url.newBuilder(url), RequestMethod.PATCH);
+            return new BodyDownload.Api(url, RequestMethod.PATCH);
         }
 
         public static BodyDownload.Api delete(String url)
         {
-            return BodyDownload.newApi(Url.newBuilder(url), RequestMethod.DELETE);
+            return new BodyDownload.Api(url, RequestMethod.DELETE);
         }
 
         public static void cancel(Object tag)

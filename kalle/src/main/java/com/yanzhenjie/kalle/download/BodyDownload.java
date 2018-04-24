@@ -18,19 +18,12 @@ package com.yanzhenjie.kalle.download;
 import com.yanzhenjie.kalle.BodyRequest;
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.Url;
 
 /**
  * Created by YanZhenjie on 2018/3/18.
  */
 public class BodyDownload extends BodyRequest implements Download
 {
-
-    public static BodyDownload.Api newApi(Url.Builder builder, RequestMethod method)
-    {
-        return new BodyDownload.Api(builder, method);
-    }
-
     private final String mDirectory;
     private final String mFileName;
 
@@ -72,16 +65,15 @@ public class BodyDownload extends BodyRequest implements Download
 
     public static class Api extends BodyRequest.Api<BodyDownload.Api>
     {
-
         private String mDirectory;
         private String mFileName;
 
         private ProgressBar mProgressBar;
         private Policy mPolicy;
 
-        private Api(Url.Builder builder, RequestMethod method)
+        public Api(String url, RequestMethod method)
         {
-            super(builder, method);
+            super(url, method);
         }
 
         public Api directory(String directory)

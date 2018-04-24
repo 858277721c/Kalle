@@ -22,7 +22,6 @@ import com.yanzhenjie.kalle.util.IOUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_URLENCODED;
 
@@ -37,23 +36,20 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody
 
     private UrlBody(Builder builder)
     {
-        this.mParams = builder.mParamsBuilder.build();
-        this.mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
-        this.mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_URLENCODED : builder.mContentType;
-    }
+        if (builder.mParams == null)
+        {
+            throw new NullPointerException("builder.mParams must not be null");
+        }
 
-    /**
-     * Copy parameters from url body.
-     */
-    private Params copyParams()
-    {
-        return mParams;
+        mParams = builder.mParams;
+        mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
+        mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_URLENCODED : builder.mContentType;
     }
 
     @Override
     public long length()
     {
-        String body = mParams.toString();
+        final String body = mParams.toString();
         if (TextUtils.isEmpty(body)) return 0;
         return IOUtils.toByteArray(body, mCharset).length;
     }
@@ -67,7 +63,7 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody
     @Override
     protected void onWrite(OutputStream writer) throws IOException
     {
-        String body = mParams.toString();
+        final String body = mParams.toString();
         IOUtils.write(writer, body, mCharset);
     }
 
@@ -75,12 +71,7 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody
     {
         private Charset mCharset;
         private String mContentType;
-        private Params.Builder mParamsBuilder;
-
-        public Builder()
-        {
-            this.mParamsBuilder = new Params.Builder();
-        }
+        private Params mParams;
 
         /**
          * Data charset.
@@ -103,117 +94,9 @@ public class UrlBody extends BasicOutData<StringBody> implements RequestBody
         /**
          * Add parameter.
          */
-        public Builder param(String key, int value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, long value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, boolean value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, char value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, double value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, float value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, short value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, CharSequence value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, String value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameters.
-         */
-        public Builder param(String key, List<String> values)
-        {
-            mParamsBuilder.add(key, values);
-            return this;
-        }
-
-        /**
-         * Add parameters.
-         */
         public Builder params(Params params)
         {
-            mParamsBuilder.add(params);
-            return this;
-        }
-
-        /**
-         * Remove parameters.
-         */
-        public Builder removeParam(String key)
-        {
-            mParamsBuilder.remove(key);
-            return this;
-        }
-
-        /**
-         * Clear parameters.
-         */
-        public Builder clearParams()
-        {
-            mParamsBuilder.clear();
+            mParams = params;
             return this;
         }
 

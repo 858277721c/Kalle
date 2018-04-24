@@ -19,7 +19,6 @@ import android.text.TextUtils;
 
 import com.yanzhenjie.kalle.util.IOUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -33,32 +32,29 @@ import static com.yanzhenjie.kalle.Headers.VALUE_APPLICATION_FORM;
  */
 public class FormBody extends BasicOutData<FormBody> implements RequestBody
 {
+    private final Params mParams;
     private final Charset mCharset;
     private final String mContentType;
-    private final Params mParams;
 
-    private String mBoundary;
+    private final String mBoundary;
 
     private FormBody(Builder builder)
     {
-        this.mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
-        this.mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_FORM : builder.mContentType;
-        this.mParams = builder.mParamsBuilder.build();
-        this.mBoundary = createBoundary();
-    }
+        if (builder.mParams == null)
+        {
+            throw new NullPointerException("builder.mParams must not be null");
+        }
 
-    /**
-     * Copy parameters from form body.
-     */
-    private Params copyParams()
-    {
-        return mParams;
+        mParams = builder.mParams;
+        mCharset = builder.mCharset == null ? Kalle.getConfig().getCharset() : builder.mCharset;
+        mContentType = TextUtils.isEmpty(builder.mContentType) ? VALUE_APPLICATION_FORM : builder.mContentType;
+        mBoundary = createBoundary();
     }
 
     @Override
     public long length()
     {
-        CounterStream stream = new CounterStream();
+        final CounterStream stream = new CounterStream();
         try
         {
             onWrite(stream);
@@ -77,22 +73,25 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
     @Override
     protected void onWrite(OutputStream writer) throws IOException
     {
-        Set<String> keys = mParams.keySet();
-        for (String key : keys)
+        final Set<String> setString = mParams.keySetString();
+        for (String key : setString)
         {
-            List<Object> values = mParams.get(key);
-            for (Object value : values)
+            final String value = mParams.getString(key);
+            writeFormString(writer, key, value);
+            IOUtils.write(writer, "\r\n", mCharset);
+        }
+
+        final Set<String> setBinary = mParams.keySetBinary();
+        for (String key : setBinary)
+        {
+            final List<Binary> values = mParams.getBinary(key);
+            for (Binary value : values)
             {
-                if (value instanceof String)
-                {
-                    writeFormString(writer, key, (String) value);
-                } else if (value instanceof Binary)
-                {
-                    writeFormBinary(writer, key, (Binary) value);
-                }
+                writeFormBinary(writer, key, value);
                 IOUtils.write(writer, "\r\n", mCharset);
             }
         }
+
         IOUtils.write(writer, "--" + mBoundary + "--", mCharset);
     }
 
@@ -147,12 +146,7 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
     {
         private Charset mCharset;
         private String mContentType;
-        private Params.Builder mParamsBuilder;
-
-        public Builder()
-        {
-            this.mParamsBuilder = new Params.Builder();
-        }
+        private Params mParams;
 
         /**
          * Data charset.
@@ -173,155 +167,11 @@ public class FormBody extends BasicOutData<FormBody> implements RequestBody
         }
 
         /**
-         * Add parameter.
-         */
-        public Builder param(String key, int value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, long value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, boolean value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, char value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, double value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, float value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, short value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, CharSequence value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder param(String key, String value)
-        {
-            mParamsBuilder.add(key, value);
-            return this;
-        }
-
-        /**
-         * Add parameters.
-         */
-        public Builder param(String key, List<String> values)
-        {
-            mParamsBuilder.add(key, values);
-            return this;
-        }
-
-        /**
          * Add parameters.
          */
         public Builder params(Params params)
         {
-            mParamsBuilder.add(params);
-            return this;
-        }
-
-        /**
-         * Add several file parameters.
-         */
-        public Builder file(String key, File file)
-        {
-            mParamsBuilder.file(key, file);
-            return this;
-        }
-
-        /**
-         * Add files parameter.
-         */
-        public Builder files(String key, List<File> files)
-        {
-            mParamsBuilder.files(key, files);
-            return this;
-        }
-
-        /**
-         * Add binary parameter.
-         */
-        public Builder binary(String key, Binary binary)
-        {
-            mParamsBuilder.binary(key, binary);
-            return this;
-        }
-
-        /**
-         * Add several binary parameters.
-         */
-        public Builder binaries(String key, List<Binary> binaries)
-        {
-            mParamsBuilder.binaries(key, binaries);
-            return this;
-        }
-
-        /**
-         * Remove parameters.
-         */
-        public Builder removeParam(String key)
-        {
-            mParamsBuilder.remove(key);
-            return this;
-        }
-
-        /**
-         * Clear parameters.
-         */
-        public Builder clearParams()
-        {
-            mParamsBuilder.clear();
+            mParams = params;
             return this;
         }
 

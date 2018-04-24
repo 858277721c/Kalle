@@ -16,7 +16,6 @@
 package com.yanzhenjie.kalle;
 
 import java.net.Proxy;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -27,9 +26,10 @@ import javax.net.ssl.SSLSocketFactory;
  */
 public abstract class Request
 {
-
     private final RequestMethod mMethod;
     private final Headers mHeaders;
+    private final Url mUrl;
+    private final Params mParams;
 
     private final Proxy mProxy;
     private final SSLSocketFactory mSSLSocketFactory;
@@ -40,26 +40,34 @@ public abstract class Request
 
     protected <T extends Api<T>> Request(Api<T> api)
     {
-        this.mMethod = api.mMethod;
-        this.mHeaders = api.mHeaders;
+        mMethod = api.mMethod;
+        mHeaders = api.mHeaders;
+        mUrl = api.mUrlBuilder.build();
+        mParams = api.mParamsBuilder.build();
 
-        this.mProxy = api.mProxy;
-        this.mSSLSocketFactory = api.mSSLSocketFactory;
-        this.mHostnameVerifier = api.mHostnameVerifier;
-        this.mConnectTimeout = api.mConnectTimeout;
-        this.mReadTimeout = api.mReadTimeout;
-        this.mTag = api.mTag;
+        mProxy = api.mProxy;
+        mSSLSocketFactory = api.mSSLSocketFactory;
+        mHostnameVerifier = api.mHostnameVerifier;
+        mConnectTimeout = api.mConnectTimeout;
+        mReadTimeout = api.mReadTimeout;
+        mTag = api.mTag;
     }
 
     /**
      * Get url.
      */
-    public abstract Url url();
+    public Url url()
+    {
+        return mUrl;
+    }
 
     /**
      * Get params.
      */
-    public abstract Params copyParams();
+    public Params params()
+    {
+        return mParams;
+    }
 
     /**
      * Get request body.
@@ -132,9 +140,11 @@ public abstract class Request
 
     public static abstract class Api<T extends Api<T>>
     {
-
         private final RequestMethod mMethod;
         private final Headers mHeaders = new Headers();
+        private final Url.Builder mUrlBuilder;
+        protected final Params.Builder mParamsBuilder;
+
         private Proxy mProxy = Kalle.getConfig().getProxy();
         private SSLSocketFactory mSSLSocketFactory = Kalle.getConfig().getSSLSocketFactory();
         private HostnameVerifier mHostnameVerifier = Kalle.getConfig().getHostnameVerifier();
@@ -142,51 +152,13 @@ public abstract class Request
         private int mReadTimeout = Kalle.getConfig().getReadTimeout();
         private Object mTag;
 
-        protected Api(RequestMethod method)
+        protected Api(String url, RequestMethod method)
         {
-            this.mMethod = method;
-            this.mHeaders.add(Kalle.getConfig().getHeaders());
+            mUrlBuilder = new Url.Builder(url);
+            mParamsBuilder = new Params.Builder();
+            mMethod = method;
+            mHeaders.add(Kalle.getConfig().getHeaders());
         }
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(int value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(long value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(boolean value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(char value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(double value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(float value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(CharSequence value);
-
-        /**
-         * Overlay path.
-         */
-        public abstract T path(String value);
 
         /**
          * Add a new header.
@@ -234,64 +206,24 @@ public abstract class Request
         }
 
         /**
-         * Add parameter.
+         * Overlay path.
          */
-        public abstract T param(String key, int value);
+        public T addPath(String value)
+        {
+            mUrlBuilder.addPath(value);
+            return (T) this;
+        }
+
+        public T putQuery(String key, String value)
+        {
+            mUrlBuilder.putQuery(key, value);
+            return (T) this;
+        }
 
         /**
-         * Add parameter.
+         * Put a String parameters. The entry will be removed if the value is null
          */
-        public abstract T param(String key, long value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, boolean value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, char value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, double value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, float value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, short value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, CharSequence value);
-
-        /**
-         * Add parameter.
-         */
-        public abstract T param(String key, String value);
-
-        /**
-         * Add parameters.
-         */
-        public abstract T param(String key, List<String> value);
-
-        /**
-         * Remove parameters.
-         */
-        public abstract T removeParam(String key);
-
-        /**
-         * Clear parameters.
-         */
-        public abstract T clearParams();
+        public abstract T putString(String key, String value);
 
         /**
          * Proxy information for this request.

@@ -18,7 +18,6 @@ package com.yanzhenjie.kalle;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -31,114 +30,55 @@ import java.util.Set;
  */
 public class Params
 {
-    private final Map<String, List<Object>> mMap;
+    private final Map<String, String> mMapString;
+    private final Map<String, List<Binary>> mMapBinary;
 
     private Params(Builder builder)
     {
-        this.mMap = builder.mMap;
+        mMapString = builder.mMapString;
+        mMapBinary = builder.mMapBinary;
     }
 
     /**
-     * Get parameters by key.
-     *
-     * @param key key.
-     * @return if the key does not exist, it may be null.
+     * Get a String.
      */
-    public List<Object> get(String key)
+    public String getString(String key)
     {
-        List<Object> valueList = mMap.get(key);
-        if (valueList == null) return null;
-        return Collections.unmodifiableList(valueList);
+        return mMapString.get(key);
     }
 
     /**
-     * Get the first value of the key.
-     *
-     * @param key key.
-     * @return if the key does not exist, it may be null.
+     * Get a Binary
      */
-    public Object getFirst(String key)
+    public List<Binary> getBinary(String key)
     {
-        List<Object> values = mMap.get(key);
-        if (values != null && values.size() > 0)
-            return values.get(0);
-        return null;
+        return Collections.unmodifiableList(mMapBinary.get(key));
     }
 
     /**
-     * Get {@link Set} view of the parameters.
-     *
-     * @return a set view of the mappings.
-     * @see Map#entrySet()
+     * Returns a {@link Set} view of String
      */
-    public Set<Map.Entry<String, List<Object>>> entrySet()
+    public Set<String> keySetString()
     {
-        return Collections.unmodifiableSet(mMap.entrySet());
+        return Collections.unmodifiableSet(mMapString.keySet());
     }
 
     /**
-     * Get {@link Set} view of the keys.
-     *
-     * @return a set view of the keys.
-     * @see Map#keySet()
+     * Returns a {@link Set} view of Binary
      */
-    public Set<String> keySet()
+    public Set<String> keySetBinary()
     {
-        return Collections.unmodifiableSet(mMap.keySet());
+        return Collections.unmodifiableSet(mMapBinary.keySet());
     }
 
-    /**
-     * No parameters.
-     *
-     * @return true if there are no key-values pairs.
-     * @see Map#isEmpty()
-     */
-    public boolean isEmpty()
+    public int sizeString()
     {
-        return mMap.isEmpty();
+        return mMapString.size();
     }
 
-    /**
-     * Parameters contains the key.
-     *
-     * @param key key.
-     * @return true if there contains the key.
-     */
-    public boolean containsKey(String key)
+    public int sizeBinary()
     {
-        return mMap.containsKey(key);
-    }
-
-    /**
-     * Does it contain {@link Binary}.
-     */
-    public boolean hasBinary()
-    {
-        for (Map.Entry<String, List<Object>> entry : entrySet())
-        {
-            List<Object> values = entry.getValue();
-            if (values.size() > 0)
-            {
-                for (Object value : values) if (value instanceof Binary) return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Convert to {@link UrlBody}
-     */
-    public UrlBody toUrlBody()
-    {
-        return new UrlBody.Builder().params(this).build();
-    }
-
-    /**
-     * Convert to {@link FormBody}
-     */
-    public FormBody toFormBody()
-    {
-        return new FormBody.Builder().params(this).build();
+        return mMapBinary.size();
     }
 
     /**
@@ -146,32 +86,18 @@ public class Params
      */
     public Builder builder()
     {
-        Map<String, List<Object>> map = new LinkedHashMap<>();
-        for (Map.Entry<String, List<Object>> entry : mMap.entrySet())
-        {
-            List<Object> valueList = new ArrayList<>();
-            valueList.addAll(entry.getValue());
-            map.put(entry.getKey(), valueList);
-        }
-        return new Builder(map);
+        return new Builder().putParams(this);
     }
 
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder();
-        Set<String> keySet = keySet();
-        for (String key : keySet)
+        final StringBuilder builder = new StringBuilder();
+        for (String key : keySetString())
         {
-            List<Object> values = get(key);
-            for (Object value : values)
-            {
-                if (value != null && value instanceof CharSequence)
-                {
-                    String textValue = Uri.encode(value.toString());
-                    builder.append("&").append(key).append("=").append(textValue);
-                }
-            }
+            final String value = getString(key);
+            final String valueEncode = Uri.encode(value);
+            builder.append("&").append(key).append("=").append(valueEncode);
         }
         if (builder.length() > 0) builder.deleteCharAt(0);
         return builder.toString();
@@ -179,180 +105,90 @@ public class Params
 
     public static class Builder
     {
-        private Map<String, List<Object>> mMap;
+        private final Map<String, String> mMapString = new LinkedHashMap<>();
+        private final Map<String, List<Binary>> mMapBinary = new LinkedHashMap<>();
 
         public Builder()
         {
-            this.mMap = new LinkedHashMap<>();
         }
 
-        private Builder(Map<String, List<Object>> map)
+        public Builder putParams(Params params)
         {
-            this.mMap = map;
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, int value)
-        {
-            return add(key, Integer.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, long value)
-        {
-            return add(key, Long.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, boolean value)
-        {
-            return add(key, Boolean.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, char value)
-        {
-            return add(key, String.valueOf(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, double value)
-        {
-            return add(key, Double.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, float value)
-        {
-            return add(key, Float.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, short value)
-        {
-            return add(key, Integer.toString(value));
-        }
-
-        /**
-         * Add parameter.
-         */
-        public Builder add(String key, CharSequence value)
-        {
-            return add(key, (Object) value);
-        }
-
-        /**
-         * Add parameters.
-         */
-        public Builder add(String key, List<String> values)
-        {
-            for (String value : values) add(key, value);
+            mMapString.putAll(params.mMapString);
+            mMapBinary.putAll(params.mMapBinary);
             return this;
         }
 
         /**
-         * Add parameter.
+         * Put a String. The entry will be removed if the value is null
          */
-        private Builder add(String key, Object value)
+        public Builder putString(String key, String value)
         {
             if (!TextUtils.isEmpty(key))
             {
-                if (!mMap.containsKey(key))
+                if (value == null)
                 {
-                    mMap.put(key, new ArrayList<>(1));
+                    mMapString.remove(key);
+                } else
+                {
+                    mMapString.put(key, value);
                 }
-                if (value == null) value = "";
-                if (value instanceof File) value = new FileBinary((File) value);
-                mMap.get(key).add(value);
             }
             return this;
         }
 
         /**
-         * Add parameters.
+         * Put a Binary. The entry will be removed if the value is null
          */
-        public Builder add(Params params)
+        public Builder putBinary(String key, Binary binary)
         {
-            for (Map.Entry<String, List<Object>> entry : params.entrySet())
+            if (!TextUtils.isEmpty(key))
             {
-                String key = entry.getKey();
-                List<Object> valueList = entry.getValue();
-                for (Object value : valueList) add(key, value);
+                mMapBinary.remove(key);
+                if (binary != null)
+                {
+                    final List<Binary> list = new ArrayList<>(1);
+                    list.add(binary);
+                    mMapBinary.put(key, list);
+                }
             }
             return this;
         }
 
         /**
-         * Add parameters.
+         * Add a Binary.
          */
-        public Builder set(Params params)
+        public Builder addBinary(String key, Binary binary)
         {
-            return clear().add(params);
-        }
-
-        /**
-         * Add a file parameter.
-         */
-        public Builder file(String key, File file)
-        {
-            return add(key, file);
-        }
-
-        /**
-         * Add several file parameters.
-         */
-        public Builder files(String key, List<File> files)
-        {
-            for (File file : files) add(key, file);
+            if (!TextUtils.isEmpty(key))
+            {
+                if (binary != null)
+                {
+                    if (!mMapBinary.containsKey(key))
+                    {
+                        mMapBinary.put(key, new ArrayList<Binary>(1));
+                    }
+                    mMapBinary.get(key).add(binary);
+                }
+            }
             return this;
         }
 
         /**
-         * Add binary parameter.
+         * Remove String parameters.
          */
-        public Builder binary(String key, Binary binary)
+        public Builder clearString()
         {
-            return add(key, binary);
-        }
-
-        /**
-         * Add several binary parameters.
-         */
-        public Builder binaries(String key, List<Binary> binaries)
-        {
-            for (Binary binary : binaries) binary(key, binary);
+            mMapString.clear();
             return this;
         }
 
         /**
-         * Remove parameters by key.
+         * Remove Binary parameters.
          */
-        public Builder remove(String key)
+        public Builder clearBinary()
         {
-            mMap.remove(key);
-            return this;
-        }
-
-        /**
-         * Remove all parameters.
-         */
-        public Builder clear()
-        {
-            mMap.clear();
+            mMapBinary.clear();
             return this;
         }
 

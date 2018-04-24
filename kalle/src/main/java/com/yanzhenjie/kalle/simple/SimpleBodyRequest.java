@@ -32,12 +32,6 @@ import static com.yanzhenjie.kalle.simple.cache.CacheMode.HTTP;
  */
 public class SimpleBodyRequest extends BodyRequest implements SimpleRequest
 {
-
-    public static SimpleBodyRequest.Api newApi(Url.Builder builder, RequestMethod method)
-    {
-        return new SimpleBodyRequest.Api(builder, method);
-    }
-
     private final CacheMode mCacheMode;
     private final String mCacheKey;
 
@@ -72,15 +66,14 @@ public class SimpleBodyRequest extends BodyRequest implements SimpleRequest
 
     public static class Api extends BodyRequest.Api<Api>
     {
-
         private CacheMode mCacheMode;
         private String mCacheKey;
 
         private Converter mConverter;
 
-        private Api(Url.Builder builder, RequestMethod method)
+        public Api(String url, RequestMethod method)
         {
-            super(builder, method);
+            super(url, method);
         }
 
         public Api cacheMode(CacheMode cacheMode)

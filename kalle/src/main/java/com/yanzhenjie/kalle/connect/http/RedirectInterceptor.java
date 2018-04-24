@@ -55,14 +55,14 @@ public class RedirectInterceptor implements Interceptor
             Request newRequest;
             if (method.allowBody())
             {
-                newRequest = BodyRequest.newBuilder(url.builder(), method)
+                newRequest = new BodyRequest.Builder(url.toString(), method)
                         .setHeaders(headers)
-                        .setParams(request.copyParams())
+                        .putParams(request.params())
                         .body(request.body())
                         .build();
             } else
             {
-                newRequest = UrlRequest.newBuilder(url.builder(), method)
+                newRequest = new UrlRequest.Builder(url.toString(), method)
                         .setHeaders(headers)
                         .build();
             }

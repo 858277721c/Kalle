@@ -25,12 +25,6 @@ import com.yanzhenjie.kalle.UrlRequest;
  */
 public class UrlDownload extends UrlRequest implements Download
 {
-
-    public static UrlDownload.Api newApi(Url.Builder builder, RequestMethod method)
-    {
-        return new UrlDownload.Api(builder, method);
-    }
-
     private final String mDirectory;
     private final String mFileName;
 
@@ -72,16 +66,15 @@ public class UrlDownload extends UrlRequest implements Download
 
     public static class Api extends UrlRequest.Api<UrlDownload.Api>
     {
-
         private String mDirectory;
         private String mFileName;
 
         private ProgressBar mProgressBar;
         private Policy mPolicy;
 
-        private Api(Url.Builder builder, RequestMethod method)
+        public Api(String url, RequestMethod method)
         {
-            super(builder, method);
+            super(url, method);
         }
 
         public Api directory(String directory)

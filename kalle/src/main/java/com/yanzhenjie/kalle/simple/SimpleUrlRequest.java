@@ -19,7 +19,6 @@ import android.text.TextUtils;
 
 import com.yanzhenjie.kalle.Canceller;
 import com.yanzhenjie.kalle.RequestMethod;
-import com.yanzhenjie.kalle.Url;
 import com.yanzhenjie.kalle.UrlRequest;
 import com.yanzhenjie.kalle.simple.cache.CacheMode;
 
@@ -32,12 +31,6 @@ import static com.yanzhenjie.kalle.simple.cache.CacheMode.HTTP;
  */
 public class SimpleUrlRequest extends UrlRequest implements SimpleRequest
 {
-
-    public static SimpleUrlRequest.Api newApi(Url.Builder builder, RequestMethod method)
-    {
-        return new SimpleUrlRequest.Api(builder, method);
-    }
-
     private final CacheMode mCacheMode;
     private final String mCacheKey;
 
@@ -72,15 +65,14 @@ public class SimpleUrlRequest extends UrlRequest implements SimpleRequest
 
     public static class Api extends UrlRequest.Api<Api>
     {
-
         private CacheMode mCacheMode;
         private String mCacheKey;
 
         private Converter mConverter;
 
-        private Api(Url.Builder builder, RequestMethod method)
+        public Api(String url, RequestMethod method)
         {
-            super(builder, method);
+            super(url, method);
         }
 
         public Api cacheMode(CacheMode cacheMode)

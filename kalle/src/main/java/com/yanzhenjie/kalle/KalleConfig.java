@@ -315,9 +315,9 @@ public final class KalleConfig
         /**
          * Add the global param.
          */
-        public Builder addParam(String key, String value)
+        public Builder putParams(Params params)
         {
-            mParamsBuilder.add(key, value);
+            mParamsBuilder.putParams(params);
             return this;
         }
 
