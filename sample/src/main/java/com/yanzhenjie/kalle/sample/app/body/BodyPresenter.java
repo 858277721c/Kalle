@@ -22,8 +22,8 @@ import android.support.annotation.Nullable;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.kalle.FileBody;
 import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.request.body.FileBody;
 import com.yanzhenjie.kalle.sample.R;
 import com.yanzhenjie.kalle.sample.app.BaseActivity;
 import com.yanzhenjie.kalle.sample.app.body.entity.FileInfo;
@@ -88,7 +88,7 @@ public class BodyPresenter extends BaseActivity implements Contract.BodyPresente
         File file = new File(mAlbumFile.getPath());
 
         Kalle.post(UrlConfig.UPLOAD_BODY_FILE)
-                .urlParam("filename", file.getName())
+                .putQuery("filename", file.getName())
                 .body(new FileBody(file))
                 .tag(this)
                 .perform(new SimpleCallback<FileInfo>(this) {

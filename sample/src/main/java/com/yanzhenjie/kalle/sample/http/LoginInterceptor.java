@@ -15,9 +15,9 @@
  */
 package com.yanzhenjie.kalle.sample.http;
 
-import com.yanzhenjie.kalle.BodyRequest;
+import com.yanzhenjie.kalle.request.BodyRequest;
+import com.yanzhenjie.kalle.request.Request;
 import com.yanzhenjie.kalle.sample.util.Logger;
-import com.yanzhenjie.kalle.Request;
 import com.yanzhenjie.kalle.RequestMethod;
 import com.yanzhenjie.kalle.Response;
 import com.yanzhenjie.kalle.Url;
@@ -40,9 +40,9 @@ public class LoginInterceptor implements Interceptor {
         Response originResponse = chain.proceed(request);
         if (originResponse.code() == 401) { // If not login, try login.
             Logger.w("Need login: " + request.url().toString());
-            BodyRequest loginRequest = BodyRequest.newBuilder(Url.newBuilder(UrlConfig.LOGIN), RequestMethod.POST)
-                    .param("name", 123)
-                    .param("password", 456)
+            BodyRequest loginRequest = new BodyRequest.Builder(UrlConfig.LOGIN, RequestMethod.POST)
+                    .putString("name", String.valueOf(123))
+                    .putString("password", String.valueOf(456))
                     .build();
             Response loginResponse = new Call(loginRequest).execute();
             if (loginResponse.code() == 200) { // Login successfully.

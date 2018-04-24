@@ -54,7 +54,7 @@ public class App extends Application {
     public void initialize() {
         AppConfig.get().initFileDir();
 
-        Kalle.setConfig(KalleConfig.newBuilder()
+        Kalle.setConfig(new KalleConfig.Builder()
                 .connectFactory(URLConnectionFactory.newBuilder().build())
                 .cookieStore(DBCookieStore.newBuilder(this).build())
                 .cacheStore(DiskCacheStore.newBuilder(AppConfig.get().PATH_APP_CACHE).build())

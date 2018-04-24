@@ -75,8 +75,8 @@ public class WelActivity extends Activity {
      */
     private void tryLogin() {
         Kalle.post(LOGIN)
-                .param("name", 123)
-                .param("password", 456)
+                .putString("name", String.valueOf(123))
+                .putString("password", String.valueOf(456))
                 .tag(this)
                 .perform(new SimpleCallback<String>(this) {
                     @Override

@@ -22,10 +22,11 @@ import android.support.annotation.Nullable;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
-import com.yanzhenjie.kalle.FileBinary;
-import com.yanzhenjie.kalle.FormBody;
 import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.Params;
 import com.yanzhenjie.kalle.ProgressBar;
+import com.yanzhenjie.kalle.request.body.FileBinary;
+import com.yanzhenjie.kalle.request.body.FormBody;
 import com.yanzhenjie.kalle.sample.R;
 import com.yanzhenjie.kalle.sample.app.BaseActivity;
 import com.yanzhenjie.kalle.sample.app.form.entity.FileInfo;
@@ -122,13 +123,16 @@ public class FormPresenter extends BaseActivity implements Contract.FormPresente
                     });
         }
 
-        FormBody formBody = FormBody.newBuilder()
-                .param("name", "kalle")
-                .param("age", 18)
-                .binary("file1", binary1)
-                .binary("file2", binary2)
-                .binary("file3", binary3)
+        FormBody formBody = new FormBody.Builder()
+                .params(new Params.Builder()
+                        .putString("name", "kalle")
+                        .putString("age", String.valueOf(18))
+                        .putBinary("file1", binary1)
+                        .putBinary("file2", binary2)
+                        .putBinary("file3", binary3)
+                        .build())
                 .build();
+
         formBody.onProgress(new ProgressBar<FormBody>() {
             @Override
             public void progress(FormBody origin, int progress) {

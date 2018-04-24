@@ -53,8 +53,8 @@ public class NormalPresenter extends BaseActivity implements Contract.NormalPres
     @Override
     public void refresh() {
         Kalle.get(UrlConfig.GET_LIST)
-                .param("pageNum", 1)
-                .param("pageSize", 50)
+                .putString("pageNum", String.valueOf(1))
+                .putString("pageSize", String.valueOf(50))
                 .tag(this)
                 .perform(new SimpleCallback<NewsWrapper>(this) {
                     @Override
@@ -78,8 +78,8 @@ public class NormalPresenter extends BaseActivity implements Contract.NormalPres
     @Override
     public void loadMore() {
         Kalle.get(UrlConfig.GET_LIST)
-                .param("pageNum", mPage.getPageNum() + 1)
-                .param("pageSize", 50)
+                .putString("pageNum", String.valueOf(mPage.getPageNum() + 1))
+                .putString("pageSize", String.valueOf(50))
                 .perform(new SimpleCallback<NewsWrapper>(this) {
                     @Override
                     public void onResponse(SimpleResponse<NewsWrapper, String> response) {
