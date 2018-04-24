@@ -18,6 +18,7 @@ package com.yanzhenjie.kalle;
 import com.yanzhenjie.kalle.request.Request;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,13 +26,7 @@ import java.util.List;
  */
 public class CancelerManager
 {
-
-    private final List<CancelEntity> mRequestList;
-
-    public CancelerManager()
-    {
-        this.mRequestList = new ArrayList<>();
-    }
+    private final List<RequestInfo> listRequest = new ArrayList<>();
 
     /**
      * Add a task to cancel.
@@ -39,10 +34,13 @@ public class CancelerManager
      * @param request   target request.
      * @param canceller canceller.
      */
-    public void addCancel(Request request, Canceller canceller)
+    public synchronized void addCancel(Request request, Canceller canceller)
     {
-        CancelEntity cancelTag = new CancelEntity(request, canceller);
-        mRequestList.add(cancelTag);
+        if (request == null || canceller == null)
+        {
+            return;
+        }
+        listRequest.add(new RequestInfo(request, canceller));
     }
 
     /**
@@ -50,19 +48,17 @@ public class CancelerManager
      *
      * @param request target request.
      */
-    public void removeCancel(Request request)
+    public synchronized void removeCancel(Request request)
     {
-        CancelEntity cancelEntity = null;
-        for (CancelEntity entity : mRequestList)
+        final Iterator<RequestInfo> it = listRequest.iterator();
+        while (it.hasNext())
         {
-            Request newRequest = entity.mRequest;
-            if (request == newRequest)
+            final RequestInfo item = it.next();
+            if (item.request == request)
             {
-                cancelEntity = entity;
-                break;
+                it.remove();
             }
         }
-        if (cancelEntity != null) mRequestList.remove(cancelEntity);
     }
 
     /**
@@ -70,28 +66,27 @@ public class CancelerManager
      *
      * @param tag tag.
      */
-    public void cancel(Object tag)
+    public synchronized void cancel(Object tag)
     {
-        for (CancelEntity entity : mRequestList)
+        for (RequestInfo item : listRequest)
         {
-            Object newTag = entity.mRequest.tag();
-            if (tag == newTag || (tag != null && newTag != null && tag.equals(newTag)))
+            final Object tagSaved = item.request.tag();
+            if (tag == tagSaved || (tag != null && tagSaved != null && tag.equals(tagSaved)))
             {
-                entity.mCanceller.cancel();
+                item.canceller.cancel();
             }
         }
     }
 
-    private static class CancelEntity
+    private static class RequestInfo
     {
-        private final Request mRequest;
-        private final Canceller mCanceller;
+        private final Request request;
+        private final Canceller canceller;
 
-        private CancelEntity(Request request, Canceller canceller)
+        private RequestInfo(Request request, Canceller canceller)
         {
-            this.mRequest = request;
-            this.mCanceller = canceller;
+            this.request = request;
+            this.canceller = canceller;
         }
     }
-
 }
