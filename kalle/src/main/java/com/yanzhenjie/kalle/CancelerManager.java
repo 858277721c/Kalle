@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class CancelerManager
 {
-    private final List<RequestInfo> listRequest = new ArrayList<>();
+    private final List<RequestInfo> mListRequest = new ArrayList<>();
 
     /**
      * Add a task to cancel.
@@ -40,7 +40,7 @@ public class CancelerManager
         {
             return;
         }
-        listRequest.add(new RequestInfo(request, canceller));
+        mListRequest.add(new RequestInfo(request, canceller));
     }
 
     /**
@@ -48,15 +48,15 @@ public class CancelerManager
      *
      * @param request target request.
      */
-    public synchronized void removeCancel(Request request)
+    public synchronized void removeCancel(final Request request)
     {
-        final Iterator<RequestInfo> it = listRequest.iterator();
+        final Iterator<RequestInfo> it = mListRequest.iterator();
         while (it.hasNext())
         {
-            final RequestInfo item = it.next();
-            if (item.request == request)
+            if (it.next().mRequest == request)
             {
                 it.remove();
+                break;
             }
         }
     }
@@ -66,27 +66,27 @@ public class CancelerManager
      *
      * @param tag tag.
      */
-    public synchronized void cancel(Object tag)
+    public synchronized void cancel(final Object tag)
     {
-        for (RequestInfo item : listRequest)
+        for (RequestInfo item : mListRequest)
         {
-            final Object tagSaved = item.request.tag();
+            final Object tagSaved = item.mRequest.tag();
             if (tag == tagSaved || (tag != null && tagSaved != null && tag.equals(tagSaved)))
             {
-                item.canceller.cancel();
+                item.mCanceller.cancel();
             }
         }
     }
 
     private static class RequestInfo
     {
-        private final Request request;
-        private final Canceller canceller;
+        private final Request mRequest;
+        private final Canceller mCanceller;
 
         private RequestInfo(Request request, Canceller canceller)
         {
-            this.request = request;
-            this.canceller = canceller;
+            this.mRequest = request;
+            this.mCanceller = canceller;
         }
     }
 }
