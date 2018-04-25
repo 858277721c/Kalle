@@ -15,8 +15,10 @@
  */
 package com.yanzhenjie.kalle.request;
 
-import com.yanzhenjie.kalle.request.body.RequestBody;
+import android.text.TextUtils;
+
 import com.yanzhenjie.kalle.RequestMethod;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 
 /**
  * Created by YanZhenjie on 2018/2/13.
@@ -44,8 +46,11 @@ public class UrlRequest extends Request
         @Override
         public T putString(String key, String value)
         {
-            mParamsBuilder.putString(key, value);
-            return putQuery(key, value);
+            if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value))
+            {
+                putQuery(key, value);
+            }
+            return super.putString(key, value);
         }
     }
 

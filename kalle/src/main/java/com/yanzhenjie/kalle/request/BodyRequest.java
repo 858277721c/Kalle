@@ -18,6 +18,7 @@ package com.yanzhenjie.kalle.request;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.Params;
 import com.yanzhenjie.kalle.RequestMethod;
+import com.yanzhenjie.kalle.request.body.Binary;
 import com.yanzhenjie.kalle.request.body.FormBody;
 import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.request.body.UrlBody;
@@ -77,10 +78,9 @@ public class BodyRequest extends Request
             return (T) this;
         }
 
-        @Override
-        public T putString(String key, String value)
+        public T putBinary(String key, Binary binary)
         {
-            mParamsBuilder.putString(key, value);
+            mParamsBuilder.putBinary(key, binary);
             return (T) this;
         }
 

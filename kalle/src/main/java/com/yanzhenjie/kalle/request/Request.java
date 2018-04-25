@@ -18,9 +18,9 @@ package com.yanzhenjie.kalle.request;
 import com.yanzhenjie.kalle.Headers;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.Params;
-import com.yanzhenjie.kalle.request.body.RequestBody;
 import com.yanzhenjie.kalle.RequestMethod;
 import com.yanzhenjie.kalle.Url;
+import com.yanzhenjie.kalle.request.body.RequestBody;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -230,14 +230,18 @@ public abstract class Request
         /**
          * Put a String parameters. The entry will be removed if the value is null
          */
-        public abstract T putString(String key, String value);
+        public T putString(String key, String value)
+        {
+            mParamsBuilder.putString(key, value);
+            return (T) this;
+        }
 
         /**
          * Proxy information for this request.
          */
         public T proxy(Proxy proxy)
         {
-            this.mProxy = proxy;
+            mProxy = proxy;
             return (T) this;
         }
 
@@ -246,7 +250,7 @@ public abstract class Request
          */
         public T sslSocketFactory(SSLSocketFactory sslSocketFactory)
         {
-            this.mSSLSocketFactory = sslSocketFactory;
+            mSSLSocketFactory = sslSocketFactory;
             return (T) this;
         }
 
@@ -255,7 +259,7 @@ public abstract class Request
          */
         public T hostnameVerifier(HostnameVerifier hostnameVerifier)
         {
-            this.mHostnameVerifier = hostnameVerifier;
+            mHostnameVerifier = hostnameVerifier;
             return (T) this;
         }
 
@@ -265,7 +269,7 @@ public abstract class Request
         public T connectTimeout(int timeout, TimeUnit timeUnit)
         {
             long time = timeUnit.toMillis(timeout);
-            this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
+            mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return (T) this;
         }
 
@@ -275,7 +279,7 @@ public abstract class Request
         public T readTimeout(int timeout, TimeUnit timeUnit)
         {
             long time = timeUnit.toMillis(timeout);
-            this.mConnectTimeout = (int) Math.min(time, Integer.MAX_VALUE);
+            mReadTimeout = (int) Math.min(time, Integer.MAX_VALUE);
             return (T) this;
         }
 
@@ -284,7 +288,7 @@ public abstract class Request
          */
         public T tag(Object tag)
         {
-            this.mTag = tag;
+            mTag = tag;
             return (T) this;
         }
     }
