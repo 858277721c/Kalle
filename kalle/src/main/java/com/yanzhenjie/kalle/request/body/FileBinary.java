@@ -16,7 +16,6 @@
 package com.yanzhenjie.kalle.request.body;
 
 import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 
 import com.yanzhenjie.kalle.Headers;
 import com.yanzhenjie.kalle.util.IOUtils;
@@ -26,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 
 /**
  * <p>
@@ -40,7 +40,11 @@ public class FileBinary extends BasicOutData<FileBinary> implements Binary
 
     public FileBinary(File file)
     {
-        this.mFile = file;
+        if (!file.exists())
+        {
+            throw new IllegalArgumentException("file does not exists");
+        }
+        mFile = file;
     }
 
     @Override
@@ -58,9 +62,7 @@ public class FileBinary extends BasicOutData<FileBinary> implements Binary
     @Override
     public String contentType()
     {
-        String fileName = mFile.getName();
-        String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        String mimeType = HttpURLConnection.guessContentTypeFromName(mFile.getName());
         if (TextUtils.isEmpty(mimeType)) mimeType = Headers.VALUE_APPLICATION_STREAM;
         return mimeType;
     }
