@@ -1,3 +1,2 @@
 include ':kalle'
-include ':okalle'
 include ':sample'
