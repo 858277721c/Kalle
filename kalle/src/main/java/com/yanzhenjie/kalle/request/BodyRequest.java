@@ -37,7 +37,7 @@ public class BodyRequest extends Request
         if (api.mBody == null)
         {
             final Params params = params();
-            if (params.hasBinary())
+            if (params.sizeBinary() > 0)
             {
                 mBody = new FormBody.Builder().params(params).build();
             } else

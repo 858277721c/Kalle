@@ -73,9 +73,20 @@ public class Params
         return Collections.unmodifiableSet(mMapBinary.keySet());
     }
 
-    public boolean hasBinary()
+    /**
+     * Returns the number of key mapping for String
+     */
+    public int sizeString()
     {
-        return mMapBinary.size() > 0;
+        return mMapString.size();
+    }
+
+    /**
+     * Returns the number of key mapping for Binary
+     */
+    public int sizeBinary()
+    {
+        return mMapString.size();
     }
 
     @Override
